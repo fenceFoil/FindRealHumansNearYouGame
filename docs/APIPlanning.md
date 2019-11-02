@@ -4,6 +4,8 @@
 
 (TODO: Lobby interactions and getting to that setup screen)
 
+* POST RestartGame (From Master Robot)
+
 ## Game Starting
 
 * POST Create Profile (From Phone)
@@ -57,6 +59,7 @@
 ## Results Time!
 
 * GET RoundResults
+  * RoundNum (int)
   * IsFinalResults (bool)
   * NumBotsDated (int)
   * NumHumansDated (int)

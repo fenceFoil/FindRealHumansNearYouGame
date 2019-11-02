@@ -20,6 +20,11 @@ Likes
 * RoundNum
 * Action (string: LEFT or RIGHT)
 
+GameScheduler
+* CurrGameState
+* RoundNumber
+* StateTimeoutTime
+
 OPTIONAL PlayerHistory:
 * Player
 * MapOfHeartsByRoundNumber
