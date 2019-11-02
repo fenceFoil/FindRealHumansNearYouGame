@@ -311,6 +311,9 @@ definitions:
       round_num:
         type: "integer"
         format: "int32"
+      action:
+        type: "string"
+        description: ""
     title: "Root Type for likes"
     description: ""
     example:

@@ -15,7 +15,7 @@ class Likes(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, source_player_id: int=None, dest_player_id: int=None, round_num: int=None):  # noqa: E501
+    def __init__(self, source_player_id: int=None, dest_player_id: int=None, round_num: int=None, action: str=None):  # noqa: E501
         """Likes - a model defined in Swagger
 
         :param source_player_id: The source_player_id of this Likes.  # noqa: E501
@@ -24,22 +24,27 @@ class Likes(Model):
         :type dest_player_id: int
         :param round_num: The round_num of this Likes.  # noqa: E501
         :type round_num: int
+        :param action: The action of this Likes.  # noqa: E501
+        :type action: str
         """
         self.swagger_types = {
             'source_player_id': int,
             'dest_player_id': int,
-            'round_num': int
+            'round_num': int,
+            'action': str
         }
 
         self.attribute_map = {
             'source_player_id': 'source_player_id',
             'dest_player_id': 'dest_player_id',
-            'round_num': 'round_num'
+            'round_num': 'round_num',
+            'action': 'action'
         }
 
         self._source_player_id = source_player_id
         self._dest_player_id = dest_player_id
         self._round_num = round_num
+        self._action = action
 
     @classmethod
     def from_dict(cls, dikt) -> 'Likes':
@@ -114,3 +119,26 @@ class Likes(Model):
         """
 
         self._round_num = round_num
+
+    @property
+    def action(self) -> str:
+        """Gets the action of this Likes.
+
+          # noqa: E501
+
+        :return: The action of this Likes.
+        :rtype: str
+        """
+        return self._action
+
+    @action.setter
+    def action(self, action: str):
+        """Sets the action of this Likes.
+
+          # noqa: E501
+
+        :param action: The action of this Likes.
+        :type action: str
+        """
+
+        self._action = action
