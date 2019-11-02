@@ -11,3 +11,6 @@ Every .1 seconds
                 move to PICKUP WRITING, choose new StateTimeoutTime
                 increment round number
 
+                if round number is greater than 5:
+                    GameOver=True
+

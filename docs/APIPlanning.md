@@ -5,6 +5,7 @@
 (TODO: Lobby interactions and getting to that setup screen)
 
 * POST RestartGame (From Master Robot)
+  * // this exports and wipes the tables
 
 ## Game Starting
 
@@ -22,12 +23,12 @@
 
 * GET Generate Pickup Completions (From Phone)
     * HumanWords
-    * NumScreedsNeeded
+    * NumCompletionsNeeded
     * PlayerID
     RETURN
-    * List of bot screed options
+    * List of bot completion options
 
-* POST Commit New Message (From Phone)
+* POST Commit New Pickup (From Phone)
     * PlayerID
     * HumanWords
     * BotScreed

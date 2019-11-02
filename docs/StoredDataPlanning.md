@@ -24,6 +24,7 @@ GameScheduler
 * CurrGameState
 * RoundNumber
 * StateTimeoutTime
+* GameOver (bool)
 
 OPTIONAL PlayerHistory:
 * Player
