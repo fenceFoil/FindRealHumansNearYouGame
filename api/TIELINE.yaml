@@ -262,6 +262,9 @@ definitions:
       round_num:
         format: int32
         type: integer
+      action:
+        description: ""
+        type: string
     example:
       source_player_id: 0
       dest_player_id: 0
