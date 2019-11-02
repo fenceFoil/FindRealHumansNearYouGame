@@ -1,0 +1,268 @@
+---
+swagger: "2.0"
+info:
+  title: TIELIN
+  version: 1.0.0
+  description: Tech is evil Love is not
+paths:
+  /profiles:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns an array of `profiles` entities.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/profiles'
+      operationId: getallprofiles
+      summary: List All profiles
+      description: Gets a list of all `profiles` entities.
+    post:
+      parameters:
+      - name: body
+        description: A new `profiles` to be created.
+        schema:
+          $ref: '#/definitions/profiles'
+        in: body
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createprofiles
+      summary: Create a profiles
+      description: Creates a new instance of a `profiles`.
+  /profiles/{profilesId}:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns a single `profiles`.
+          schema:
+            $ref: '#/definitions/profiles'
+      operationId: getprofiles
+      summary: Get a profiles
+      description: Gets the details of a single instance of a `profiles`.
+    put:
+      parameters:
+      - name: body
+        description: Updated `profiles` information.
+        schema:
+          $ref: '#/definitions/profiles'
+        in: body
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateprofiles
+      summary: Update a profiles
+      description: Updates an existing `profiles`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteprofiles
+      summary: Delete a profiles
+      description: Deletes an existing `profiles`.
+    parameters:
+    - name: profilesId
+      description: A unique identifier for a `profiles`.
+      in: path
+      required: true
+      type: string
+  /pickup_lines:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns an array of `pickup_lines` entities.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pickup_lines'
+      operationId: getallpickup_lines
+      summary: List All pickup_lines
+      description: Gets a list of all `pickup_lines` entities.
+    post:
+      parameters:
+      - name: body
+        description: A new `pickup_lines` to be created.
+        schema:
+          $ref: '#/definitions/pickup_lines'
+        in: body
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createpickup_lines
+      summary: Create a pickup_lines
+      description: Creates a new instance of a `pickup_lines`.
+  /pickup_lines/{pickup_linesId}:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns a single `pickup_lines`.
+          schema:
+            $ref: '#/definitions/pickup_lines'
+      operationId: getpickup_lines
+      summary: Get a pickup_lines
+      description: Gets the details of a single instance of a `pickup_lines`.
+    put:
+      parameters:
+      - name: body
+        description: Updated `pickup_lines` information.
+        schema:
+          $ref: '#/definitions/pickup_lines'
+        in: body
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updatepickup_lines
+      summary: Update a pickup_lines
+      description: Updates an existing `pickup_lines`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deletepickup_lines
+      summary: Delete a pickup_lines
+      description: Deletes an existing `pickup_lines`.
+    parameters:
+    - name: pickup_linesId
+      description: A unique identifier for a `pickup_lines`.
+      in: path
+      required: true
+      type: string
+  /likes:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns an array of `likes` entities.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/likes'
+      operationId: getalllikes
+      summary: List All likes
+      description: Gets a list of all `likes` entities.
+    post:
+      parameters:
+      - name: body
+        description: A new `likes` to be created.
+        schema:
+          $ref: '#/definitions/likes'
+        in: body
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createlikes
+      summary: Create a likes
+      description: Creates a new instance of a `likes`.
+  /likes/{likesId}:
+    get:
+      responses:
+        "200":
+          description: Successful response - returns a single `likes`.
+          schema:
+            $ref: '#/definitions/likes'
+      operationId: getlikes
+      summary: Get a likes
+      description: Gets the details of a single instance of a `likes`.
+    put:
+      parameters:
+      - name: body
+        description: Updated `likes` information.
+        schema:
+          $ref: '#/definitions/likes'
+        in: body
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updatelikes
+      summary: Update a likes
+      description: Updates an existing `likes`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deletelikes
+      summary: Delete a likes
+      description: Deletes an existing `likes`.
+    parameters:
+    - name: likesId
+      description: A unique identifier for a `likes`.
+      in: path
+      required: true
+      type: string
+definitions:
+  profiles:
+    title: Root Type for profiles
+    description: ""
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      is_robot:
+        type: boolean
+      name:
+        type: string
+      waifu_image_url:
+        type: string
+      hearts:
+        format: int32
+        type: integer
+      implants:
+        format: int32
+        type: integer
+    example:
+      id: 0
+      is_robot: false
+      name: ""
+      waifu_image_url: http://images6.fanpop.com/image/photos/39900000/Mr-Kimura-elinafairy-39952234-320-216.gif
+      hearts: 0
+      implants: 0
+  pickup_lines:
+    title: Root Type for pickup_lines
+    description: '        '
+    type: object
+    properties:
+      player_id:
+        format: int32
+        type: integer
+      round_num:
+        format: int32
+        type: integer
+      earned_swipes_left:
+        type: string
+      earned_swipes_right:
+        type: string
+      human_words:
+        type: string
+      robot_words:
+        type: string
+    example:
+      player_id: 0
+      round_num: 0
+      earned_swipes_left: ""
+      earned_swipes_right: ""
+      human_words: ""
+      robot_words: ""
+  likes:
+    title: Root Type for likes
+    description: ""
+    type: object
+    properties:
+      source_player_id:
+        format: int32
+        type: integer
+      dest_player_id:
+        format: int32
+        type: integer
+      round_num:
+        format: int32
+        type: integer
+    example:
+      source_player_id: 0
+      dest_player_id: 0
+      round_num: 0

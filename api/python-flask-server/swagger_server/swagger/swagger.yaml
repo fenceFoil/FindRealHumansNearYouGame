@@ -1,0 +1,319 @@
+---
+swagger: "2.0"
+info:
+  description: "Tech is evil Love is not"
+  version: "1.0.0"
+  title: "TIELIN"
+paths:
+  /profiles:
+    get:
+      summary: "List All profiles"
+      description: "Gets a list of all `profiles` entities."
+      operationId: "getallprofiles"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response - returns an array of `profiles` entities."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/profiles"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    post:
+      summary: "Create a profiles"
+      description: "Creates a new instance of a `profiles`."
+      operationId: "createprofiles"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new `profiles` to be created."
+        required: true
+        schema:
+          $ref: "#/definitions/profiles"
+      responses:
+        201:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /profiles/{profilesId}:
+    get:
+      summary: "Get a profiles"
+      description: "Gets the details of a single instance of a `profiles`."
+      operationId: "getprofiles"
+      parameters:
+      - name: "profilesId"
+        in: "path"
+        description: "A unique identifier for a `profiles`."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response - returns a single `profiles`."
+          schema:
+            $ref: "#/definitions/profiles"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    put:
+      summary: "Update a profiles"
+      description: "Updates an existing `profiles`."
+      operationId: "updateprofiles"
+      parameters:
+      - name: "profilesId"
+        in: "path"
+        description: "A unique identifier for a `profiles`."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated `profiles` information."
+        required: true
+        schema:
+          $ref: "#/definitions/profiles"
+      responses:
+        202:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    delete:
+      summary: "Delete a profiles"
+      description: "Deletes an existing `profiles`."
+      operationId: "deleteprofiles"
+      parameters:
+      - name: "profilesId"
+        in: "path"
+        description: "A unique identifier for a `profiles`."
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /pickup_lines:
+    get:
+      summary: "List All pickup_lines"
+      description: "Gets a list of all `pickup_lines` entities."
+      operationId: "getallpickup_lines"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response - returns an array of `pickup_lines` entities."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/pickup_lines"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    post:
+      summary: "Create a pickup_lines"
+      description: "Creates a new instance of a `pickup_lines`."
+      operationId: "createpickup_lines"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new `pickup_lines` to be created."
+        required: true
+        schema:
+          $ref: "#/definitions/pickup_lines"
+      responses:
+        201:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /pickup_lines/{pickup_linesId}:
+    get:
+      summary: "Get a pickup_lines"
+      description: "Gets the details of a single instance of a `pickup_lines`."
+      operationId: "getpickup_lines"
+      parameters:
+      - name: "pickup_linesId"
+        in: "path"
+        description: "A unique identifier for a `pickup_lines`."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response - returns a single `pickup_lines`."
+          schema:
+            $ref: "#/definitions/pickup_lines"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    put:
+      summary: "Update a pickup_lines"
+      description: "Updates an existing `pickup_lines`."
+      operationId: "updatepickup_lines"
+      parameters:
+      - name: "pickup_linesId"
+        in: "path"
+        description: "A unique identifier for a `pickup_lines`."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated `pickup_lines` information."
+        required: true
+        schema:
+          $ref: "#/definitions/pickup_lines"
+      responses:
+        202:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    delete:
+      summary: "Delete a pickup_lines"
+      description: "Deletes an existing `pickup_lines`."
+      operationId: "deletepickup_lines"
+      parameters:
+      - name: "pickup_linesId"
+        in: "path"
+        description: "A unique identifier for a `pickup_lines`."
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /likes:
+    get:
+      summary: "List All likes"
+      description: "Gets a list of all `likes` entities."
+      operationId: "getalllikes"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response - returns an array of `likes` entities."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/likes"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    post:
+      summary: "Create a likes"
+      description: "Creates a new instance of a `likes`."
+      operationId: "createlikes"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new `likes` to be created."
+        required: true
+        schema:
+          $ref: "#/definitions/likes"
+      responses:
+        201:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+  /likes/{likesId}:
+    get:
+      summary: "Get a likes"
+      description: "Gets the details of a single instance of a `likes`."
+      operationId: "getlikes"
+      parameters:
+      - name: "likesId"
+        in: "path"
+        description: "A unique identifier for a `likes`."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response - returns a single `likes`."
+          schema:
+            $ref: "#/definitions/likes"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    put:
+      summary: "Update a likes"
+      description: "Updates an existing `likes`."
+      operationId: "updatelikes"
+      parameters:
+      - name: "likesId"
+        in: "path"
+        description: "A unique identifier for a `likes`."
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated `likes` information."
+        required: true
+        schema:
+          $ref: "#/definitions/likes"
+      responses:
+        202:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+    delete:
+      summary: "Delete a likes"
+      description: "Deletes an existing `likes`."
+      operationId: "deletelikes"
+      parameters:
+      - name: "likesId"
+        in: "path"
+        description: "A unique identifier for a `likes`."
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Successful response."
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+definitions:
+  profiles:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      is_robot:
+        type: "boolean"
+      name:
+        type: "string"
+      waifu_image_url:
+        type: "string"
+      hearts:
+        type: "integer"
+        format: "int32"
+      implants:
+        type: "integer"
+        format: "int32"
+    title: "Root Type for profiles"
+    description: ""
+    example:
+      id: 0
+      is_robot: false
+      name: ""
+      waifu_image_url: "http://images6.fanpop.com/image/photos/39900000/Mr-Kimura-elinafairy-39952234-320-216.gif"
+      hearts: 0
+      implants: 0
+  pickup_lines:
+    type: "object"
+    properties:
+      player_id:
+        type: "integer"
+        format: "int32"
+      round_num:
+        type: "integer"
+        format: "int32"
+      earned_swipes_left:
+        type: "string"
+      earned_swipes_right:
+        type: "string"
+      human_words:
+        type: "string"
+      robot_words:
+        type: "string"
+    title: "Root Type for pickup_lines"
+    description: "        "
+    example:
+      player_id: 0
+      round_num: 0
+      earned_swipes_left: ""
+      earned_swipes_right: ""
+      human_words: ""
+      robot_words: ""
+  likes:
+    type: "object"
+    properties:
+      source_player_id:
+        type: "integer"
+        format: "int32"
+      dest_player_id:
+        type: "integer"
+        format: "int32"
+      round_num:
+        type: "integer"
+        format: "int32"
+    title: "Root Type for likes"
+    description: ""
+    example:
+      source_player_id: 0
+      dest_player_id: 0
+      round_num: 0
