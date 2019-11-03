@@ -11,7 +11,7 @@ VERSION = 5
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
-GPT2_URL = "http://findrealhumansnearyou.com:465/"
+GPT2_URL = "http://localhost:8080/"
 
 app = Flask(__name__)
 CORS(app)

@@ -28,7 +28,10 @@
     components:{},
     methods:{
       submit: function (){
-        alert(this.name)
+        var url = 'http://findrealhumansnearyou.com:443/';
+        
+        alert(url);
+        alert(this.name);
         window.location.href='#/pickupline'
       }
     }
