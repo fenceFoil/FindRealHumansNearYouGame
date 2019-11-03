@@ -1,7 +1,7 @@
 var ipAddress = "localhost";
 var port = "5000";
 var statsRoute="scoreboard_stats";
-var statsUrlGlobal = "http://localhost:5000/scoreboard_stats";
+var statsUrlGlobal = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:443/scoreboard_stats";
 
 var mostHeartsListNode;
 var mostImplantsListNode;
@@ -62,7 +62,7 @@ function populateMostHearts(profileData) {
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], null);
+        createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], "Hearts: " + profileData[i].hearts);
     }
 }
 
@@ -72,7 +72,7 @@ function populateMostImplants(profileData) {
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], null);
+        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], "Implants: " + profileData[i].imnplants);
     }
 }
 
@@ -141,7 +141,7 @@ function createElementNode(root, nodeName, profile, extraValue) {
     let extraValueNameElement;
     if(extraValue != null) {
         extraValueNameElement = document.createTextNode(extraValue);
-        extraValueNameElement.setAttribute('class', 'extraValue');
+        //extraValueNameElement.setAttribute('class', 'extraValue');
     }
     
     parentElement.appendChild(childImageElement);
