@@ -11,11 +11,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:5000/clear_game",
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/clear_game",
 					"host": [
-						"localhost"
+						"{{LOCAL_DOMAIN}}"
 					],
-					"port": "5000",
+					"port": "{{LOCAL_PORT}}",
 					"path": [
 						"clear_game"
 					]
@@ -43,7 +43,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"asdf\":5}",
+					"raw": "{\"name\":\"Joe\",\"picture\":1234}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,11 +51,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/create_profile",
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/create_profile",
 					"host": [
-						"localhost"
+						"{{LOCAL_DOMAIN}}"
 					],
-					"port": "5000",
+					"port": "{{LOCAL_PORT}}",
 					"path": [
 						"create_profile"
 					]
@@ -69,7 +69,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/get_num_players",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"get_num_players"
+					]
 				}
 			},
 			"response": []
@@ -80,7 +87,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/start_game",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"start_game"
+					]
 				}
 			},
 			"response": []
@@ -91,7 +105,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/profiles/1",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"profiles",
+						"1"
+					]
 				}
 			},
 			"response": []
@@ -121,11 +143,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:5000/get_pickup_completions",
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/get_pickup_completions",
 					"host": [
-						"localhost"
+						"{{LOCAL_DOMAIN}}"
 					],
-					"port": "5000",
+					"port": "{{LOCAL_PORT}}",
 					"path": [
 						"get_pickup_completions"
 					]
