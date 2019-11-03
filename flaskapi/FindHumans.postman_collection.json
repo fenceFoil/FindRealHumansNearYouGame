@@ -154,6 +154,200 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Is It Results Time?",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/is_it_results_time",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"is_it_results_time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commit New Pickup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"playerID\":1,\n\t\"humanWords\":\"I'm called little Buttercup, \",\n\t\"botScreed\":\" and you'd better belive it.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/commit_new_pickup",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"commit_new_pickup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Prospects",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/get_prospects/1",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"get_prospects",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Swipe",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"playerID\": 1,\n\t\"targetID\": 2,\n\t\"action\": \"RIGHT\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/swipes",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"swipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Announce Finished Swiping",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"playerID\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/finished_swiping",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"finished_swiping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Is It Swipe Time?",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/is_it_swipe_time",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"is_it_swipe_time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Your Round Results",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"playerID\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/results",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
