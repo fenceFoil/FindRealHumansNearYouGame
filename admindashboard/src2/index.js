@@ -1,7 +1,7 @@
 var ipAddress = "localhost";
 var port = "5000";
 var statsRoute="scoreboard_stats";
-var statsUrlGlobal = "http://localhost:5000/scoreboard_stats";
+var statsUrlGlobal = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:443/scoreboard_stats";
 
 var mostHeartsListNode;
 var mostImplantsListNode;
