@@ -32,6 +32,19 @@ def send_js3(path):
 @app.route('/static/admin/<path:path>')
 def send_js4(path):
     return send_from_directory('static/admin', path)
+@app.route('/js/<path:path>')
+def send_js5(path):
+    return send_from_directory('static/app/js/', path)
+@app.route('/css/<path:path>')
+def send_js6(path):
+    return send_from_directory('static/app/css/', path)
+@app.route('/img/<path:path>')
+def send_js7(path):
+    return send_from_directory('static/app/img/', path)
+@app.route('/fonts/<path:path>')
+def send_js8(path):
+    return send_from_directory('static/app/fonts/', path)
+
 
 nextPlayerID = 1
 profiles = []
