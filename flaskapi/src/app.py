@@ -267,9 +267,10 @@ enteringNewState = True
 def generateBotPickupsForRound():
     # TODO
     # Loop bots
-        # Decide on canned prefix for bots (either a random one from the list, or a popular one)
-        # Generate the suffix for it
-        # Save it
+    # Decide on canned prefix for bots (either a random one from the list, or a popular one)
+    # Generate the suffix for it
+    # Save it
+    pass
 
 def updateGameState():
     """
