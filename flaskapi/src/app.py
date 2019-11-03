@@ -20,6 +20,10 @@ class Object:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
+@app.route('/static/<path:path>')
+def send_js(path):
+    return send_from_directory('static', path)
+
 nextPlayerID = 1
 profiles = []
 class Profile(Object): 
