@@ -1,12 +1,13 @@
 <template>
   <div class="about">
-    <h1>{{prospects[index].name}}</h1>
+    <h1 class="header-title">{{prospects[index].name}}</h1>
+    <h1 class="this-is-not-you japanese">これはあなたじゃないです</h1>
     <div class="picture">
-      <img :src="prospects[index].src">
+      <img class="waifu" :src="prospects[index].src">
     </div>
     <h1>{{prospects[index].line}}</h1>
-    <button v-on:click="submit('LEFT')" type="submit">LEFT</button>
-    <button v-on:click="submit('RIGHT')" type="submit">RIGHT</button>
+    <button class="button-2" v-on:click="submit('RIGHT')" type="submit">RIGHT</button>
+    <button class="button-1" v-on:click="submit('LEFT')" type="submit">LEFT</button>
   </div>
 </template>
 <script>
@@ -31,4 +32,6 @@
       }
     }
   }
+
+
 </script>

@@ -1,0 +1,90 @@
+div.picture img {
+    width: 0%;
+    max-width: 25%;
+}
+
+@media only screen and (max-width: 1899px) {
+    #app {
+        display: none;
+    }
+
+    #overall::after {
+        content: "Your screen size is too small. You can fuck right off ya cunt!";
+        font-size: 10em;
+    }
+}
+
+@media only screen and (min-width: 2300px) {
+    #app {
+        display: none;
+    }
+
+    #overall::after {
+        content: "Your screen size is too big, please kindly go fuck right off. Our website does not like you!";
+        font-size: 10em;
+    }
+}
+
+@font-face {
+    font-family: Crayon;
+    src:url("./../assets/font/crayonfont/crayon_1-1.ttf");
+}
+
+@font-face {
+    font-family: Glitter;
+    src:url("./../assets/font/glitter/I Love Glitter - TTF.ttf");
+}
+
+body {
+    background-color: #ff9c9c;
+}
+
+img.logo {
+    background: #fffa4d;
+    position: absolute;
+    margin: 0em 0em 0em -37em;
+}
+
+.japanese {
+    font-family: Crayon !important;
+    color: #a55fc1;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+p {
+    font-size: 2em;
+}
+
+h1, p {
+    font-family: Glitter;
+}
+
+h1.this-is-you {
+    position: absolute;
+    margin: 4.5em 0em 0em 7.5em;
+}
+
+button, .button input {
+    margin-top: 1em;
+    background-color: #ff9c9c;
+    padding: .5em 2em .5em 2em;
+    font-size: 1.5em;
+    font-weight: 900;
+    color: #a55fc1;
+    border-radius: 15%;
+}
+
+button:hover, .button input:hover {
+    background-color: #a55fc1;
+    color: #ff9c9c;
+}
+
+div.button button p {
+    margin: .5em 2em .5em 2em;
+    font-size: 1.5em;
+    font-weight: 900;
+    color: #a55fc1;
+}
