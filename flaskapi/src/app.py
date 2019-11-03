@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 import json
-import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -48,6 +48,10 @@ def convert_to_json(thing):
 def getPlayer(playerID):
     return [p for p in profiles if p.playerID == int(playerID)][0]
 
+def getNumHumanPlayers():
+    global profiles
+    return len([p for p in profiles if not p.isRobot])
+
 pickupLines = []
 class PickupLine(Object):
     def __init__(self, playerID, roundNum, humanWords, botScreed):
@@ -77,6 +81,7 @@ currGameState = "STOPPED" # STOPPED, WRITING_PICKUPS, SWIPING
 currRound = 1
 stateTimeoutTime = None
 gameOver = False
+finishedSwiping = []
 
 # TODO STRETCH: Create export function called after each round to make a backup
 
@@ -86,8 +91,6 @@ gameOver = False
 def create_profile():
     profiles.append(Profile(request.json["name"], request.json["picture"]))
     return jsonify({'playerID':profiles[-1].playerID}) 
-
-
 
 @app.route('/profiles/<playerID>')
 def get_profile(playerID):
@@ -128,20 +131,81 @@ def commit_new_pickup():
 
     return "added pickupline"
 
-@app.route('/move_to_swipe_time')
+@app.route('/is_it_swipe_time')
 def move_to_swipe_time():
     return jsonify({"isItTime":currGameState == "SWIPING"})
 
+@app.route('/swipes', methods=["POST"])
+def do_swipe():
+    global currRound
+    likes.append(Like(request.json["playerID"], request.json["targetID"], currRound, request.json["action"]))
+    return "ok"
+
+@app.route('/finished_swiping', methods=["POST"])
+def finished_swiping():
+    global finished_swiping
+    finished_swiping.append(request.json["playerID"])
+    return "ok"
+
+@app.route('/is_it_results_time')
+def is_it_results_time():
+    return jsonify({"isItTime":currGameState == "WRITING_PICKUPS"})
+
+@app.route('/results')
+def get_results():
+    global currRound
+    playerID = request.json["playerID"]
+    roundNum = currRound - 1
+    numBotsDated = len([l for l in likes if l.playerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and getPlayer(l.destPlayerID).isRobot])
+    numHumansDated = len([l for l in likes if l.playerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and (not getPlayer(l.destPlayerID).isRobot)])
+    newHearts = 0 # TODO
+    newImplants = 0 # TODO, and we Should provide list of bots that gave you hearts and implants for flavor
+    youDatedList = []
+    return jsonify({
+        "roundNum": roundNum,
+        "isFinalResults": gameOver,
+        "numBotsDated": numBotsDated,
+        "numHumansDated": numHumansDated,
+        "newHearts": newHearts,
+        "newImplants": newImplants,
+        "youDated": youDatedList
+    })
+
 # After everything else is established, start the game ticking
+
+enteringNewState = True
 
 def updateGameState():
     """
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global profiles
-    print ("Updating game state")
-    print(profiles)
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState
+
+    if currGameState == "STOPPED":
+        print ("Game is stopped")
+    elif currGameState == "WRITING_PICKUPS":
+        if enteringNewState:
+            # Make robots write their pickups
+            # TODO
+            enteringNewState = False
+        # If all human players have finished submitting pickup lines this round OR time is up...
+        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()) or datetime.now() > stateTimeoutTime:
+            # Move to swiping time
+            currGameState = "SWIPING"
+            enteringNewState = True
+            stateTimeoutTime = datetime.now() + timedelta(seconds=30)
+            finished_swiping = []
+    elif currGameState == "SWIPING":
+        # If all human players are finished swiping OR time is up...
+        if (len(finished_swiping) >= getNumHumanPlayers()) or datetime.now() > stateTimeoutTime:
+            # Move to round results and writing pickup lines
+            currGameState = "WRITING_PICKUPS"
+            enteringNewState = True
+            stateTimeoutTime = datetime.now() + timedelta(seconds=60)
+            currRound += 1
+            if currRound > 5:
+                gameOver = True
 
 scheduler = APScheduler()
 scheduler.init_app(app)
