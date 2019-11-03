@@ -1,13 +1,30 @@
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
+import json
 
 app = Flask(__name__)
 
 # TODO: Set up game types
 
+#    # Use this constructor to make a robot clone
+#    def makeClone(self, cloneBase):
+#        global nextPlayerID
+#
+#        self.name = cloneBase.name
+#        self.picture = cloneBase.picture
+#        self.playerID = nextPlayerID
+#        nextPlayerID += 1
+#
+#        self.hearts = cloneBase.hearts # TODO
+#        self.implants = cloneBase.implants # TODO
+
+class Object:
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
 nextPlayerID = 1
 profiles = []
-class Profile: 
+class Profile(Object): 
     def __init__(self, name, picture):
         global nextPlayerID
 
@@ -21,21 +38,6 @@ class Profile:
 
         self.isRobot = False
 
-    # Use this constructor to make a robot clone
-    def makeClone(self, cloneBase):
-        global nextPlayerID
-
-        self.name = cloneBase.name
-        self.picture = cloneBase.picture
-        self.playerID = nextPlayerID
-        nextPlayerID += 1
-
-        self.hearts = cloneBase.hearts # TODO
-        self.implants = cloneBase.implants # TODO
-
-
-    #def __str__(self):
-    #    return 'Profile' + ": " + str(self.__dict__)
     def __repr__(self):
         return 'Profile' + ": " + str(self.__dict__)
 
@@ -45,6 +47,29 @@ class Profile:
 def create_profile():
     profiles.append(Profile(request.json["name"], request.json["picture"]))
     return jsonify({'playerID':profiles[-1].playerID}) 
+
+def getPlayer(playerID):
+    return [p for p in profiles if p.playerID == int(playerID)][0]
+
+@app.route('/profiles/<playerID>')
+def get_profile(playerID):
+    global profiles
+    return getPlayer(playerID).toJSON()
+
+@app.route('/get_pickup_completions')
+def generate_pickup_completions():
+    playerID = request.json["playerID"]
+    humanWords = request.json["humanWords"]
+
+    generatedOptions = []
+    # TODO: Call GPT-2 here.
+    for i in range(getPlayer(playerID).implants):
+        import random
+        generatedOptions.append(random.choice(["word lol.", "words lol", "more words lol"]))
+
+    return jsonify({
+        "options":generatedOptions
+    })
 
 # After everything else is established, start the game ticking
 

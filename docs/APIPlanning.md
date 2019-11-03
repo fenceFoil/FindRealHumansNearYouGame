@@ -26,7 +26,6 @@ port = 9621
 
 * GET Generate Pickup Completions (From Phone)
     * HumanWords
-    * NumCompletionsNeeded
     * PlayerID
     RETURN
     * List of bot completion options
