@@ -198,7 +198,7 @@ def generateSuffixForPrompt(prompt):
 
         return accepted
 
-@app.route('/get_pickup_completions')
+@app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():
     playerID = request.json["playerID"]
     humanWords = request.json["humanWords"]
@@ -259,7 +259,7 @@ def finished_swipingfinished_swiping():
 def is_it_results_time():
     return jsonify({"isItTime":currGameState == "WRITING_PICKUPS"})
 
-@app.route('/results')
+@app.route('/results', methods=['GET', 'POST'])
 def get_results():
     global currRound, profiles, likes
     playerID = request.json["playerID"]
