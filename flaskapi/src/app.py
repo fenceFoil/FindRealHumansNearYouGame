@@ -58,7 +58,21 @@ class PickupLine(Object):
 def getPickupLine(playerID, roundNum):
     return [p for p in pickupLines if p.playerID == int(playerID) and p.roundNum == int(roundNum)][0]
 
+likes = []
+class Like(Object):
+    def __init__(self, sourcePlayerID, destPlayerID, roundNum, action):
+        self.sourcePlayerID = sourcePlayerID
+        self.destPlayerID = destPlayerID
+        self.roundNum = roundNum
+        self.action = action
+
+    def __repr__(self):
+        return 'Like' + ": " + str(self.__dict__)
+
+currGameState = "WRITING_PICKUPS"
 currRound = 1
+stateTimeoutTime = None
+gameOver = False
 
 # TODO STRETCH: Create export function called after each round to make a backup
 
@@ -101,6 +115,11 @@ def commit_new_pickup():
     pickupLines.append(PickupLine(playerID, currRound, humanWords, botScreed))
 
     return "added pickupline"
+
+@app.route('/move_to_swipe_time')
+def move_to_swipe_time():
+    # TODO
+    return jsonify({"isItTime":False})
 
 # After everything else is established, start the game ticking
 
