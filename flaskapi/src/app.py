@@ -41,6 +41,25 @@ class Profile(Object):
     def __repr__(self):
         return 'Profile' + ": " + str(self.__dict__)
 
+def getPlayer(playerID):
+    return [p for p in profiles if p.playerID == int(playerID)][0]
+
+pickupLines = []
+class PickupLine(Object):
+    def __init__(self, playerID, roundNum, humanWords, botScreed):
+        self.playerID = playerID
+        self.roundNum = roundNum
+        self.humanWords = humanWords
+        self.botScreed = botScreed
+
+    def __repr__(self):
+        return 'PickupLine' + ": " + str(self.__dict__)
+
+def getPickupLine(playerID, roundNum):
+    return [p for p in pickupLines if p.playerID == int(playerID) and p.roundNum == int(roundNum)][0]
+
+# TODO STRETCH: Create export function called after each round to make a backup
+
 # TODO: Define routes
 
 @app.route('/create_profile', methods=['POST'])
@@ -48,8 +67,7 @@ def create_profile():
     profiles.append(Profile(request.json["name"], request.json["picture"]))
     return jsonify({'playerID':profiles[-1].playerID}) 
 
-def getPlayer(playerID):
-    return [p for p in profiles if p.playerID == int(playerID)][0]
+
 
 @app.route('/profiles/<playerID>')
 def get_profile(playerID):
@@ -63,13 +81,21 @@ def generate_pickup_completions():
 
     generatedOptions = []
     # TODO: Call GPT-2 here.
-    for i in range(getPlayer(playerID).implants):
+    for i in range(getPlayer(playerID).implants+3):
         import random
-        generatedOptions.append(random.choice(["word lol.", "words lol", "more words lol"]))
+        generatedOptions.append(humanWords+random.choice(["word lol.", "words lol", "more words lol"]))
 
     return jsonify({
         "options":generatedOptions
     })
+
+@app.route('/commit_new_pickup', methods=['POST'])
+def commit_new_pickup():
+    playerID = request.json["playerID"]
+    humanWords = request.json["humanWords"]
+    botScreed = request.json["botScreed"]
+
+
 
 # After everything else is established, start the game ticking
 
