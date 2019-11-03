@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, redirect
 from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
@@ -138,7 +138,7 @@ def get_num_players():
 
 @app.route('/')
 def redirect_to_static():
-    return flask.redirect("findrealhumansnearyou.com/static/app/index.html", code=302)
+    return redirect("findrealhumansnearyou.com/static/app/index.html", code=302)
 
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
