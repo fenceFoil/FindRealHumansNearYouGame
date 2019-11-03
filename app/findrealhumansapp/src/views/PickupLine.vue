@@ -43,8 +43,8 @@
             "humanWords":this.pickupline
           })
         });
-        const myJson = await response.json();
-        alert(myJson.options[0])
+
+        alert("The other waifus are preparing...")
 
         await fetch(
           url+"commit_new_pickup", {
