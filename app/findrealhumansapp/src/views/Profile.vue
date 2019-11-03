@@ -27,11 +27,21 @@
     },
     components:{},
     methods:{
-      submit: function (){
-        var url = 'http://findrealhumansnearyou.com:443/';
-        
-        alert(url);
-        alert(this.name);
+      submit: async function (){
+        var url = 'http://findrealhumansnearyou.com/create_profile';
+        const response = await fetch(
+          url+"", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            'name': this.name,
+            'picture': 123
+          })
+        });
+        const myJson = await response.json();
+        window.localStorage.setItem("playerID", myJson.playerID)
         window.location.href='#/pickupline'
       }
     }

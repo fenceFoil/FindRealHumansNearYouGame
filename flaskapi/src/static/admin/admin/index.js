@@ -66,6 +66,9 @@ function populateMostHearts(profileData) {
         for(let j = 0; j < profileData[i].hearts; j++) {
             heartsCombined = heartsCombined + "*";
         }
+        if(heartsCombined == "") {
+            heartsCombined = "No Hearts :(";
+        }
         createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], heartsCombined);
     }
 }
@@ -80,7 +83,10 @@ function populateMostImplants(profileData) {
         for(let j = 0; j < profileData[i].implants; j++) {
             implantsCombined = implantsCombined + "@";
         }
-        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], "Implants: " + implantsCombined);
+        if(implantsCombined == "") {
+            implantsCombined = "No Implants :)";
+        }
+        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], implantsCombined);
     }
 }
 
