@@ -26,6 +26,21 @@
       }
     },
     components:{},
+    created: async function (){
+        var myint = setInterval(async function() {
+          var url2 = 'http://findrealhumansnearyou.com/';
+          const response2 = await fetch(
+            url2+"is_it_results_time", {
+            method: 'GET'
+          });
+          const myJson2 = await response2.json();
+          if (myJson2.isItTime) {
+            window.location.href='#/pickupline'
+            clearInterval(myint);
+          }
+      }, 3000);
+
+    },
     methods:{
       submit: async function (){
         var url = 'http://findrealhumansnearyou.com/create_profile';
@@ -45,8 +60,7 @@
         window.localStorage.setItem("playerID", myJson.playerID)
         window.localStorage.setItem("playerName", this.name)
         window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
-        window.location.href='#/pickupline'
+        alert("Please wait for game to begin...")
       }
-    }
-  }
+    }}
 </script>

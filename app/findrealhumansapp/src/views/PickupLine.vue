@@ -59,27 +59,19 @@
           })
         });
 
-        var phaseWaiting = true;
-        function sleep(milliseconds) {
-          var start = new Date().getTime();
-          for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds){
-              break;
-            }
-          }
-        }
-
-        do {
-          sleep(1000);
+        var myint = setInterval(async function() {
           var url2 = 'http://findrealhumansnearyou.com/';
           const response2 = await fetch(
             url2+"is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
-          phaseWaiting = myJson2.isItTime
-        } while (phaseWaiting)
-        window.location.href='#/swipe'
+          if (!myJson2.isItTime) {
+            window.location.href='#/swipe'
+            clearInterval(myint);
+          }
+        }, 1000);
+
       }
     }
   }

@@ -18,7 +18,7 @@ export default {
     return {
       reviews: ["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"]
      }
-  },
+  }
 }
 </script>
 
