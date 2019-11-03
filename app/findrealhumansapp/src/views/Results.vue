@@ -2,17 +2,22 @@
   <div class="results">
     <h1 class="header-title">This is teh result page</h1>
     <h1 class="round-num">Round {{round}}</h1>
-    <div v-for="n in hearts" :key="n">
-      <h1 class="hearts">*</h1>
-    </div>
+    <h1>
+    <span v-for="n in hearts" :key="n">
+      <span style="color: pink;" class="hearts">* </span>
+    </span>
+    </h1>
     <h1 class="implants">cybernetic implants</h1>
-    <div v-for="n in implants" :key="n">
+    <div>
+    <span style="margin-right: 1em;" v-for="n in implants" :key="n">
       <Implant/>
-    </div>
+    </span>
+    </div>    
     <div v-for="pickupline in pickuplines" :key="pickupline">
-    <h1 class="seperator">=================================================</h1>
+    <h1 class="seperator"><div class="asterisk left">*</div><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore middle">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><div class="asterisk right">*</div></h1>
       <h1 class="robo-pickuplines">{{pickupline}}</h1>
     </div>
+    <h1 class="seperator"><div class="asterisk left">*</div><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore middle">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><div class="asterisk right">*</div></h1>
     <h1 class="dated">Your lovely Dates</h1>
     <div v-for="date in dates" :key="date" class="dates-display">
       <img class="waifu-thumbnail" :src="date">

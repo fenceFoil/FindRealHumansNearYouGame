@@ -1,5 +1,5 @@
 <template>
-<div id="overall">
+<div id="overall" >
   <div id="app">
     <router-view/>
   </div>
@@ -8,6 +8,7 @@
 
 <style>
 #app {
+  min-width: '1900px';
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
