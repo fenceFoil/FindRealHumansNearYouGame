@@ -11,6 +11,7 @@
 
 * POST Create Profile (From Phone)
     * Name
+    * Picture number (five digit) (int)
     RETURN
     * PlayerID
 
