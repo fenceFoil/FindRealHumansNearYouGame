@@ -7,7 +7,7 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 5
+VERSION = 6
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
@@ -23,6 +23,15 @@ class Object:
 @app.route('/static/<path:path>')
 def send_js(path):
     return send_from_directory('static', path)
+@app.route('/static/admin/admin/<path:path>')
+def send_js(path):
+    return send_from_directory('static/admin/admin/', path)
+@app.route('/static/app/<path:path>')
+def send_js(path):
+    return send_from_directory('static/app', path)
+@app.route('/static/admin/<path:path>')
+def send_js(path):
+    return send_from_directory('static/admin', path)
 
 nextPlayerID = 1
 profiles = []
