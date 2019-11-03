@@ -2,9 +2,13 @@ from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
+import requests
 
+VERSION = 2
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
+NUM_ROUNDS = 4
+GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
 
 app = Flask(__name__)
 
@@ -72,7 +76,7 @@ stateTimeoutTime = None
 gameOver = False
 finishedSwiping = []
 
-# TODO STRETCH: Create export function called after each round to make a backup
+# NOTTODO STRETCH: Create export function called after each round to make a backup
 
 # Define routes
 
@@ -90,7 +94,7 @@ def clear_game():
     profiles = []
     nextPlayerID = 1
     enteringNewState = True
-    # TODO export game data and history
+    # NOT TODO export game data and history
     return "Game Restarted :)"
 
 # Game Admin: Getting number of players with created profiles to confirm before starting game
@@ -110,11 +114,11 @@ def start_game():
 
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
-    profiles.append(Profile(request.json["name"], request.json["picture"]))
-    # TODO: Clone this profile here
-    profiles.append(Profile(request.json["name"], request.json["picture"]))
+    profiles.append(Profile(request.json["name"], "https://www.thiswaifudoesnotexist.net/example-{}.jpg".format(request.json["picture"])))
+    # Clone this profile here
+    profiles.append(Profile(request.json["name"], "https://www.thiswaifudoesnotexist.net/example-{}.jpg".format(request.json["picture"])))
     profiles[-1].isRobot = True
-    return jsonify({'playerID':profiles[-1].playerID}) 
+    return jsonify({'playerID':profiles[-2].playerID}) 
 
 @app.route('/profiles/<playerID>')
 def get_profile(playerID):
@@ -128,9 +132,14 @@ def generate_pickup_completions():
 
     generatedOptions = []
     # TODO: Call GPT-2 here.
-    for i in range(getPlayer(playerID).implants+3):
-        import random
-        generatedOptions.append(humanWords+random.choice(["word lol.", "words lol", "more words lol"]))
+    for i in range(getPlayer(playerID).implants+1):
+        response = requests.get(GPT2_URL+'gpt2')
+        if response.status_code != 200:
+            import random
+            generatedOptions.append(random.choice(['and you had better believe it!', 'woo hoo!', '<<excited beep boop>>', 'praise Shrek.']))
+            print ("Not 200 from gpt2 server")
+        else:
+            generatedOptions.append(response.text())
 
     return jsonify({
         "options":generatedOptions
@@ -195,6 +204,17 @@ def get_results():
         "youDated": youDatedList
     })
 
+# TODO: Scoreboard endpoint
+@app.route('/scoreboard_stats')
+def get_scoreboard_stats():
+    global currRound, gameOver, profiles, pickupLines
+    return jsonify({
+        "roundNum": currRound,
+        "gameOver": gameOver,
+        "profiles": profiles.__dict__(),
+        "pickupLines": pickupLines.__dict__()
+    })
+
 # After everything else is established, start the game ticking
 
 enteringNewState = True
@@ -204,14 +224,14 @@ def updateGameState():
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, stateTimeoutTime
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, NUM_ROUNDS, stateTimeoutTime
 
     if currGameState == "STOPPED":
         print ("Waiting for profiles... {} present".format(get_num_players()))
     elif currGameState == "WRITING_PICKUPS":
         print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()))
         if enteringNewState:
-            print ("===Writing Pickups / Displaying Round Results===")
+            print ("=== Writing Pickups / Displaying Round Results ===")
             # Make robots write their pickups
             # TODO
             # TODO: Also make this state wait until all the GPT 2 robot lines have come back in
@@ -232,7 +252,7 @@ def updateGameState():
             enteringNewState = True
             stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
             currRound += 1
-            if currRound > 5:
+            if currRound > NUM_ROUNDS:
                 print ("ANNOUNCING GAME IS OVER WITH ALL RESULTS REQUESTED")
                 gameOver = True
 
