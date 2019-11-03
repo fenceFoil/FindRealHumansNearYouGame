@@ -26,7 +26,6 @@ port = 9621
 
 * GET Generate Pickup Completions (From Phone)
     * HumanWords
-    * NumCompletionsNeeded
     * PlayerID
     RETURN
     * List of bot completion options
@@ -72,3 +71,10 @@ port = 9621
   * YouDated (list)
     * WaifuImageURL
     * Name
+
+
+
+currGameState = "STOPPED" # STOPPED, WRITING_PICKUPS, SWIPING
+currRound = 1
+stateTimeoutTime = None
+gameOver = False
