@@ -1,0 +1,207 @@
+.left-right {
+    animation-direction: normal;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+    animation-name: left-right-animate;
+    position: absolute;
+    margin: 10.2em 0em 0em 29.5em;
+    font-size: 138%;
+    animation-delay: 6.1s;
+}
+
+.left-right-reverse {
+    animation-direction: reverse;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+    animation-name: left-right-animate;
+    position: absolute;
+    margin: 10.2em 0em 0em 29.5em;
+    font-size: 138%;
+    animation-delay: 6.1s;
+}
+
+.left-to-right {
+    animation-direction: alternate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: left-to-right;
+    position: absolute;
+    margin: 10.2em 0em 0em 29.5em;
+    font-size: 138%;
+    animation-delay: 6.1s;
+}
+
+.left-to-right-profile {
+    animation-direction: alternate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: left-to-right;
+    position: absolute;
+    margin: -.5em 0em 0em 36.5em;
+    font-size: 138%;
+    animation-delay: 6.1s;
+}
+
+.button-1 {
+    animation: 3s 1 normal forwards button-1;
+    opacity: 0;
+    animation-delay: 6.1s;
+}
+
+.button-2 {
+    animation: 3s 1 normal forwards button-2;
+    opacity: 0;
+    animation-delay: 6.1s;
+}
+
+img.logo.anim {
+    animation: 5s infinite alternate logo;
+    z-index: 100000 !important;
+}
+
+img.logo.anim-1 {
+    animation: 5s infinite alternate logo-1;
+    animation-delay: .25s;
+    opacity: .4;
+}
+
+img.logo.anim-2 {
+    animation: 5s infinite alternate logo-2;
+    animation-delay: .5s;
+    opacity: .3;
+}
+
+img.logo.anim-3 {
+    animation: 5s infinite alternate logo-3;
+    animation-delay: .75s;
+    opacity: .2;
+}
+
+img.logo.anim-4 {
+    animation: 5s infinite alternate logo-4;
+    animation-delay: 1s;
+    opacity: .1;
+}
+
+.header-title {
+    animation: 3s 1 normal header-title;
+}
+
+.waifu, img {
+    animation: 3s 1 normal forwards waifu;
+    animation-delay: 3.1s;
+}
+
+@keyframes left-right-animate {
+    0% {transform: translate(0px, 0px) rotate(0deg);}
+    20% {transform: translate(20px, -265px) rotate(30deg);}
+    40% {transform: translate(550px, -265px) rotate(140deg);}
+    60% {transform: translate(550px, 265px) rotate(220deg);}
+    80% {transform: translate(20px, 265px) rotate(310deg);}
+    100% {transform: translate(0px, 0px) rotate(360deg);}
+}
+
+@keyframes left-to-right {
+    from {transform: translateX(0px)}
+    to {transform: translateX(20px)}
+}
+
+@keyframes right-to-left {
+    from {transform: translateX(20px)}
+    to {transform: translateX(0px)}
+}
+
+@keyframes button-1 {
+    0% {transform: translate(0px, 0px) rotate(0deg); opacity: 1;}
+    10% {transform: translate(200px, -100px) rotate(-30deg);}
+    20% {transform: translate(0px, 0px) rotate(0deg);}
+    30% {transform: translate(50px, 50px) rotate(-30deg);}
+    40% {transform: translate(0px, 0px) rotate(0deg);}
+    50% {transform: translate(-50px, 0px) rotate(-30deg);}
+    60% {transform: translate(-50px, -50px) rotate(90deg);}
+    70% {transform: translate(-25px, -75px) rotate(180deg);}
+    80% {transform: translate(-50px, -25px) rotate(270deg);}
+    90% {transform: translate(-180px, 0px) rotate(360deg);}
+    99.999% {transform: translate(-180px, 0px) rotate(360deg);}
+    100% {transform: translate(-180px, 0px) rotate(360deg); opacity: 1;}
+}
+
+@keyframes button-2 {
+    0% {transform: translate(0px, 0px) rotate(0deg); opacity: 1;}
+    10% {transform: translate(-200px, -100px) rotate(30deg);}
+    20% {transform: translate(0px, 0px) rotate(0deg);}
+    30% {transform: translate(-50px, 50px) rotate(30deg);}
+    40% {transform: translate(0px, 0px) rotate(0deg);}
+    50% {transform: translate(50px, 0px) rotate(30deg);}
+    60% {transform: translate(50px, -50px) rotate(-90deg);}
+    70% {transform: translate(25px, -75px) rotate(-180deg);}
+    80% {transform: translate(50px, -25px) rotate(-270deg);}
+    90% {transform: translate(180px, 0px) rotate(-360deg);}
+    99.999% {transform: translate(180px, 0px) rotate(-360deg);}
+    100% {transform: translate(180px, 0px) rotate(-360deg); opacity: 1;}
+}
+
+@keyframes logo {
+    0% {transform: translate(0px, 0px); width: 10%;}
+    25% {transform: translate(0px, 500px); width: 15%;}
+    40% {transform: translate(600px, 500px) rotate(-30deg); width: 17%;}
+    50% {transform: translate(450px, 250px) rotate(0deg); width: 21%;}
+    60% {transform: translate(300px, 500px) rotate(30deg); width: 17%;}
+    75% {transform: translate(1000px, 500px); width: 15%;}
+    85% {transform: translate(1000px, 250px) rotate(180deg); width: 13%;}
+    100% {transform: translate(1000px, 0px) rotate(360deg); width: 10%;}
+}
+
+@keyframes logo-1 {
+    0% {transform: translate(0px, 0px); width: 8%;}
+    25% {transform: translate(0px, 500px); width: 13%;}
+    40% {transform: translate(600px, 500px) rotate(-30deg); width: 15%;}
+    50% {transform: translate(450px, 250px) rotate(0deg); width: 19%;}
+    60% {transform: translate(300px, 500px) rotate(30deg); width: 15%;}
+    75% {transform: translate(1000px, 500px); width: 13%;}
+    85% {transform: translate(1000px, 250px) rotate(180deg); width: 11%;}
+    100% {transform: translate(1000px, 0px) rotate(360deg); width: 8%;}
+}
+
+@keyframes logo-2 {
+    0% {transform: translate(0px, 0px); width: 6%;}
+    25% {transform: translate(0px, 500px); width: 11%;}
+    40% {transform: translate(600px, 500px) rotate(-30deg); width: 13%;}
+    50% {transform: translate(450px, 250px) rotate(0deg); width: 17%;}
+    60% {transform: translate(300px, 500px) rotate(30deg); width: 13%;}
+    75% {transform: translate(1000px, 500px); width: 11%;}
+    85% {transform: translate(1000px, 250px) rotate(180deg); width: 9%;}
+    100% {transform: translate(1000px, 0px) rotate(360deg); width: 6%;}
+}
+
+@keyframes logo-3 {
+    0% {transform: translate(0px, 0px); width: 4%;}
+    25% {transform: translate(0px, 500px); width: 9%;}
+    40% {transform: translate(600px, 500px) rotate(-30deg); width: 11%;}
+    50% {transform: translate(450px, 250px) rotate(0deg); width: 15%;}
+    60% {transform: translate(300px, 500px) rotate(30deg); width: 11%;}
+    75% {transform: translate(1000px, 500px); width: 9%;}
+    85% {transform: translate(1000px, 250px) rotate(180deg); width: 7%;}
+    100% {transform: translate(1000px, 0px) rotate(360deg); width: 4%;}
+}
+
+@keyframes logo-4 {
+    0% {transform: translate(0px, 0px); width: 2%;}
+    25% {transform: translate(0px, 500px); width: 7%;}
+    40% {transform: translate(600px, 500px) rotate(-30deg); width: 9%;}
+    50% {transform: translate(450px, 250px) rotate(0deg); width: 13%;}
+    60% {transform: translate(300px, 500px) rotate(30deg); width: 9%;}
+    75% {transform: translate(1000px, 500px); width: 7%;}
+    85% {transform: translate(1000px, 250px) rotate(180deg); width: 5%;}
+    100% {transform: translate(1000px, 0px) rotate(360deg); width: 2%;}
+}
+
+@keyframes header-title {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes waifu {
+    from {width: 0%;}
+    to {width: 25%;}
+}
