@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-# TODO: Set up game types
-
 #    # Use this constructor to make a robot clone
 #    def makeClone(self, cloneBase):
 #        global nextPlayerID
@@ -85,7 +83,27 @@ finishedSwiping = []
 
 # TODO STRETCH: Create export function called after each round to make a backup
 
-# TODO: Define routes
+# Define routes
+
+# Game Admin: Stopping/resetting game in any state
+@app.route('/stop_game', methods=['GET', 'POST'])
+def stop_game():
+    global currGameState, currRound, stateTimeoutTime, gameOver, finishedSwiping, likes, pickupLines, profiles, nextPlayerID, enteringNewState
+    currGameState = "STOPPED"
+    currRound = 
+    # TODO
+    return "Game Restarted :)"
+
+# Game Admin: Getting number of players with created profiles to confirm before starting game
+@app.route('/get_num_players', methods=['GET'])
+def get_num_players():
+    return getNumHumanPlayers()
+
+# Game Admin: Start the game once everyone has created their profiles!
+@app.route('/start_game', methods=['GET', 'POST'])
+def start_game():
+    # TODO - Transition state
+    return "Game Started :)"
 
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
@@ -188,6 +206,7 @@ def updateGameState():
         if enteringNewState:
             # Make robots write their pickups
             # TODO
+            # TODO: Also make this state wait until all the GPT 2 robot lines have come back in
             enteringNewState = False
         # If all human players have finished submitting pickup lines this round OR time is up...
         if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()) or datetime.now() > stateTimeoutTime:
