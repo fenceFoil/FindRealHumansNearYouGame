@@ -20,7 +20,7 @@ Likes
 * RoundNum
 * Action (string: LEFT or RIGHT)
 
-GameScheduler (just global variables)
+GameScheduler
 * CurrGameState
 * RoundNumber
 * StateTimeoutTime
