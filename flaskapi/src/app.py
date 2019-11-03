@@ -40,6 +40,9 @@ class Profile(Object):
 
     def __repr__(self):
         return 'Profile' + ": " + str(self.__dict__)
+        
+def convert_to_json(thing):
+    return json.dumps(thing, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 # TODO: Define routes
 
@@ -70,6 +73,11 @@ def generate_pickup_completions():
     return jsonify({
         "options":generatedOptions
     })
+    
+@app.route('/get_prospects/<playerID>')
+def get_prospects(playerID):
+    playerID = int(playerID)
+    return convert_to_json([p for p in profiles if p.playerID != int(playerID)])
 
 # After everything else is established, start the game ticking
 
