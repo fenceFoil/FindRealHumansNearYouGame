@@ -205,7 +205,7 @@ def get_prospects(playerID):
     profilesTwo = [p for p in profiles if p.playerID != int(playerID)]
     for p in profilesTwo:
         p.pickupLine = getPickupLine(p.playerID, currRound)
-    return convert_to_json({"prospects":profilesTwo})
+    return convert_to_json({"prospects":random.shuffle(profilesTwo)})
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():

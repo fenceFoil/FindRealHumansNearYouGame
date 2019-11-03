@@ -32,7 +32,22 @@
     methods:{
       submit: function (){
         alert(this.pickupline)
-        
+
+        var url = 'http://findrealhumansnearyou.com/get_pickup_completions';
+        const response = await fetch(
+          url+"", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            "playerID":window.localStorage.getItem('playerName'),
+            "humanWords":this.pickupline
+          })
+        });
+        const myJson = await response.json();
+        myJson
+
         window.location.href='#/swipe'
       }
     }
