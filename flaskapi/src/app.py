@@ -58,6 +58,8 @@ class PickupLine(Object):
 def getPickupLine(playerID, roundNum):
     return [p for p in pickupLines if p.playerID == int(playerID) and p.roundNum == int(roundNum)][0]
 
+currRound = 1
+
 # TODO STRETCH: Create export function called after each round to make a backup
 
 # TODO: Define routes
@@ -91,11 +93,14 @@ def generate_pickup_completions():
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():
+    global currRound
     playerID = request.json["playerID"]
     humanWords = request.json["humanWords"]
     botScreed = request.json["botScreed"]
 
+    pickupLines.append(PickupLine(playerID, currRound, humanWords, botScreed))
 
+    return "added pickupline"
 
 # After everything else is established, start the game ticking
 
