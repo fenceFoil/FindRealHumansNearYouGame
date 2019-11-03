@@ -217,7 +217,7 @@ def get_prospects(playerID):
     playerID = int(playerID)
     profilesTwo = [vars(p) for p in profiles if p.playerID != int(playerID)]
     for p in profilesTwo:
-        p.pickupLine = getPickupLine(p.playerID, currRound)
+        p["pickupLine"] = getPickupLine(p["playerID"], currRound)
     return jsonify({"prospects":random.shuffle(profilesTwo)})
 
 @app.route('/commit_new_pickup', methods=['POST'])
