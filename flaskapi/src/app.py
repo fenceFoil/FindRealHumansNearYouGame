@@ -32,6 +32,19 @@ def send_js3(path):
 @app.route('/static/admin/<path:path>')
 def send_js4(path):
     return send_from_directory('static/admin', path)
+@app.route('/js/<path:path>')
+def send_js5(path):
+    return send_from_directory('static/app/js/', path)
+@app.route('/css/<path:path>')
+def send_js6(path):
+    return send_from_directory('static/app/css/', path)
+@app.route('/img/<path:path>')
+def send_js7(path):
+    return send_from_directory('static/app/img/', path)
+@app.route('/fonts/<path:path>')
+def send_js8(path):
+    return send_from_directory('static/app/fonts/', path)
+
 
 nextPlayerID = 1
 profiles = []
@@ -185,7 +198,7 @@ def generateSuffixForPrompt(prompt):
 
         return accepted
 
-@app.route('/get_pickup_completions')
+@app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():
     playerID = request.json["playerID"]
     humanWords = request.json["humanWords"]
@@ -205,7 +218,7 @@ def get_prospects(playerID):
     profilesTwo = [p for p in profiles if p.playerID != int(playerID)]
     for p in profilesTwo:
         p.pickupLine = getPickupLine(p.playerID, currRound)
-    return convert_to_json({"prospects":profilesTwo})
+    return convert_to_json({"prospects":random.shuffle(profilesTwo)})
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():
@@ -246,7 +259,7 @@ def finished_swipingfinished_swiping():
 def is_it_results_time():
     return jsonify({"isItTime":currGameState == "WRITING_PICKUPS"})
 
-@app.route('/results')
+@app.route('/results', methods=['GET', 'POST'])
 def get_results():
     global currRound, profiles, likes
     playerID = request.json["playerID"]

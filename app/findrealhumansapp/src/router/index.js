@@ -5,6 +5,7 @@ import Profile from '../views/Profile.vue'
 import Results from '../views/Results.vue'
 import PickupLine from '../views/PickupLine.vue'
 import Swipe from '../views/Swipe.vue'
+import SelectLine from '../views/SelectLine.vue'
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/pickupline',
     name: 'pickupline',
     component: PickupLine
+  },
+  {
+    path: '/selectline',
+    name: 'selectline',
+    component: SelectLine
   },
   {
     path: '/results',
