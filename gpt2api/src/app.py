@@ -25,7 +25,9 @@ import threading
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 
+tokenizer = None
 POOL_TIME = 5
+model = None
 dataLock = threading.Lock()
 yourThread = threading.Thread()
     
@@ -162,7 +164,7 @@ def sample_sequence(model, length, context, num_samples=1, temperature=1, top_k=
 
 global device
 def main():
-    global device
+    global device, tokenizer, model
     model_type = "gpt2"
     model_name_or_path="distilgpt2"
     length = 30
@@ -188,9 +190,11 @@ def main():
 
 @app.route('/gpt2', methods=['POST'])
 def gpt2():
-    global device
+    global device, tokenizer, model
     prompt = request.json["prompt"]
-    raw_text = prompt#args.prompt if args.prompt else input("Model prompt >>> ")
+    print("PROMPT: %s" % (prompt))
+    stop_token = None
+    raw_text = prompt#args.prompt if a.rgs.prompt else input("Model prompt >>> ")
     context_tokens = tokenizer.encode(raw_text, add_special_tokens=False)
     out = sample_sequence(
         model=model,
@@ -208,7 +212,7 @@ def gpt2():
     out = out[:, len(context_tokens):].tolist()
     for o in out:
         text = tokenizer.decode(o, clean_up_tokenization_spaces=True)
-        text = text[: text.find(args.stop_token) if args.stop_token else None]
+        text = text[: text.find(stop_token) if stop_token else None]
         print(text)
     return text
 
