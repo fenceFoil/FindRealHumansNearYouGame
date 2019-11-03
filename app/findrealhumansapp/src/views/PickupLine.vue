@@ -30,23 +30,37 @@
     },
     components:{},
     methods:{
-      submit: function (){
-        alert(this.pickupline)
-
-        var url = 'http://findrealhumansnearyou.com/get_pickup_completions';
+      submit: async function (){
+        var url = 'http://findrealhumansnearyou.com/';
         const response = await fetch(
-          url+"", {
-          method: 'GET',
+          url+"get_pickup_completions", {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
           },
           body: JSON.stringify({
-            "playerID":window.localStorage.getItem('playerName'),
+            "playerID":parseInt(window.localStorage.getItem('playerID')),
             "humanWords":this.pickupline
           })
         });
         const myJson = await response.json();
-        myJson
+        alert(myJson.options[0])
+
+        await fetch(
+          url+"commit_new_pickup", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            "playerID":parseInt(window.localStorage.getItem('playerID')),
+            "humanWords":this.pickupline,
+            "botScreed":myJson.options[0]
+          })
+        });
+
+        //const myJson2 = await response2.json();
+        //window.localStorage.setItem("tempy", myJson2.text)
 
         window.location.href='#/swipe'
       }
