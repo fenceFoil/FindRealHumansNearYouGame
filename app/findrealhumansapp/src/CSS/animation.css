@@ -92,6 +92,11 @@ img.logo.anim-4 {
     animation-delay: 3.1s;
 }
 
+svg {
+    animation: 3s 1 normal forwards svg;
+    animation-delay: 3.1s;
+}
+
 @keyframes left-right-animate {
     0% {transform: translate(0px, 0px) rotate(0deg);}
     20% {transform: translate(20px, -265px) rotate(30deg);}
@@ -204,4 +209,9 @@ img.logo.anim-4 {
 @keyframes waifu {
     from {width: 0%;}
     to {width: 25%;}
+}
+
+@keyframes svg {
+    from {width: 0%;}
+    to {width: 2.5%;}
 }

@@ -1,13 +1,39 @@
 <template>
   <div class="results">
     <h1 class="header-title">This is teh result page</h1>
+    <h1 class="round-num">Round {{round}}</h1>
+    <div v-for="n in hearts" :key="n">
+      <h1 class="hearts">*</h1>
+    </div>
+    <h1 class="implants">cybernetic implants</h1>
+    <div v-for="n in implants" :key="n">
+      <Implant/>
+    </div>
+    <div v-for="pickupline in pickuplines" :key="pickupline">
+    <h1 class="seperator">=================================================</h1>
+      <h1 class="robo-pickuplines">{{pickupline}}</h1>
+    </div>
+    <h1 class="dated">Your lovely Dates</h1>
+    <div v-for="date in dates" :key="date" class="dates-display">
+      <img class="waifu-thumbnail" :src="date">
+    </div>
     <button v-on:click="submit">Ready</button>
   </div>
 </template>
 <script>
+import Implant from '@/components/Implant.vue'
   export default {
     name:'pickupline',
-    components:{},
+    data: function (){
+        return {
+          round: 1,
+          hearts: 4,
+          implants: 2,
+          pickuplines: ["Hey I am a Robot. Plz beleive me","Just a hot single looking to become a hot mess."],
+          dates: ["https://www.thiswaifudoesnotexist.net/example-196646.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196647.jpg", "https://www.thiswaifudoesnotexist.net/example-196627.jpg", "https://www.thiswaifudoesnotexist.net/example-112647.jpg", "https://www.thiswaifudoesnotexist.net/example-106647.jpg", "https://www.thiswaifudoesnotexist.net/example-192647.jpg"],
+      }
+    },
+    components:{Implant},
     methods:{
       submit: function (){
         window.location.href='#/pickupline'
