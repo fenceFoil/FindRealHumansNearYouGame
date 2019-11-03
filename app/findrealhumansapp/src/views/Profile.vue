@@ -46,6 +46,7 @@
         window.localStorage.setItem("playerName", this.name)
         window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
         window.location.href='#/pickupline'
+        alert(response)
       }
     }
   }
