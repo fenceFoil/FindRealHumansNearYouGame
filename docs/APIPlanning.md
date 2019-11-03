@@ -6,8 +6,10 @@ port = 9621
 
 (TODO: Lobby interactions and getting to that setup screen)
 
-* POST RestartGame (From Master Robot)
+* POST StopGame (From Master Robot)
   * // this exports and wipes the tables
+
+* POST StartGame
 
 ## Game Starting
 
