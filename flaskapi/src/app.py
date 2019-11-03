@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
@@ -7,7 +7,7 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 7
+VERSION = 8
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
@@ -24,13 +24,13 @@ class Object:
 def send_js(path):
     return send_from_directory('static', path)
 @app.route('/static/admin/admin/<path:path>')
-def send_js(path):
+def send_js2(path):
     return send_from_directory('static/admin/admin/', path)
 @app.route('/static/app/<path:path>')
-def send_js(path):
+def send_js3(path):
     return send_from_directory('static/app', path)
 @app.route('/static/admin/<path:path>')
-def send_js(path):
+def send_js4(path):
     return send_from_directory('static/admin', path)
 
 nextPlayerID = 1
