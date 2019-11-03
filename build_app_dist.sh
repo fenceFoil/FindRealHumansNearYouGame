@@ -1,1 +1,2 @@
-cd ~/code/gamejam-2019/FindRealHumansNearYouGame/app/findrealhumansapp && npm run build && yes | cp -Rf ~/code/gamejam-2019/FindRealHumansNearYouGame/app/findrealhumansapp/dist ~/code/gamejam-2019/FindRealHumansNearYouGame/flaskapi/src/static/app/
+cd ~/code/gamejam-2019/FindRealHumansNearYouGame/app/findrealhumansapp && npm run build && rm -rf ~/code/gamejam-2019/FindRealHumansNearYouGame/flaskapi/src/static/app/ && yes | cp -R ~/code/gamejam-2019/FindRealHumansNearYouGame/app/findrealhumansapp/dist/ ~/code/gamejam-2019/FindRealHumansNearYouGame/flaskapi/src/static/app/
+#cp -Rf ~/code/gamejam-2019/FindRealHumansNearYouGame/app/findrealhumansapp/dist ~/code/gamejam-2019/FindRealHumansNearYouGame/flaskapi/src/static/app/
