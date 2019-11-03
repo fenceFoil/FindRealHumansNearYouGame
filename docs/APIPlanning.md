@@ -1,4 +1,6 @@
-# Phone Messages (REST API):
+# Phone Messages (REST API)
+
+port = 9621
 
 ## Lobby 
 
@@ -11,6 +13,7 @@
 
 * POST Create Profile (From Phone)
     * Name
+    * Picture number (five digit) (int)
     RETURN
     * PlayerID
 
@@ -23,7 +26,6 @@
 
 * GET Generate Pickup Completions (From Phone)
     * HumanWords
-    * NumCompletionsNeeded
     * PlayerID
     RETURN
     * List of bot completion options
@@ -69,3 +71,10 @@
   * YouDated (list)
     * WaifuImageURL
     * Name
+
+
+
+currGameState = "STOPPED" # STOPPED, WRITING_PICKUPS, SWIPING
+currRound = 1
+stateTimeoutTime = None
+gameOver = False

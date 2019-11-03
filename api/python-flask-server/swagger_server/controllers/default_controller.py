@@ -28,8 +28,7 @@ except Exception:
 
 # sess = gpt2.start_tf_sess()
 
-
-def test(body):  # noqa: E501
+def createprofiles(body):  # noqa: E501
     """Create a profiles
 
     Creates a new instance of a &#x60;profiles&#x60;. # noqa: E501
