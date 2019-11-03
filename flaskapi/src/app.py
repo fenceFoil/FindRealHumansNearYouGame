@@ -112,7 +112,10 @@ def generate_pickup_completions():
 @app.route('/get_prospects/<playerID>')
 def get_prospects(playerID):
     playerID = int(playerID)
-    return convert_to_json([p for p in profiles if p.playerID != int(playerID)])
+    profilesTwo = [p for p in profiles if p.playerID != int(playerID)]
+    for p in profilesTwo:
+        p.pickupLine = getPickupLine(p.playerID, currRound)
+    return convert_to_json(profilesTwo)
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():
