@@ -29,6 +29,25 @@ except Exception:
 # sess = gpt2.start_tf_sess()
 
 
+def test(body):  # noqa: E501
+    """Create a profiles
+
+    Creates a new instance of a &#x60;profiles&#x60;. # noqa: E501
+
+    :param body: A new &#x60;profiles&#x60; to be created.
+    :type body: dict | bytes
+
+    :rtype: None
+    """
+    if connexion.request.is_json:
+        body = Profiles.from_dict(connexion.request.get_json())  # noqa: E501
+        print(body)
+        body.waifu_image_url = ("https://www.thiswaifudoesnotexist.net/example-%d.jpg" % (random.randint(10000,99999)))
+        cursor.execute('''INSERT INTO profiles(name, is_robot, waifu_image_url, hearts, implants)
+                  VALUES(?,?,?,?,?)''', (body.name, body.is_robot, body.waifu_image_url, body.hearts, body.implants))
+        db.commit()
+    return cursor.lastrowid
+
 def createlikes(body):  # noqa: E501
     """Create a likes
 
@@ -67,24 +86,7 @@ def createpickup_lines(body):  # noqa: E501
     return cursor.lastrowid
 
 
-def createprofiles(body):  # noqa: E501
-    """Create a profiles
 
-    Creates a new instance of a &#x60;profiles&#x60;. # noqa: E501
-
-    :param body: A new &#x60;profiles&#x60; to be created.
-    :type body: dict | bytes
-
-    :rtype: None
-    """
-    if connexion.request.is_json:
-        body = Profiles.from_dict(connexion.request.get_json())  # noqa: E501
-        print(body)
-        body.waifu_image_url = ("https://www.thiswaifudoesnotexist.net/example-%d.jpg" % (random.randint(10000,99999)))
-        cursor.execute('''INSERT INTO profiles(name, is_robot, waifu_image_url, hearts, implants)
-                  VALUES(?,?,?,?,?)''', (body.name, body.is_robot, body.waifu_image_url, body.hearts, body.implants))
-        db.commit()
-    return cursor.lastrowid
 
 
 def deletelikes(likesId):  # noqa: E501
