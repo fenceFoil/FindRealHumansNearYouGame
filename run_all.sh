@@ -7,7 +7,10 @@ cd ~/gamejam-2019/FindRealHumansNearYouGame/gpt2api/src && sudo flask run --host
 cd ~/gamejam-2019/FindRealHumansNearYouGame/flaskapi/src && sudo flask run --host 0.0.0.0 --port 443 &
 
 # Run CRUD API (port 9620)
-cd ~/gamejam-2019/FindRealHumansNearYouGame/api/python-flask-server && python3 -m swagger_server &
+#cd ~/gamejam-2019/FindRealHumansNearYouGame/api/python-flask-server && python3 -m swagger_server &
+
+# ADMIN DASHBOARD (80)
+cd ~/gj/FindRealHumansNearYouGame/admindashboard && sudo python2 -m SimpleHTTPServer 80 &
 
 #Status Output
 sleep 10
