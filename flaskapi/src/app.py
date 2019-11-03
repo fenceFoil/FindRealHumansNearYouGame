@@ -3,6 +3,7 @@ from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
 import requests
+from flask_cors import CORS
 
 VERSION = 2
 SWIPING_SECONDS = 30
@@ -11,6 +12,7 @@ NUM_ROUNDS = 4
 GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
 
 app = Flask(__name__)
+CORS(app)
 
 class Object:
     def toJSON(self):
@@ -211,8 +213,8 @@ def get_scoreboard_stats():
     return jsonify({
         "roundNum": currRound,
         "gameOver": gameOver,
-        "profiles": profiles.__dict__(),
-        "pickupLines": pickupLines.__dict__()
+        "profiles": [vars(p) for p in profiles],
+        "pickupLines": [vars(p) for p in pickupLines]
     })
 
 # After everything else is established, start the game ticking
