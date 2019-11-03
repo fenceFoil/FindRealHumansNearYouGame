@@ -217,7 +217,7 @@ def get_prospects(playerID):
     playerID = int(playerID)
     profilesTwo = [vars(p) for p in profiles if p.playerID != playerID]
     for p in profilesTwo:
-        p["pickupLine"] = getPickupLine(p["playerID"], currRound)
+        p["pickupLine"] = vars(getPickupLine(p["playerID"], currRound))
         random.shuffle(profilesTwo)
     return jsonify({"prospects":profilesTwo})
 
