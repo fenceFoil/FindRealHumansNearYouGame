@@ -27,9 +27,21 @@
     },
     components:{},
     methods:{
-      submit: function (){
+      submit: async function (){
         alert(this.name)
+        const response = await fetch(
+          'ec2-18-221-77-224.us-east-2.compute.amazonaws.com:443/create_profile', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: {
+              'name': this.name,
+              'picture': 123456
+            }
+          })
         window.location.href='#/pickupline'
+        alert(response)
       }
     }
   }
