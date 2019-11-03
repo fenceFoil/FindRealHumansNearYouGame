@@ -204,7 +204,7 @@ def gpt2():
             temperature=0.5,
             top_k=0,
             top_p=0.9,
-            repetition_penalty=1.0,
+            repetition_penalty=0.5,
             is_xlnet=False,
             is_xlm_mlm=False,
             device=device,
