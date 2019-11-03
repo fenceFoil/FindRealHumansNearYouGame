@@ -215,10 +215,11 @@ def generate_pickup_completions():
 @app.route('/get_prospects/<playerID>')
 def get_prospects(playerID):
     playerID = int(playerID)
-    profilesTwo = [vars(p) for p in profiles if p.playerID != int(playerID)]
+    profilesTwo = [vars(p) for p in profiles if p.playerID != playerID]
     for p in profilesTwo:
         p["pickupLine"] = getPickupLine(p["playerID"], currRound)
-    return jsonify({"prospects":random.shuffle(profilesTwo)})
+        random.shuffle(profilesTwo)
+    return jsonify({"prospects":profilesTwo})
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():
