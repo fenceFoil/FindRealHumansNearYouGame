@@ -108,7 +108,7 @@ def clear_game():
 # Game Admin: Getting number of players with created profiles to confirm before starting game
 @app.route('/get_num_players', methods=['GET'])
 def get_num_players():
-    return getNumHumanPlayers()
+    return str(getNumHumanPlayers())
 
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
