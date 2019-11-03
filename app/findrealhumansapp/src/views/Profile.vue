@@ -1,8 +1,19 @@
 <template>
   <div class="profile">
-    <h1>Name Goes Here</h1>
-    <div class="picture" width="500px">
-      <img src="https://www.thiswaifudoesnotexist.net/example-196646.jpg">
-    </div>
+    <h1>Enter a Name</h1>
+      <input v-model="name" type="text" placeholder="Name">
+      <button v-on:click="submit" type="button">Submit</button>
   </div>
 </template>
+<script>
+  export default {
+    name:'profile',
+    components:{},
+    methods:{
+      submit: function (){
+        alert(name)
+        window.location.href='#/pickupline'
+      }
+    }
+  }
+</script>
