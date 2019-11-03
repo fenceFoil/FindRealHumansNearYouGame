@@ -28,18 +28,23 @@
     components:{},
     methods:{
       submit: async function (){
-        alert(this.name)
+        var url = 'http://findrealhumansnearyou.com/create_profile';
+        var playerPicID = Math.floor((Math.random()*(66666)+10000));
         const response = await fetch(
-          'ec2-18-221-77-224.us-east-2.compute.amazonaws.com:443/create_profile', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: {
-              'name': this.name,
-              'picture': 123456
-            }
+          url+"", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            'name': this.name,
+            'picture': playerPicID
           })
+        });
+        const myJson = await response.json();
+        window.localStorage.setItem("playerID", myJson.playerID)
+        window.localStorage.setItem("playerName", this.name)
+        window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
         window.location.href='#/pickupline'
         alert(response)
       }

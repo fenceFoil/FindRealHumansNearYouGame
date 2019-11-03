@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
@@ -7,11 +7,11 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 4
+VERSION = 8
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
-GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
+GPT2_URL = "http://localhost:8080/"
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +19,32 @@ CORS(app)
 class Object:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+@app.route('/static/<path:path>')
+def send_js(path):
+    return send_from_directory('static', path)
+@app.route('/static/admin/admin/<path:path>')
+def send_js2(path):
+    return send_from_directory('static/admin/admin/', path)
+@app.route('/static/app/<path:path>')
+def send_js3(path):
+    return send_from_directory('static/app', path)
+@app.route('/static/admin/<path:path>')
+def send_js4(path):
+    return send_from_directory('static/admin', path)
+@app.route('/js/<path:path>')
+def send_js5(path):
+    return send_from_directory('static/app/js/', path)
+@app.route('/css/<path:path>')
+def send_js6(path):
+    return send_from_directory('static/app/css/', path)
+@app.route('/img/<path:path>')
+def send_js7(path):
+    return send_from_directory('static/app/img/', path)
+@app.route('/fonts/<path:path>')
+def send_js8(path):
+    return send_from_directory('static/app/fonts/', path)
+
 
 nextPlayerID = 1
 profiles = []
@@ -256,10 +282,14 @@ def get_results():
 @app.route('/scoreboard_stats')
 def get_scoreboard_stats():
     global currRound, gameOver, profiles, pickupLines, likes
+    newprofiles = [vars(p).copy() for p in profiles]
+    for p in newprofiles:
+        p["hearts"] = sum(p["hearts"])
+        p["implants"] = sum(p["implants"])
     return jsonify({
         "roundNum": currRound,
         "gameOver": gameOver,
-        "profiles": [vars(p) for p in profiles],
+        "profiles": newprofiles,
         "likes": [vars(p) for p in likes],
         "pickupLines": [vars(p) for p in pickupLines]
     })
