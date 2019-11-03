@@ -14,7 +14,7 @@ window.onload = function() {
     const interval = setInterval(function() {
         clearData();
         loadData();
-    }, 10000);
+    }, 5000);
 }
 
 function initElements() {
@@ -62,7 +62,7 @@ function populateMostHearts(profileData) {
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], null);
+        createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], "Hearts: " + profileData[i].hearts);
     }
 }
 
@@ -72,7 +72,7 @@ function populateMostImplants(profileData) {
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], null);
+        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], "Implants: " + profileData[i].implants);
     }
 }
 
@@ -86,26 +86,28 @@ function populateBestPickupLines(profiles, pickupLines, likes) {
         let curResultsProfile = [null, null, null, null, null, null];// {profile: profiles[i], roundNum: roundNum, numberOfLikes: 0, line: ""};
         for (roundNum = 1; roundNum <= 5; roundNum++) {
             // GO through the likes for the round
-            for(let likeIndex = 0; likeIndex < likes.length; likeIndex++) {
-                // If this is a like for us and is new
-                let likeValue = likes[likeIndex];
-                if(likeValue.action == "RIGHT" && !curResultsProfile[likeValue.roundNum] && likeValue.roundNum == roundNum && likeValue.destPlayerID == profiles[i].playerID) {
-                    // Find the like's pickup line
-                    let line = "";
-                    for(let lineIndex = 0; lineIndex < pickupLines.length; lineIndex++){
-                        let pickupLine = pickupLines[lineIndex];
-                        if(pickupLine.playerID == likeValue.destPlayerID && pickupLine.roundNum == roundNum) {
-                            console.log("FOund a LLING");
-                            line = pickupLine.humanWords + pickupLine.botScreed;
+            if(likes != null) {
+                for(let likeIndex = 0; likeIndex < likes.length; likeIndex++) {
+                    // If this is a like for us and is new
+                    let likeValue = likes[likeIndex];
+                    if(likeValue.action == "RIGHT" && !curResultsProfile[likeValue.roundNum] && likeValue.roundNum == roundNum && likeValue.destPlayerID == profiles[i].playerID) {
+                        // Find the like's pickup line
+                        let line = "";
+                        for(let lineIndex = 0; lineIndex < pickupLines.length; lineIndex++){
+                            let pickupLine = pickupLines[lineIndex];
+                            if(pickupLine.playerID == likeValue.destPlayerID && pickupLine.roundNum == roundNum) {
+                                console.log("FOund a LLING");
+                                line = pickupLine.humanWords + pickupLine.botScreed;
+                            }
                         }
+                        // Add the new entry
+                        curResultsProfile[likeValue.roundNum] = {profile: profiles[i], roundNum: roundNum, numberOfLikes: 1, pickupLine: line};
                     }
-                    // Add the new entry
-                    curResultsProfile[likeValue.roundNum] = {profile: profiles[i], roundNum: roundNum, numberOfLikes: 1, pickupLine: line};
-                }
-                else if(likeValue.action == "RIGHT" && likeValue.roundNum == roundNum && likeValue.destPlayerID == profiles[i].playerID) {
-                    // If the like is ours and is not new
-                    // Add it to the likes count
-                    curResultsProfile[likeValue.roundNum].numberOfLikes = curResultsProfile[likeValue.roundNum].numberOfLikes + 1;
+                    else if(likeValue.action == "RIGHT" && likeValue.roundNum == roundNum && likeValue.destPlayerID == profiles[i].playerID) {
+                        // If the like is ours and is not new
+                        // Add it to the likes count
+                        curResultsProfile[likeValue.roundNum].numberOfLikes = curResultsProfile[likeValue.roundNum].numberOfLikes + 1;
+                    }
                 }
             }
         }
@@ -135,13 +137,15 @@ function createElementNode(root, nodeName, profile, extraValue) {
     childImageElement.setAttribute('class', 'profileImage');
     childImageElement.setAttribute('src', profile.picture);
     
-    let childNameElement = document.createTextNode(profile.name);
-    //childImageElement.setAttribute('class', 'profileName');
+    let childNameElement = document.createElement("div");
+    childNameElement.setAttribute('class', 'profileName');
+    childNameElement.innerHTML = profile.name;
     
-    let extraValueNameElement;
+    let extraValueNameElement = null;
     if(extraValue != null) {
-        extraValueNameElement = document.createTextNode(extraValue);
+        extraValueNameElement = document.createElement("div");
         extraValueNameElement.setAttribute('class', 'extraValue');
+        extraValueNameElement.innerHTML = extraValue;
     }
     
     parentElement.appendChild(childImageElement);
@@ -154,8 +158,6 @@ function createElementNode(root, nodeName, profile, extraValue) {
 }
 
 function createElementNodePickupLines(root, nodeName, pickupLine) {
-    console.log("UI WORK");
-    console.log(pickupLine);
     let parentElement = document.createElement("div");
     parentElement.setAttribute('class', nodeName);
     
@@ -163,14 +165,17 @@ function createElementNodePickupLines(root, nodeName, pickupLine) {
     childImageElement.setAttribute('class', 'profileImage');
     childImageElement.setAttribute('src', pickupLine.profile.picture);
     
-    let childNameElement = document.createTextNode(pickupLine.profile.name);
-    //childNameElement.setAttribute('class', 'profileName');
+    let childNameElement = document.createElement("div");
+    childNameElement.setAttribute('class', 'profileName');
+    childNameElement.innerHTML = pickupLine.profile.name;
     
-    let childLikesElement = document.createTextNode("Likes: " + pickupLine.numberOfLikes);
-    //childLikesElement.setAttribute('class', 'numberOfLikes');
+    let childLikesElement = document.createElement("div");
+    childLikesElement.setAttribute('class', 'numberOfLikes');
+    childLikesElement.innerHTML = "Likes: " + pickupLine.numberOfLikes;
     
-    let childLineElement = document.createTextNode(pickupLine.pickupLine);
-    //childLineElement.setAttribute('class', 'pickupLine');
+    let childLineElement = document.createElement("div");
+    childLineElement.setAttribute('class', 'pickupLine');
+    childLineElement.innerHTML = pickupLine.pickupLine;
     
     
     parentElement.appendChild(childImageElement);

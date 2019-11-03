@@ -7,11 +7,11 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 2
+VERSION = 5
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
-GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
+GPT2_URL = "http://localhost:8080/"
 
 app = Flask(__name__)
 CORS(app)
@@ -48,6 +48,9 @@ def getPlayer(playerID):
 def getNumHumanPlayers():
     global profiles
     return len([p for p in profiles if not p.isRobot])
+
+def getRobotness(player):
+    return (sum(player.implants) / (sum(player.implants) + sum(player.hearts) + 1))
 
 pickupLines = []
 class PickupLine(Object):
@@ -109,12 +112,13 @@ def get_num_players():
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
 def start_game():
+    global VERSION
     global currGameState, stateTimeoutTime, enteringNewState
     currGameState = "WRITING_PICKUPS"
     enteringNewState = True
     stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
 
-    return "Game Started :)"
+    return "Game Started :) VERSION={}".format(VERSION)
 
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
@@ -212,7 +216,7 @@ def do_swipe():
     if getPlayer(request.json["targetID"]).isRobot:
         # chance of getting an implant
         player = getPlayer(request.json["playerID"])
-        if (random.random() > (0.3 + 0.5*(sum(player.implants) / (sum(player.implants) + sum(player.hearts) + 1)))):
+        if (random.random() > (0.3 + 0.5*getRobotness(player))):
             player.implants[currRound] += 1
     else:
         # you get a heart
@@ -252,25 +256,62 @@ def get_results():
 @app.route('/scoreboard_stats')
 def get_scoreboard_stats():
     global currRound, gameOver, profiles, pickupLines, likes
+    newprofiles = [vars(p).copy() for p in profiles]
+    for p in newprofiles:
+        p["hearts"] = sum(p["hearts"])
+        p["implants"] = sum(p["implants"])
     return jsonify({
         "roundNum": currRound,
         "gameOver": gameOver,
-        "profiles": [vars(p) for p in profiles],
+        "profiles": newprofiles,
         "likes": [vars(p) for p in likes],
         "pickupLines": [vars(p) for p in pickupLines]
     })
+
+@app.route('/rungpt2', methods=["POST"])
+def rungpt2():
+    return generateSuffixForPrompt(request.json["prompt"].strip())
 
 # After everything else is established, start the game ticking
 
 enteringNewState = True
 
 def generateBotPickupsForRound():
+    global profiles, pickupLines, likes, currRound
     # TODO
     # Loop bots
     # Decide on canned prefix for bots (either a random one from the list, or a popular one)
     # Generate the suffix for it
     # Save it
-    pass
+    for bot in [b for b in profiles if b.isRobot]:
+        print ("CALCULATING PICKUP LINE FOR ROBOT "+str(bot.playerID))
+        # TODO: Get human profiles ranked by humanity left
+        #humans_by_humanity = [p for p in profiles if not p.isRobot].sort(key=lambda p: getRobotness(p)) # TODO
+        # TODO: Get ranked list of most swiped pickup lines
+        # TODO: Smash together with canned pickup lines (but rank at bottom)
+        allLines = [x.humanWords for x in pickupLines]
+        if len(allLines) < 10:
+            allLines += [
+                "Do you want to feel my biceps?",
+                "I am a sports star.",
+                "Nuzzles ur chesty-westy, *** UwU!",
+                "The fact that I am a physical person is very important to me.",
+                "I is human!",
+                "Wanna go to my place?",
+                "Send nudes!", 
+                "Let me be your waifu, senpai!",
+                "Age/Gender/Location?",
+                "ayy bb",
+                "Drug/Disease free?",
+                "Do you drink water?",
+                "Will you share your water with me?",
+                "Do you have any friends you can introduce me to?",
+                "What is the best way to infiltrate your heart?",
+                "All your breasts belong to me!"
+            ]
+        # TODO: Select an appropriate pickup line
+        prompt = random.choice(allLines)
+        pickupLines.append(PickupLine(bot.playerID, currRound, prompt, generateSuffixForPrompt(prompt)))
 
 def updateGameState():
     """
@@ -282,11 +323,11 @@ def updateGameState():
     if currGameState == "STOPPED":
         print ("Waiting for profiles... {} present".format(get_num_players()))
     elif currGameState == "WRITING_PICKUPS":
-        print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()))
+        print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()*2))
         if enteringNewState:
             print ("=== Writing Pickups / Displaying Round Results ===")
             # Make robots write their pickups
-            threading.Thread(target=generateBotPickupsForRound, args=(1,)).start()
+            threading.Thread(target=generateBotPickupsForRound).start()
             enteringNewState = False
         # If all human players have finished submitting pickup lines this round OR time is up...
         if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
