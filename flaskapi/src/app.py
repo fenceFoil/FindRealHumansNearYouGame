@@ -3,6 +3,9 @@ from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
 
+SWIPING_SECONDS = 30
+WRITING_PICKUPS_SECONDS = 60
+
 app = Flask(__name__)
 
 #    # Use this constructor to make a robot clone
@@ -86,12 +89,20 @@ finishedSwiping = []
 # Define routes
 
 # Game Admin: Stopping/resetting game in any state
-@app.route('/stop_game', methods=['GET', 'POST'])
-def stop_game():
+@app.route('/clear_game', methods=['GET', 'POST'])
+def clear_game():
     global currGameState, currRound, stateTimeoutTime, gameOver, finishedSwiping, likes, pickupLines, profiles, nextPlayerID, enteringNewState
     currGameState = "STOPPED"
-    currRound = 
-    # TODO
+    currRound = 1
+    stateTimeoutTime = None
+    gameOver = False
+    finishedSwiping = []
+    likes = []
+    pickupLines = []
+    profiles = []
+    nextPlayerID = 1
+    enteringNewState = True
+    # TODO export game data and history
     return "Game Restarted :)"
 
 # Game Admin: Getting number of players with created profiles to confirm before starting game
@@ -102,7 +113,11 @@ def get_num_players():
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
 def start_game():
-    # TODO - Transition state
+    global currGameState, stateTimeoutTime, enteringNewState
+    currGameState = "WRITING_PICKUPS"
+    enteringNewState = True
+    stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
+
     return "Game Started :)"
 
 @app.route('/create_profile', methods=['POST'])
@@ -198,7 +213,7 @@ def updateGameState():
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS
 
     if currGameState == "STOPPED":
         print ("Game is stopped")
@@ -213,7 +228,7 @@ def updateGameState():
             # Move to swiping time
             currGameState = "SWIPING"
             enteringNewState = True
-            stateTimeoutTime = datetime.now() + timedelta(seconds=30)
+            stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
             finished_swiping = []
     elif currGameState == "SWIPING":
         # If all human players are finished swiping OR time is up...
@@ -221,7 +236,7 @@ def updateGameState():
             # Move to round results and writing pickup lines
             currGameState = "WRITING_PICKUPS"
             enteringNewState = True
-            stateTimeoutTime = datetime.now() + timedelta(seconds=60)
+            stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
             currRound += 1
             if currRound > 5:
                 gameOver = True
