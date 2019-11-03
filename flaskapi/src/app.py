@@ -7,7 +7,7 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 2
+VERSION = 3
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
@@ -112,12 +112,13 @@ def get_num_players():
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
 def start_game():
+    global VERSION
     global currGameState, stateTimeoutTime, enteringNewState
     currGameState = "WRITING_PICKUPS"
     enteringNewState = True
     stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
 
-    return "Game Started :)"
+    return "Game Started :) VERSION={}".format(VERSION)
 
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
