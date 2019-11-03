@@ -29,6 +29,7 @@
     methods:{
       submit: async function (){
         var url = 'http://findrealhumansnearyou.com/create_profile';
+        var playerPicID = Math.floor((Math.random()*(66666)+10000));
         const response = await fetch(
           url+"", {
           method: 'POST',
@@ -37,11 +38,13 @@
           },
           body: JSON.stringify({
             'name': this.name,
-            'picture': 123
+            'picture': playerPicID
           })
         });
         const myJson = await response.json();
         window.localStorage.setItem("playerID", myJson.playerID)
+        window.localStorage.setItem("playerName", this.name)
+        window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
         window.location.href='#/pickupline'
       }
     }
