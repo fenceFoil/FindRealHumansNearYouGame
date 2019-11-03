@@ -196,7 +196,7 @@ def generateSuffixForPrompt(prompt):
             accepted = accepted[:75]+"..."
         accepted = accepted.replace("<|endoftext|>", ".")
 
-        return accepted
+        return str(accepted)
 
 @app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():

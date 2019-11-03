@@ -16,11 +16,23 @@
     data: function (){
       return {
         index: 0,
-        prospects: [{name: "Name 1", src:"https://www.thiswaifudoesnotexist.net/example-196646.jpg", line: "Pickup Line 1"},
-                    {name: "Name 2", src:"https://www.thiswaifudoesnotexist.net/example-196647.jpg", line: "Pickup Line 2"}],
+        //prospects: [{name: "Name 1", src:"https://www.thiswaifudoesnotexist.net/example-196646.jpg", line: "Pickup Line 1"},
+        //            {name: "Name 2", src:"https://www.thiswaifudoesnotexist.net/example-196647.jpg", line: "Pickup Line 2"}],
+        prospects: async () => {
+
+        }
       }
     },
     components:{},
+    created: async function() {
+      var url = 'http://findrealhumansnearyou.com/';
+      const response = await fetch(
+        url+"get_prospects/"+window.localStorage.getItem('playerID'), {
+        method: 'GET'
+      });
+      const myJson = await response.json();
+      alert(myJson.options[0])
+    },
     methods:{
       submit: function (direction){
         alert(direction)
