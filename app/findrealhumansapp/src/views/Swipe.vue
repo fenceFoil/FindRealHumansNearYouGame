@@ -6,8 +6,8 @@
       <img class="waifu" :src="prospects[index].src">
     </div>
     <h1>{{prospects[index].line}}</h1>
-    <button class="button-2" v-on:click="submit('RIGHT')" type="submit">RIGHT</button>
-    <button class="button-1" v-on:click="submit('LEFT')" type="submit">LEFT</button>
+    <button class="button-2 japanese" v-on:click="submit('RIGHT')" type="submit">右</button>
+    <button class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button>
   </div>
 </template>
 <script>
