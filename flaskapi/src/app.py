@@ -8,7 +8,7 @@ import random
 import threading
 
 VERSION = 8
-SWIPING_SECONDS = 30
+SWIPING_SECONDS = 60
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
 GPT2_URL = "http://localhost:8080/"

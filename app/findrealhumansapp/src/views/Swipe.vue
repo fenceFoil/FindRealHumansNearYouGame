@@ -3,9 +3,9 @@
     <h1 class="header-title">{{prospects[index].name}}</h1>
     <h1 class="this-is-not-you japanese">これはあなたじゃないです</h1>
     <div class="picture">
-      <img class="waifu" :src="prospects[index].src">
+      <img class="waifu" :src="prospects[index].picture">
     </div>
-    <h1>{{prospects[index].line}}</h1>
+    <h1>{{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}</h1>
     <button class="button-2 japanese" v-on:click="submit('RIGHT')" type="submit">右</button>
     <button class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button>
   </div>
@@ -16,11 +16,7 @@
     data: function (){
       return {
         index: 0,
-        //prospects: [{name: "Name 1", src:"https://www.thiswaifudoesnotexist.net/example-196646.jpg", line: "Pickup Line 1"},
-        //            {name: "Name 2", src:"https://www.thiswaifudoesnotexist.net/example-196647.jpg", line: "Pickup Line 2"}],
-        prospects: async () => {
-
-        }
+        prospects: []
       }
     },
     components:{},
@@ -31,11 +27,23 @@
         method: 'GET'
       });
       const myJson = await response.json();
-      alert(myJson.options[0])
+      this.prospects = myJson.prospects
     },
     methods:{
-      submit: function (direction){
-        alert(direction)
+      submit: async function (direction){
+        var url = 'http://findrealhumansnearyou.com/swipes';
+          await fetch(
+          url+"", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            "playerID": window.localStorage.getItem('playerID'),
+            "targetID": this.prospects[this.index].playerID,
+            "action": direction
+          })
+        });
         if(this.index < this.prospects.length-1){
           this.index++
         }else{
