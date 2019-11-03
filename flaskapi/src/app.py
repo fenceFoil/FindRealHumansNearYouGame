@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timedelta
 import requests
 from flask_cors import CORS
+import random
 
 VERSION = 2
 SWIPING_SECONDS = 30
@@ -22,15 +23,15 @@ nextPlayerID = 1
 profiles = []
 class Profile(Object): 
     def __init__(self, name, picture):
-        global nextPlayerID
+        global nextPlayerID, NUM_ROUNDS
 
         self.name = name
         self.picture = picture
         self.playerID = nextPlayerID
         nextPlayerID += 1
 
-        self.hearts = 0
-        self.implants = 0
+        self.hearts = [0 for i in range(NUM_ROUNDS+2)]
+        self.implants = [0 for i in range(NUM_ROUNDS+2)]
 
         self.isRobot = False
 
@@ -133,15 +134,14 @@ def generate_pickup_completions():
     humanWords = request.json["humanWords"]
 
     generatedOptions = []
-    # TODO: Call GPT-2 here.
-    for i in range(getPlayer(playerID).implants+1):
-        response = requests.get(GPT2_URL+'gpt2')
+    for i in range(sum(getPlayer(playerID).implants)+1):
+        response = requests.post(GPT2_URL+'gpt2', json={"prompt":humanWords})
         if response.status_code != 200:
             import random
             generatedOptions.append(random.choice(['and you had better believe it!', 'woo hoo!', '<<excited beep boop>>', 'praise Shrek.']))
             print ("Not 200 from gpt2 server")
         else:
-            generatedOptions.append(response.text())
+            generatedOptions.append(response.text)
 
     return jsonify({
         "options":generatedOptions
@@ -174,10 +174,18 @@ def move_to_swipe_time():
 def do_swipe():
     global currRound
     likes.append(Like(request.json["playerID"], request.json["targetID"], currRound, request.json["action"]))
+    if getPlayer(request.json["targetID"]).isRobot:
+        # chance of getting an implant
+        player = getPlayer(request.json["playerID"])
+        if (random.random() > (0.5 + 0.5*(sum(player.implants) / (sum(player.implants) + sum(player.hearts) + 1)))):
+            player.implants[currRound] += 1
+    else:
+        # you get a heart
+        getPlayer(request.json["playerID"]).hearts[currRound] += 1
     return "ok"
 
 @app.route('/finished_swiping', methods=["POST"])
-def finished_swiping():
+def finished_swipingfinished_swiping():
     global finished_swiping
     finished_swiping.append(request.json["playerID"])
     return "ok"
@@ -188,14 +196,14 @@ def is_it_results_time():
 
 @app.route('/results')
 def get_results():
-    global currRound
+    global currRound, profiles, likes
     playerID = request.json["playerID"]
     roundNum = currRound - 1
     numBotsDated = len([l for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and getPlayer(l.destPlayerID).isRobot])
     numHumansDated = len([l for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and (not getPlayer(l.destPlayerID).isRobot)])
-    newHearts = 0 # TODO
-    newImplants = 0 # TODO, and we Should provide list of bots that gave you hearts and implants for flavor
-    youDatedList = []
+    newHearts = getPlayer(playerID).hearts[roundNum]
+    newImplants = getPlayer(playerID).implants[roundNum]
+    youDatedList = [vars(p) for p in profiles if p.playerID in [l.destPlayerID for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT"]] # TODO TEST
     return jsonify({
         "roundNum": roundNum,
         "isFinalResults": gameOver,
@@ -206,14 +214,14 @@ def get_results():
         "youDated": youDatedList
     })
 
-# TODO: Scoreboard endpoint
 @app.route('/scoreboard_stats')
 def get_scoreboard_stats():
-    global currRound, gameOver, profiles, pickupLines
+    global currRound, gameOver, profiles, pickupLines, likes
     return jsonify({
         "roundNum": currRound,
         "gameOver": gameOver,
         "profiles": [vars(p) for p in profiles],
+        "likes": [vars(p) for p in likes],
         "pickupLines": [vars(p) for p in pickupLines]
     })
 
