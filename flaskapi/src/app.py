@@ -2,11 +2,19 @@ from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 import json
 from datetime import datetime, timedelta
+import requests
+from flask_cors import CORS
+import random
+import threading
 
+VERSION = 4
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
+NUM_ROUNDS = 4
+GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
 
 app = Flask(__name__)
+CORS(app)
 
 class Object:
     def toJSON(self):
@@ -16,15 +24,15 @@ nextPlayerID = 1
 profiles = []
 class Profile(Object): 
     def __init__(self, name, picture):
-        global nextPlayerID
+        global nextPlayerID, NUM_ROUNDS
 
         self.name = name
         self.picture = picture
         self.playerID = nextPlayerID
         nextPlayerID += 1
 
-        self.hearts = 0
-        self.implants = 0
+        self.hearts = [0 for i in range(NUM_ROUNDS+2)]
+        self.implants = [0 for i in range(NUM_ROUNDS+2)]
 
         self.isRobot = False
 
@@ -40,6 +48,9 @@ def getPlayer(playerID):
 def getNumHumanPlayers():
     global profiles
     return len([p for p in profiles if not p.isRobot])
+
+def getRobotness(player):
+    return (sum(player.implants) / (sum(player.implants) + sum(player.hearts) + 1))
 
 pickupLines = []
 class PickupLine(Object):
@@ -72,7 +83,7 @@ stateTimeoutTime = None
 gameOver = False
 finishedSwiping = []
 
-# TODO STRETCH: Create export function called after each round to make a backup
+# NOTTODO STRETCH: Create export function called after each round to make a backup
 
 # Define routes
 
@@ -90,7 +101,7 @@ def clear_game():
     profiles = []
     nextPlayerID = 1
     enteringNewState = True
-    # TODO export game data and history
+    # NOT TODO export game data and history
     return "Game Restarted :)"
 
 # Game Admin: Getting number of players with created profiles to confirm before starting game
@@ -101,25 +112,65 @@ def get_num_players():
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
 def start_game():
+    global VERSION
     global currGameState, stateTimeoutTime, enteringNewState
     currGameState = "WRITING_PICKUPS"
     enteringNewState = True
     stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
 
-    return "Game Started :)"
+    return "Game Started :) VERSION={}".format(VERSION)
 
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
-    profiles.append(Profile(request.json["name"], request.json["picture"]))
-    # TODO: Clone this profile here
-    profiles.append(Profile(request.json["name"], request.json["picture"]))
+    profiles.append(Profile(request.json["name"], "https://www.thiswaifudoesnotexist.net/example-{}.jpg".format(request.json["picture"])))
+    # Clone this profile here
+    profiles.append(Profile(request.json["name"], "https://www.thiswaifudoesnotexist.net/example-%d.jpg" % (random.randint(10000, 88888))))
     profiles[-1].isRobot = True
-    return jsonify({'playerID':profiles[-1].playerID}) 
+    return jsonify({'playerID':profiles[-2].playerID}) 
 
 @app.route('/profiles/<playerID>')
 def get_profile(playerID):
     global profiles
     return getPlayer(playerID).toJSON()
+
+def generateSuffixForPrompt(prompt):
+    global GPT2_URL
+    response = requests.post(GPT2_URL+'gpt2', json={"prompt":prompt})
+    if response.status_code != 200:
+        import random
+        print ("Not 200 from gpt2 server")
+        return random.choice(['and you had better believe it!', 'woo hoo!', '<<excited beep boop>>', 'praise Shrek.'])
+    else:
+        # TODO: Process GPT2
+        suffix = response.text
+        accepted = ""
+        #suffix = suffix.replace ('"', "")
+        #suffix = suffix.replace ("'", "" )
+        suffix = suffix.replace ("\n", " ")
+        suffix = suffix.replace ("\r", " ")
+        suffix = suffix.replace ('..', ".")
+        suffix = suffix.replace ('...', ".")
+        suffix = suffix.replace ('.....', ".")
+
+        notFirstLoop = False
+        thisSentenceEnds = False
+        for token in suffix.split(" "):
+            accepted += (" " if notFirstLoop else "") + token
+            notFirstLoop = True
+            #print (token)
+            killloop = False
+            for endchar in [".", "!", ":", "?", "<|endoftext|>"]:
+                if endchar in token:
+                    killloop = True
+                    thisSentenceEnds = True
+            if killloop:
+                #print ('breaking')
+                break
+        if not thisSentenceEnds:
+            accepted = accepted[:75]+"..."
+        accepted = accepted.replace("<|endoftext|>", ".")
+
+        return accepted
 
 @app.route('/get_pickup_completions')
 def generate_pickup_completions():
@@ -127,10 +178,9 @@ def generate_pickup_completions():
     humanWords = request.json["humanWords"]
 
     generatedOptions = []
-    # TODO: Call GPT-2 here.
-    for i in range(getPlayer(playerID).implants+3):
-        import random
-        generatedOptions.append(humanWords+random.choice(["word lol.", "words lol", "more words lol"]))
+    for i in range(min(sum(getPlayer(playerID).implants)+1, 4)):
+        # TODO Batch these?
+        generatedOptions.append(generateSuffixForPrompt(humanWords.strip()))
 
     return jsonify({
         "options":generatedOptions
@@ -163,10 +213,18 @@ def move_to_swipe_time():
 def do_swipe():
     global currRound
     likes.append(Like(request.json["playerID"], request.json["targetID"], currRound, request.json["action"]))
+    if getPlayer(request.json["targetID"]).isRobot:
+        # chance of getting an implant
+        player = getPlayer(request.json["playerID"])
+        if (random.random() > (0.3 + 0.5*getRobotness(player))):
+            player.implants[currRound] += 1
+    else:
+        # you get a heart
+        getPlayer(request.json["playerID"]).hearts[currRound] += 1
     return "ok"
 
 @app.route('/finished_swiping', methods=["POST"])
-def finished_swiping():
+def finished_swipingfinished_swiping():
     global finished_swiping
     finished_swiping.append(request.json["playerID"])
     return "ok"
@@ -177,14 +235,14 @@ def is_it_results_time():
 
 @app.route('/results')
 def get_results():
-    global currRound
+    global currRound, profiles, likes
     playerID = request.json["playerID"]
     roundNum = currRound - 1
     numBotsDated = len([l for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and getPlayer(l.destPlayerID).isRobot])
     numHumansDated = len([l for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT" and (not getPlayer(l.destPlayerID).isRobot)])
-    newHearts = 0 # TODO
-    newImplants = 0 # TODO, and we Should provide list of bots that gave you hearts and implants for flavor
-    youDatedList = []
+    newHearts = getPlayer(playerID).hearts[roundNum]
+    newImplants = getPlayer(playerID).implants[roundNum]
+    youDatedList = [vars(p) for p in profiles if p.playerID in [l.destPlayerID for l in likes if l.sourcePlayerID == playerID and l.roundNum == roundNum and l.action == "RIGHT"]]
     return jsonify({
         "roundNum": roundNum,
         "isFinalResults": gameOver,
@@ -195,29 +253,80 @@ def get_results():
         "youDated": youDatedList
     })
 
+@app.route('/scoreboard_stats')
+def get_scoreboard_stats():
+    global currRound, gameOver, profiles, pickupLines, likes
+    return jsonify({
+        "roundNum": currRound,
+        "gameOver": gameOver,
+        "profiles": [vars(p) for p in profiles],
+        "likes": [vars(p) for p in likes],
+        "pickupLines": [vars(p) for p in pickupLines]
+    })
+
+@app.route('/rungpt2', methods=["POST"])
+def rungpt2():
+    return generateSuffixForPrompt(request.json["prompt"].strip())
+
 # After everything else is established, start the game ticking
 
 enteringNewState = True
+
+def generateBotPickupsForRound():
+    global profiles, pickupLines, likes, currRound
+    # TODO
+    # Loop bots
+    # Decide on canned prefix for bots (either a random one from the list, or a popular one)
+    # Generate the suffix for it
+    # Save it
+    for bot in [b for b in profiles if b.isRobot]:
+        print ("CALCULATING PICKUP LINE FOR ROBOT "+str(bot.playerID))
+        # TODO: Get human profiles ranked by humanity left
+        #humans_by_humanity = [p for p in profiles if not p.isRobot].sort(key=lambda p: getRobotness(p)) # TODO
+        # TODO: Get ranked list of most swiped pickup lines
+        # TODO: Smash together with canned pickup lines (but rank at bottom)
+        allLines = [x.humanWords for x in pickupLines]
+        if len(allLines) < 10:
+            allLines += [
+                "Do you want to feel my biceps?",
+                "I am a sports star.",
+                "Nuzzles ur chesty-westy, *** UwU!",
+                "The fact that I am a physical person is very important to me.",
+                "I is human!",
+                "Wanna go to my place?",
+                "Send nudes!", 
+                "Let me be your waifu, senpai!",
+                "Age/Gender/Location?",
+                "ayy bb",
+                "Drug/Disease free?",
+                "Do you drink water?",
+                "Will you share your water with me?",
+                "Do you have any friends you can introduce me to?",
+                "What is the best way to infiltrate your heart?",
+                "All your breasts belong to me!"
+            ]
+        # TODO: Select an appropriate pickup line
+        prompt = random.choice(allLines)
+        pickupLines.append(PickupLine(bot.playerID, currRound, prompt, generateSuffixForPrompt(prompt)))
 
 def updateGameState():
     """
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, stateTimeoutTime
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, NUM_ROUNDS, stateTimeoutTime
 
     if currGameState == "STOPPED":
         print ("Waiting for profiles... {} present".format(get_num_players()))
     elif currGameState == "WRITING_PICKUPS":
-        print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()))
+        print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()*2))
         if enteringNewState:
-            print ("===Writing Pickups / Displaying Round Results===")
+            print ("=== Writing Pickups / Displaying Round Results ===")
             # Make robots write their pickups
-            # TODO
-            # TODO: Also make this state wait until all the GPT 2 robot lines have come back in
+            threading.Thread(target=generateBotPickupsForRound).start()
             enteringNewState = False
         # If all human players have finished submitting pickup lines this round OR time is up...
-        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()) or datetime.now() > stateTimeoutTime:
+        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
             # Move to swiping time
             currGameState = "SWIPING"
             enteringNewState = True
@@ -232,7 +341,7 @@ def updateGameState():
             enteringNewState = True
             stateTimeoutTime = datetime.now() + timedelta(seconds=WRITING_PICKUPS_SECONDS)
             currRound += 1
-            if currRound > 5:
+            if currRound > NUM_ROUNDS:
                 print ("ANNOUNCING GAME IS OVER WITH ALL RESULTS REQUESTED")
                 gameOver = True
 
