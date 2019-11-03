@@ -110,6 +110,8 @@ def generate_pickup_completions():
     
 @app.route('/get_prospects/<playerID>')
 def get_prospects(playerID):
+    global currRound
+    global profiles
     playerID = int(playerID)
     profilesTwo = [p for p in profiles if p.playerID != int(playerID)]
     for p in profilesTwo:
