@@ -6,6 +6,7 @@ var statsUrlGlobal = "http://findrealhumansnearyou.com/scoreboard_stats";
 var mostHeartsListNode;
 var mostImplantsListNode;
 var bestPickupLinesListNode;
+var svgTemplateNode;
 
 window.onload = function() {
     initElements();
@@ -21,6 +22,7 @@ function initElements() {
     mostHeartsListNode = document.getElementById('mostHeartsList');
     mostImplantsListNode = document.getElementById('mostImplantsList');
     bestPickupLinesListNode = document.getElementById('bestPickupLinesList');
+    svgTemplateNode = document.getElementById('svgTemplate');
 }
 
 function clearData() {
@@ -49,8 +51,6 @@ function loadDataCallback(dataJson) {
     let profiles = dataJson.profiles;
     let pickupLines = dataJson.pickupLines;
     let likes = dataJson.likes;
-    console.log("ALL_Likes");
-    console.log(likes);
     populateMostHearts(profiles);
     populateMostImplants(profiles);
     populateBestPickupLines(profiles, pickupLines, likes);
@@ -58,35 +58,39 @@ function loadDataCallback(dataJson) {
 
 function populateMostHearts(profileData) {
     profileData.sort(function(a,b) {
-        return a.hearts - b.hearts;
+        return b.hearts - a.hearts;
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        let heartsCombined = "";
-        for(let j = 0; j < profileData[i].hearts; j++) {
-            heartsCombined = heartsCombined + "*";
+        if(profileData[i].isRobot == false) {
+            let heartsCombined = "";
+            for(let j = 0; j < profileData[i].hearts; j++) {
+                heartsCombined = heartsCombined + "*";
+            }
+            if(heartsCombined == "") {
+                heartsCombined = "No Hearts :(";
+            }
+            createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], heartsCombined);
         }
-        if(heartsCombined == "") {
-            heartsCombined = "No Hearts :(";
-        }
-        createElementNode(mostHeartsListNode, 'mostHeartsEntry', profileData[i], heartsCombined);
     }
 }
 
 function populateMostImplants(profileData) {
     profileData.sort(function(a,b) {
-        return a.implants - b.implants;
+        return b.implants - a.implants;
     });
     
     for (let i = 0; i < profileData.length; i++) {
-        let implantsCombined = "";
-        for(let j = 0; j < profileData[i].implants; j++) {
-            implantsCombined = implantsCombined + "@";
+        if(profileData[i].isRobot == false) {
+            let implantsCombined = "";
+            for(let j = 0; j < profileData[i].implants; j++) {
+                implantsCombined = implantsCombined + "@";
+            }
+            if(implantsCombined == "") {
+                implantsCombined = "No Implants :)";
+            }
+            createElementNodeImplants(mostImplantsListNode, 'mostImplantsEntry', profileData[i], profileData[i].implants);
         }
-        if(implantsCombined == "") {
-            implantsCombined = "No Implants :)";
-        }
-        createElementNode(mostImplantsListNode, 'mostImplantsEntry', profileData[i], implantsCombined);
     }
 }
 
@@ -110,7 +114,6 @@ function populateBestPickupLines(profiles, pickupLines, likes) {
                         for(let lineIndex = 0; lineIndex < pickupLines.length; lineIndex++){
                             let pickupLine = pickupLines[lineIndex];
                             if(pickupLine.playerID == likeValue.destPlayerID && pickupLine.roundNum == roundNum) {
-                                console.log("FOund a LLING");
                                 line = pickupLine.humanWords + pickupLine.botScreed;
                             }
                         }
@@ -134,7 +137,7 @@ function populateBestPickupLines(profiles, pickupLines, likes) {
     }
     // Sort
     combinedResults.sort(function(a,b) {
-        return a.numberOfLikes - b.numberOfLikes;
+        return b.numberOfLikes - a.numberOfLikes;
     });
     
     // FInally add them to the UI
@@ -166,6 +169,31 @@ function createElementNode(root, nodeName, profile, extraValue) {
     parentElement.appendChild(childNameElement);
     if(extraValue != null) {
         parentElement.appendChild(extraValueNameElement);
+    }
+    root.appendChild(parentElement);
+    
+}
+
+function createElementNodeImplants(root, nodeName, profile, implants) {
+    let parentElement = document.createElement("div");
+    parentElement.setAttribute('class', nodeName);
+    
+    let childImageElement = document.createElement("img");
+    childImageElement.setAttribute('class', 'profileImage');
+    childImageElement.setAttribute('src', profile.picture);
+    
+    let childNameElement = document.createElement("div");
+    childNameElement.setAttribute('class', 'profileName');
+    childNameElement.innerHTML = profile.name;
+    
+        
+    parentElement.appendChild(childImageElement);
+    parentElement.appendChild(childNameElement);
+    
+    for(let i = 0; i < implants; i++) {
+        let svgElement = svgTemplateNode.cloneNode(true);
+        svgElement.setAttribute('display', 'inline');
+        parentElement.appendChild(svgElement);
     }
     root.appendChild(parentElement);
     
