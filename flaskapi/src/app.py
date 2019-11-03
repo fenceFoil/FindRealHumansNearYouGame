@@ -11,7 +11,7 @@ VERSION = 4
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
-GPT2_URL = "http://ec2-18-221-77-224.us-east-2.compute.amazonaws.com:465/"
+GPT2_URL = "http://findrealhumansnearyou.com:465/"
 
 app = Flask(__name__)
 CORS(app)
@@ -256,10 +256,14 @@ def get_results():
 @app.route('/scoreboard_stats')
 def get_scoreboard_stats():
     global currRound, gameOver, profiles, pickupLines, likes
+    newprofiles = [vars(p).copy() for p in profiles]
+    for p in newprofiles:
+        p["hearts"] = sum(p["hearts"])
+        p["implants"] = sum(p["implants"])
     return jsonify({
         "roundNum": currRound,
         "gameOver": gameOver,
-        "profiles": [vars(p) for p in profiles],
+        "profiles": newprofiles,
         "likes": [vars(p) for p in likes],
         "pickupLines": [vars(p) for p in pickupLines]
     })
