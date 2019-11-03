@@ -87,7 +87,7 @@ img.logo.anim-4 {
     animation: 3s 1 normal header-title;
 }
 
-.waifu, img {
+.waifu {
     animation: 3s 1 normal forwards waifu;
     animation-delay: 3.1s;
 }
@@ -95,6 +95,52 @@ img.logo.anim-4 {
 svg {
     animation: 3s 1 normal forwards svg;
     animation-delay: 3.1s;
+}
+
+.asterisk.left {
+    animation: 15s 1 normal forwards asterisk-left;
+    margin: 0em 0em -1.2em -31.2em;
+}
+
+.asterisk.right {
+    animation: 15s 1 normal forwards asterisk-right;
+    margin: -1em 0em 0em 31.5em;
+}
+
+.pipe.left {
+    animation: 15s 1 normal forwards pipe-left;
+}
+
+.underscore.left {
+    animation: 15s 1 normal forwards underscore-left;
+}
+
+.underscore.middle {
+    animation: 15s 1 normal forwards underscore-middle;
+}
+
+.pipe.right {
+    animation: 15s 1 normal forwards pipe-right;
+}
+
+.underscore.right {
+    animation: 15s 1 normal forwards underscore-right;
+}
+
+.hearts {
+    animation: 3s 1 normal forwards hearts;
+}
+
+.dates-display {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dates-display > img {
+    flex-shrink: 0;
+    width: 25%;
 }
 
 @keyframes left-right-animate {
@@ -214,4 +260,69 @@ svg {
 @keyframes svg {
     from {width: 0%;}
     to {width: 2.5%;}
+}
+
+@keyframes asterisk-left {
+    0% {transform: translate(0px, 0px) rotate(0deg); color: pink;}
+    25% {transform: translate(-50px, -50px) rotate(45deg); color: pink;}
+    50% {transform: translate(-100px, -100px) rotate(90deg); color: pink;}
+    75% {transform: translate(-50px, -50px) rotate(45deg); color: pink}
+    100% {transform: translate(0px, 0px) rotate(0deg); color: pink;}
+}
+
+@keyframes asterisk-right {
+    0% {transform: translate(0px, 0px) rotate(0deg); color: pink;}
+    25% {transform: translate(50px, -50px) rotate(-45deg); color: pink;}
+    50% {transform: translate(100px, -100px) rotate(-90deg); color: pink;}
+    75% {transform: translate(50px, -50px) rotate(-45deg); color: pink;}
+    100% {transform: translate(0px, 0px) rotate(0deg); color: pink;}
+}
+
+@keyframes pipe-left {
+    0% {color: red;}
+    25% {color: green;}
+    75% {color: red;}
+    100% {color: green;}
+}
+
+@keyframes underscore-left {
+    0% {color: green;}
+    25% {color: red;}
+    75% {color: green}
+    100% {color: red;}
+}
+
+@keyframes underscore-middle {
+    0% {color: pink;}
+    25% {color: pink;}
+    75% {color: pink;}
+    100% {color: pink;}
+}
+
+@keyframes pipe-right {
+    0% {color: green;}
+    25% {color: red;}
+    75% {color: green;}
+    100% {color: red;}
+}
+
+@keyframes underscore-right {
+    0% {color: red;}
+    25% {color: green;}
+    75% {color: red;}
+    100% {color: green;}
+}
+
+@keyframes hearts {
+    0% {font-size: 2em;}
+    10% {font-size: 2.5em;}
+    20% {font-size: 2.75em;}
+    30% {font-size: 2.5em;}
+    40% {font-size: 2.75em;}
+    50% {font-size: 2.5em;}
+    60% {font-size: 2.75em;}
+    70% {font-size: 2.5em;}
+    80% {font-size: 2.75em;}
+    90% {font-size: 2.5em;}
+    100% {font-size: 2em;}
 }
