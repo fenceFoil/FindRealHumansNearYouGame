@@ -180,7 +180,7 @@ def updateGameState():
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver
 
     if currGameState == "STOPPED":
         print ("Game is stopped")
