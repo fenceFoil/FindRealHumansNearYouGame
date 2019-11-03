@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
 import json
+import datetime
 
 app = Flask(__name__)
 
@@ -72,7 +73,7 @@ class Like(Object):
     def __repr__(self):
         return 'Like' + ": " + str(self.__dict__)
 
-currGameState = "WRITING_PICKUPS"
+currGameState = "STOPPED" # STOPPED, WRITING_PICKUPS, SWIPING
 currRound = 1
 stateTimeoutTime = None
 gameOver = False
@@ -131,8 +132,7 @@ def commit_new_pickup():
 
 @app.route('/move_to_swipe_time')
 def move_to_swipe_time():
-    # TODO
-    return jsonify({"isItTime":False})
+    return jsonify({"isItTime":currGameState == "SWIPING"})
 
 # After everything else is established, start the game ticking
 

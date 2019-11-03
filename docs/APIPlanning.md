@@ -71,3 +71,10 @@ port = 9621
   * YouDated (list)
     * WaifuImageURL
     * Name
+
+
+
+currGameState = "STOPPED" # STOPPED, WRITING_PICKUPS, SWIPING
+currRound = 1
+stateTimeoutTime = None
+gameOver = False
