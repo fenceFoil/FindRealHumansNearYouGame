@@ -7,7 +7,7 @@ from flask_cors import CORS
 import random
 import threading
 
-VERSION = 3
+VERSION = 4
 SWIPING_SECONDS = 30
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
