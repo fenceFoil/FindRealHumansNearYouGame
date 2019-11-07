@@ -1,4 +1,5 @@
-pip install flask_apscheduler tensorflow transformers tqdm flask torch
+source activate tensorflow_p36
+pip install flask_apscheduler tqdm torch transformers
 
 # Run GPT2 API endpoint (port 5000)
 cd ~/FindRealHumansNearYouGame/gpt2api/src && flask run --host 0.0.0.0 --port 8080 &
