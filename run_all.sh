@@ -5,7 +5,8 @@ pip install flask_apscheduler tqdm torch transformers
 cd ~/FindRealHumansNearYouGame/gpt2api/src && flask run --host 0.0.0.0 --port 8080 &
 
 # Run Flask API for Game State (port 9283)
-cd ~/FindRealHumansNearYouGame/flaskapi/src && flask run --host 0.0.0.0 --port 80 &
+sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3000
+cd ~/FindRealHumansNearYouGame/flaskapi/src && flask run --host 0.0.0.0 --port 3000 &
 
 # Run CRUD API (port 9620)
 #cd ~/gamejam-2019/FindRealHumansNearYouGame/api/python-flask-server && python3 -m swagger_server &
