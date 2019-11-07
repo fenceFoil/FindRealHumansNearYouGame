@@ -138,7 +138,7 @@ def get_num_players():
 
 @app.route('/')
 def redirect_to_static():
-    return redirect("http://findrealhumansnearyou.com/static/app/index.html", code=302)
+    return redirect("/static/app/index.html", code=302)
 
 # Game Admin: Start the game once everyone has created their profiles!
 @app.route('/start_game', methods=['GET', 'POST'])
