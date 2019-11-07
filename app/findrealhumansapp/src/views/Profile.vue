@@ -28,9 +28,8 @@
     components:{},
     created: async function (){
         var myint = setInterval(async function() {
-          var url2 = 'http://findrealhumansnearyou.com/';
           const response2 = await fetch(
-            url2+"is_it_results_time", {
+            "/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
@@ -43,10 +42,9 @@
     },
     methods:{
       submit: async function (){
-        var url = 'http://findrealhumansnearyou.com/create_profile';
         var playerPicID = Math.floor((Math.random()*(66666)+10000));
         const response = await fetch(
-          url+"", {
+          "/create_profile", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'

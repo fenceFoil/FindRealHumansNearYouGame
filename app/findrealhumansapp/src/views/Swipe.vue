@@ -21,9 +21,8 @@
     },
     components:{},
     created: async function() {
-      var url = 'http://findrealhumansnearyou.com/';
       const response = await fetch(
-        url+"get_prospects/"+window.localStorage.getItem('playerID'), {
+        "/get_prospects/"+window.localStorage.getItem('playerID'), {
         method: 'GET'
       });
       const myJson = await response.json();
@@ -31,9 +30,8 @@
     },
     methods:{
       submit: async function (direction){
-        var url = 'http://findrealhumansnearyou.com/swipes';
           await fetch(
-          url+"", {
+          "/swipes", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'

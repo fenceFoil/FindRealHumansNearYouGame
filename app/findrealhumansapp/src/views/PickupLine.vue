@@ -31,9 +31,8 @@
     components:{},
     methods:{
       submit: async function (){
-        var url = 'http://findrealhumansnearyou.com/';
         const response = await fetch(
-          url+"get_pickup_completions", {
+          "/get_pickup_completions", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -47,9 +46,8 @@
 
         alert("The other waifus are preparing...")
 
-
         await fetch(
-          url+"commit_new_pickup", {
+          "/commit_new_pickup", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -62,9 +60,8 @@
         });
 
         var myint = setInterval(async function() {
-          var url2 = 'http://findrealhumansnearyou.com/';
           const response2 = await fetch(
-            url2+"is_it_results_time", {
+            "/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
