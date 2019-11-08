@@ -217,9 +217,9 @@ def get_game_state():
     if currGameState == 'STOPPED':
         return "Make your profiles now! {} have joined so far.".format(get_num_players()) 
     elif currGameState == 'WRITING_PICKUPS':
-        return "Actual humans preparing to swipe!"
+        return "{} actual humans preparing to swipe!".format(get_num_players())
     elif currGameState == 'SWIPING':
-        return "Humans are swiping right now!"
+        return "{} humans are swiping right now!".format(get_num_players())
     else:
         return "Who knows, looks broken."
 

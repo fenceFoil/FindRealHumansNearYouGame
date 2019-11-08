@@ -23,14 +23,17 @@ export default {
      }
   },
   created: async function() {
-    const response3 = await fetch(
-      window.localStorage.getItem('resturl')+"/game_state", {
-      method: 'GET'
-    });
-    this.gamestate = await response3.text();
+    let that = this;
+
+    setInterval(async function() {
+      const response3 = await fetch(
+        window.localStorage.getItem('resturl')+"/game_state", {
+        method: 'GET'
+      });
+      that.gamestate = await response3.text();
+    }, 1000);
 
     let i = 0;
-    let that = this;
     var myint = setInterval(async function() {
       const response2 = await fetch(
         window.localStorage.getItem('resturl')+"/get_review", {
