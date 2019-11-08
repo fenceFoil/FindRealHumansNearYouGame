@@ -203,6 +203,15 @@ def generateSuffixForPrompt(prompt):
 
         return accepted #accepted.encode('ascii', 'ignore')
 
+@app.route('/get_review')
+def get_review():
+    while True:
+        candidate = generateSuffixForPrompt("Top review: ")
+        if len(candidate) <= 2:
+            print ("GENERATED TOO-SHORT REVIEW. RETRYING.")
+            continue
+        return candidate
+
 @app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():
     playerID = request.json["playerID"]
