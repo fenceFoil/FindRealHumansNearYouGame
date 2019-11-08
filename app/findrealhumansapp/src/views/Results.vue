@@ -1,6 +1,6 @@
 <template>
   <div class="results">
-    <h1 class="header-title">This is teh result page</h1>
+    <h1 class="header-title">{{playerName}}</h1>
     <h1 class="round-num">Round {{round}}</h1>
     <h1>
     <span v-for="n in hearts" :key="n">
@@ -19,18 +19,30 @@
     </div>
     <h1 class="seperator"><div class="asterisk left">*</div><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore left">_</span><span class="pipe left">|</span><span class="underscore middle">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><span class="pipe right">|</span><span class="underscore right">_</span><div class="asterisk right">*</div></h1>
     <h1 class="dated">Your lovely Dates</h1>
-    <div v-for="date in dates" :key="date" class="dates-display">
-      <img class="waifu-thumbnail" :src="date">
+    <div class="dates-container">
+      <img v-for="date in dates" :key="date" class="waifu-thumbnail" :src="date">
     </div>
     <button v-on:click="submit">Ready</button>
   </div>
 </template>
+<style>
+  .waifu-thumbnail{
+    width: 20%;
+  }
+  .dates-container{
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+  }
+</style>
+
 <script>
 import Implant from '@/components/Implant.vue'
   export default {
     name:'pickupline',
     data: function (){
         return {
+          playerName: window.localStorage.getItem("playerName"),
           round: 1,
           hearts: 4,
           implants: 2,
