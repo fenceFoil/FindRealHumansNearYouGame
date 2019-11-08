@@ -16,8 +16,23 @@ export default {
   },
   data: function (){
     return {
-      reviews: ["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"]
+      reviews: []//["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"]
      }
+  },
+  created: function() {
+    let i = 0;
+    let that = this;
+    var myint = setInterval(async function() {
+      const response2 = await fetch(
+        "/get_review", {
+        method: 'GET'
+      });
+      const reviewText = await response2.text();
+      that.reviews.push(reviewText);
+      if (++i > 3) {
+        clearInterval(myint);
+      }
+    }, 3200);
   }
 }
 </script>
