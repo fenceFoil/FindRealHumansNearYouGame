@@ -44,7 +44,7 @@
     methods:{
       submit: async function (){
         const response = await fetch(
-          "/get_pickup_completions", {
+          window.localStorage.getItem('resturl')+"/get_pickup_completions", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -59,7 +59,7 @@
         alert("The other waifus are preparing...")
 
         await fetch(
-          "/commit_new_pickup", {
+          window.localStorage.getItem('resturl')+"/commit_new_pickup", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -73,7 +73,7 @@
 
         var myint = setInterval(async function() {
           const response2 = await fetch(
-            "/is_it_results_time", {
+            window.localStorage.getItem('resturl')+"/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();

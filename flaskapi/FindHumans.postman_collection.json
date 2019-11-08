@@ -348,6 +348,69 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Scoreboard Endpoint",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/scoreboard_stats",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"scoreboard_stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "General GPT2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"prompt\": \"Read our customer reviews!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_DOMAIN}}:{{LOCAL_PORT}}/rungpt2",
+					"host": [
+						"{{LOCAL_DOMAIN}}"
+					],
+					"port": "{{LOCAL_PORT}}",
+					"path": [
+						"rungpt2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a review",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

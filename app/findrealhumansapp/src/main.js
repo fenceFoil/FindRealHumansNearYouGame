@@ -4,6 +4,9 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+localStorage.setItem('resturl', '')
+localStorage.setItem('resturl', 'http://44.224.175.124')
+
 new Vue({
   router,
   render: h => h(App)

@@ -22,7 +22,7 @@
     components:{},
     created: async function() {
       const response = await fetch(
-        "/get_prospects/"+window.localStorage.getItem('playerID'), {
+        window.localStorage.getItem('resturl')+"/get_prospects/"+window.localStorage.getItem('playerID'), {
         method: 'GET'
       });
       const myJson = await response.json();
@@ -31,7 +31,7 @@
     methods:{
       submit: async function (direction){
           await fetch(
-          "/swipes", {
+          window.localStorage.getItem('resturl')+"/swipes", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'

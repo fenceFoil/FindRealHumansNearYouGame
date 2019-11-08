@@ -29,7 +29,7 @@
     created: async function (){
         var myint = setInterval(async function() {
           const response2 = await fetch(
-            "/is_it_results_time", {
+            window.localStorage.getItem('resturl')+"/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
@@ -44,7 +44,7 @@
       submit: async function (){
         var playerPicID = Math.floor((Math.random()*(66666)+10000));
         const response = await fetch(
-          "/create_profile", {
+          window.localStorage.getItem('resturl')+"/create_profile", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
