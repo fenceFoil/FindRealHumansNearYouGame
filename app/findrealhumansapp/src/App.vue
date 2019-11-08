@@ -8,8 +8,8 @@
 
 <style>
 #app {
-  min-width: '1900px';
-  max-width: '1940px';
+  min-width: 1900px;
+  max-width: 1940px;
   margin: auto;
   font-family: Glitter, 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
