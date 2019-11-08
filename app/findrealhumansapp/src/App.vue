@@ -11,11 +11,15 @@
   min-width: '1900px';
   max-width: '1940px';
   margin: auto;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Glitter, 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+button, input, textarea{
+  font-family: Glitter;
 }
 
 #nav {
