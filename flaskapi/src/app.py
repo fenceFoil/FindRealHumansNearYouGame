@@ -212,6 +212,17 @@ def get_review():
             continue
         return candidate
 
+@app.route('/game_state')
+def get_game_state():
+    if currGameState == 'STOPPED':
+        return "Make your profiles now! {} have joined so far.".format(get_num_players()) 
+    elif currGameState == 'WRITING_PICKUPS':
+        return "Actual humans preparing to swipe!"
+    elif currGameState == 'SWIPING':
+        return "Humans are swiping right now!"
+    else:
+        return "Who knows, looks broken."
+
 @app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():
     playerID = request.json["playerID"]

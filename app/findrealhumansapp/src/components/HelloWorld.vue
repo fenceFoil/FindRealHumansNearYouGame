@@ -1,5 +1,7 @@
 <template>
   <div class="hello">
+    <h1><pre>Game State:<br>{{gamestate}}</pre></h1>
+    <img src="../assets/logo-frhny.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
     <button onclick="window.location.href = '#/profile';" class="japanese">始まりましょうか</button>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
@@ -16,15 +18,22 @@ export default {
   },
   data: function (){
     return {
-      reviews: []//["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"]
+      reviews: [], //["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"],
+      gamestate: "Loading..."
      }
   },
-  created: function() {
+  created: async function() {
+    const response3 = await fetch(
+      window.localStorage.getItem('resturl')+"/game_state", {
+      method: 'GET'
+    });
+    this.gamestate = await response3.text();
+
     let i = 0;
     let that = this;
     var myint = setInterval(async function() {
       const response2 = await fetch(
-        "/get_review", {
+        window.localStorage.getItem('resturl')+"/get_review", {
         method: 'GET'
       });
       const reviewText = await response2.text();
