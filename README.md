@@ -16,8 +16,8 @@
 * `chmod +x run_all.sh`
 * `./run_all.sh`
 
-### Client
+### Hot Relaoding Dev Client
 
 Okay, so the above works for the server app. Building the vue app for prod takes too long.
 
-To use a real server like above with a `npm run serve` vue client hosted locally, go to `/app/src/findrealhumansapp/` and run `npm run serve`. Then uncomment the URL setting line in `main.js` and set it to the URL of your actual dev server.
+To use a real server like above with a `npm run serve` vue hot reloading server hosted locally, go to `/app/src/findrealhumansapp/` and run `npm run serve`. Then uncomment the URL setting line in `main.js` and set it to the URL of your actual dev server.
