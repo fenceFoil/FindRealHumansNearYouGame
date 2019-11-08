@@ -3,6 +3,8 @@
 
 ## Deployment instructions
 
+### Server
+
 * Create a server like an Amazon EC2 instance
   * Minimum specs: needs a gpu? maybe?
   * Recc. g4dn.xlarge (on 11.7.2019 in my favorite region it's 0.52USD/hr)
@@ -14,3 +16,8 @@
 * `chmod +x run_all.sh`
 * `./run_all.sh`
 
+### Client
+
+Okay, so the above works for the server app. Building the vue app for prod takes too long.
+
+To use a real server like above with a `npm run serve` vue client hosted locally, go to `/app/src/findrealhumansapp/` and run `npm run serve`. Then uncomment the URL setting line in `main.js` and set it to the URL of your actual dev server.
