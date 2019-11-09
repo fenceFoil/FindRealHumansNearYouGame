@@ -5,7 +5,17 @@ export const OVERLAY_CONTROL = {
         document.getElementById("overlay").style.display = "block";
     },
 
-    off: function() {
+    OFF: function() {
         document.getElementById("overlay").style.display = "none";
+    }
+}
+
+export const HUD_CONTROL = {
+    ON: function() {
+        document.getElementById("hud").style.display = "block";
+    },
+
+    OFF: function() {
+        document.getElementById("hud").style.display = "none";
     }
 }
