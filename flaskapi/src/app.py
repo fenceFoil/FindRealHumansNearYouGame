@@ -229,10 +229,14 @@ def get_game_state():
     else:
         message = "Who knows, looks broken."
 
+    countdownSecs = None
+    if stateTimeoutTime != None:
+        countdownSecs = (stateTimeoutTime-datetime.now()).seconds
+
     return jsonify({
         "message": message,
         "currRound": currRound,
-        "countdownSecs": (stateTimeoutTime-datetime.now()).seconds,
+        "countdownSecs": countdownSecs,
         "gameOver": gameOver,
         "gameID": gameID,
         "currPlayers": get_num_players()
