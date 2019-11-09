@@ -228,6 +228,9 @@ def get_game_state():
         message = "Round {}: {} humans are swiping right now!".format(currRound, get_num_players())
     else:
         message = "Who knows, looks broken."
+    
+    if gameOver:
+        message = "Are humans even real? Reality collapses."
 
     countdownSecs = None
     if stateTimeoutTime != None:
@@ -402,15 +405,19 @@ def updateGameState():
             # Make robots write their pickups
             threading.Thread(target=generateBotPickupsForRound).start()
             enteringNewState = False
-        # If all human players have finished submitting pickup lines this round OR time is up...
         if gameOver:
             print("Game Over -- Letting Players Display Results")
+        # TODO: Revamp pickup line submission ending logic: remove players from swiping prospects if they don't submit.
+        # TODO: Verify that all robots have pickup lines before letting state proceed to swiping
+        # If all human players have finished submitting pickup lines this round OR time is up...
         elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
-            # Move to swiping time
-            currGameState = "SWIPING"
-            enteringNewState = True
-            stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
-            finished_swiping = []
+            # TODO Also verify that robots have finished generating pickup lines...
+            if True:
+                # Move to swiping time
+                currGameState = "SWIPING"
+                enteringNewState = True
+                stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
+                finished_swiping = []
     elif currGameState == "SWIPING":
         print ("Round {} - [{}] Remaining swiping players: {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, getNumHumanPlayers() - len(finished_swiping)))
         # If all human players are finished swiping OR time is up...
