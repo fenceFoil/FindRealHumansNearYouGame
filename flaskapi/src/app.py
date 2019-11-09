@@ -217,6 +217,8 @@ def get_review():
 
 @app.route('/game_state')
 def get_game_state():
+    global currRound, currGameState, stateTimeoutTime, gameOver, gameID
+    
     message = ""
     if currGameState == 'STOPPED':
         message = "Make your profile now! {} have joined so far.".format(get_num_players()) 
@@ -227,7 +229,6 @@ def get_game_state():
     else:
         message = "Who knows, looks broken."
 
-    global currRound, currGameState, stateTimeoutTime, gameOver, gameID
     return jsonify({
         "message": message,
         "currRound": currRound,
