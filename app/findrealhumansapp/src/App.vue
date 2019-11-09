@@ -1,8 +1,7 @@
 <template>
   <div id="overall">
-    <div id="overlay">
-      <h1 id="overlay-text">*Girls Are Preparing . . .*</h1>
-    </div>
+    <LoadingOverlay></LoadingOverlay>
+    <Hud></Hud>
     <div id="vertical-app-layout">
       <div id="status-bar">
         <h1 id="status-bar-text">{{statusBarText}}</h1>
@@ -13,12 +12,14 @@
     </div>
   </div>
 </template>
-
 <script>
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import Hud from '@/components/Hud.vue'
 import { REST_BASE } from "./constants/constants.js";
 
 export default {
   name: "App",
+  components:{LoadingOverlay, Hud},
   data: function() {
     return {
       statusBarText: ""
@@ -26,7 +27,9 @@ export default {
   },
   created: async function() {
     let that = this;
+    let currGameID = 0;
 
+    // Continuously poll the server for the current game state
     setInterval(async function() {
       const response3 = await fetch(REST_BASE + "/game_state", {
         method: "GET"
@@ -37,7 +40,19 @@ export default {
             ? " at " + REST_BASE
             : " on same server as this page";
       } else {
-        that.statusBarText = await response3.text();
+        let serverState = await response3.json();
+
+        // Respond to new server state
+
+        // Update status bar message
+        that.statusBarText = serverState.message + " -- " + serverState.countdownSecs;
+
+        // Check for new game
+        if (serverState.currGameID != currGameID) {
+          // Game was reset!
+          window.location.href='#/'
+          currGameID = serverState.currGameID
+        }
       }
     }, 1000);
   }
@@ -82,33 +97,7 @@ body {
   color: #1a232c;
 }
 
-#overlay {
-  position: fixed; /* Sit on top of the page content */
-  width: 100%; /* Full width (cover the whole page) */
-  height: 100%; /* Full height (cover the whole page) */
-  display: none;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9); /* Black background with opacity */
-  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
-}
-
-#overlay-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 10em;
-  margin-top: -1em;
-  margin-left: -5em;
-  color: pink;
-}
-
-button,
-input,
-textarea {
+button, input, textarea{
   font-family: Glitter;
 }
 
