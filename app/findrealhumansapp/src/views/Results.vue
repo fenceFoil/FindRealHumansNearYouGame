@@ -70,10 +70,18 @@
     <div class="dates-container">
       <img v-for="date in dates" :key="date" class="waifu-thumbnail" :src="date" />
     </div>
-    <button v-on:click="submit">Ready</button>
+    <template v-if="!gameOver">
+      <button v-on:click="submit" class="ready-button">Ready</button>
+    </template>
+    <template v-if="gameOver">
+      <button v-on:click="leaveGame" class="ready-button">Say Goodbye</button>
+    </template>
   </div>
 </template>
 <style>
+.results {
+  margin-bottom: 6em;
+}
 .waifu-thumbnail {
   width: 20%;
 }
@@ -82,10 +90,15 @@
   display: flex;
   flex-direction: row;
 }
+.ready-button {
+  margin-top: 2em;
+  font-size: 2em;
+}
 </style>
 
 <script>
 import Implant from "@/components/Implant.vue";
+import { REST_BASE } from './../constants/constants.js';
 export default {
   name: "pickupline",
   data: function() {
@@ -94,6 +107,7 @@ export default {
       round: 1,
       hearts: 4,
       implants: 2,
+      gameOver: false,
       pickuplines: [
         "Hey I am a Robot. Plz beleive me",
         "Just a hot single looking to become a hot mess."
@@ -115,9 +129,29 @@ export default {
     };
   },
   components: { Implant },
+  created: async function() {
+    const response = await fetch(
+      REST_BASE+"/results", {
+        method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        playerID: window.localStorage.getItem("playerID")
+      })
+    });
+    const myJson = await response.json();
+    this.round = myJson.roundNum;
+    this.hearts = myJson.newHearts;
+    this.implants = myJson.newImplants;
+    this.gameOver = myJson.isFinalResults;
+  },
   methods: {
     submit: function() {
       window.location.href = "#/pickupline";
+    },
+    leaveGame: function() {
+      window.location.href = "#/";
     }
   }
 };
