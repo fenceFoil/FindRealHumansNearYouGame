@@ -43,6 +43,20 @@
       }
     },
     components:{},
+    created: async function() {
+        let myint = setInterval(async function() {
+          const response2 = await fetch(
+            REST_BASE+"/is_it_results_time", {
+            method: 'GET'
+          });
+          const myJson2 = await response2.json();
+          if (!myJson2.isItTime) {
+            OVERLAY_CONTROL.OFF();
+            window.location.href='#/swipe'
+            clearInterval(myint);
+          }
+        }, 1000);
+    },
     methods:{
       submit: async function (){
         const response = await fetch(
@@ -72,19 +86,6 @@
             "botScreed":myJson.options[0]
           })
         });
-
-        var myint = setInterval(async function() {
-          const response2 = await fetch(
-            REST_BASE+"/is_it_results_time", {
-            method: 'GET'
-          });
-          const myJson2 = await response2.json();
-          if (!myJson2.isItTime) {
-            OVERLAY_CONTROL.OFF();
-            window.location.href='#/swipe'
-            clearInterval(myint);
-          }
-        }, 1000);
       },
       enhanceLine: async function (ending) {
         alert(ending)
