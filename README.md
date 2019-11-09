@@ -10,14 +10,38 @@
   * Recc. g4dn.xlarge (on 11.7.2019 in my favorite region it's 0.52USD/hr)
   * Open port 80 to http traffic incoming and ssh traffic incoming on 22.
     * OPTIONAL: Open port 8080 to ping gpt2 server directly. Note that there's an endpoint we open up through port 80 to run prompts through gpt2 and the pickup line cropper already, so it's not useful outside of testing the 8080 server itself.
-* Log into it
-* `git clone https://github.com/fenceFoil/FindRealHumansNearYouGame.git`
-* ON DEV MACHINE: Build the /app/ project using `npm install` then `npm run build` and copy the contents of `/dist/` up to the server under `~/FindRealHumansNearYouGame/flaskapi/src/static/app/` or on linux just execute `./server_scripts/build_app_dist.sh`
-* `./run_all.sh`
+  * Log into it over SSH
 
-### Hot Relaoding Dev Client
+##### INITIAL INSTALL
+  * One liner:
+    * run `git clone https://github.com/fenceFoil/FindRealHumansNearYouGame.git && cd FindRealHumansNearYouGame/server_scripts/ && ./server_setup.sh && ./build_app_dist.sh && ./monitor.sh`
+  * Mostly Automated Steps (Same as One Liner)
+    * run `git clone https://github.com/fenceFoil/FindRealHumansNearYouGame.git`
+    * run `cd FindRealHumansNearYouGame/server_scripts/`
+    * run `./server_setup.sh`
+    * run `./build_app_dist.sh` (Builds the app into static files)
+    * run `./run_all.sh` (original script) or `./monitor.sh` (for split_planel dashboard)
+  
+##### UPDATE INSTALL
+  * run `cd FindRealHumansNearYouGame/server_scripts/`
+  * run `update.sh` (will force pull latest and rebuild vue app's dist
+  * run `./stop_all.sh` or `./run_all.sh` as needed
 
-Okay, so the above works for the server app. Building the vue app for prod takes too long.
+##### Server Script Descriptions:
+  * `update.sh` - force pull latest and rebuild vue app's static dist files
+  * `monitor.sh` - Split terminal dashboard for monitoring servers
+  * `server_setup.sh` - Install all base dependencies including vue app's npm dependencies
+  * `stop_all.sh` - stop all servers automatically
+  
+* Manually build static app files:
+  * Nav to 'app/findrealhumansapp'
+  * `npm install`
+  * `npm run build`
+  * Copy `dist/` to `FindRealHumansNearYouGame/flaskapi/src/static/app/`
+  
+### Hot Reloading Dev Client
+
+Okay, so the above works for the server app.
 
 To connect a hot reloading dev client to a server running in AWS:
 
