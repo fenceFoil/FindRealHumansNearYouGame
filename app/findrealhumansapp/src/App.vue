@@ -78,6 +78,7 @@ body {
   margin: 0;
   padding: 0.1em;
   margin-bottom: 0.3em;
+  font-size: 1.8em;
   color: #1a232c;
 }
 
