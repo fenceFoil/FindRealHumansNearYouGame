@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    <h1><pre>Game State:<br>{{gamestate}}</pre></h1>
     <img src="../assets/logo-frhny-big.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
     <button onclick="window.location.href = '#/profile';" class="japanese">始まりましょうか</button>
@@ -24,15 +23,6 @@ export default {
   },
   created: async function() {
     let that = this;
-
-    setInterval(async function() {
-      const response3 = await fetch(
-        window.localStorage.getItem('resturl')+"/game_state", {
-        method: 'GET'
-      });
-      that.gamestate = await response3.text();
-    }, 1000);
-
     let i = 0;
     var myint = setInterval(async function() {
       const response2 = await fetch(
