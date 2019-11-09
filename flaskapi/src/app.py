@@ -6,6 +6,7 @@ import requests
 from flask_cors import CORS
 import random
 import threading
+import uuid
 
 VERSION = 8
 SWIPING_SECONDS = 60
@@ -108,6 +109,7 @@ currRound = 1
 stateTimeoutTime = None
 gameOver = False
 finishedSwiping = []
+gameID = uuid.uuid4()
 
 # NOTTODO STRETCH: Create export function called after each round to make a backup
 
@@ -127,6 +129,7 @@ def clear_game():
     profiles = []
     nextPlayerID = 1
     enteringNewState = True
+    gameID = uuid.uuid4()
     # NOT TODO export game data and history
     return "Game Restarted :)"
 
@@ -214,14 +217,25 @@ def get_review():
 
 @app.route('/game_state')
 def get_game_state():
+    global currRound, currGameState, stateTimeoutTime, gameOver, gameID
+    
+    message = ""
     if currGameState == 'STOPPED':
-        return "Make your profile now! {} have joined so far.".format(get_num_players()) 
+        message = "Make your profile now! {} have joined so far.".format(get_num_players()) 
     elif currGameState == 'WRITING_PICKUPS':
-        return "Round {}: {} actual humans preparing to swipe!".format(currRound, get_num_players())
+        message = "Round {}: {} actual humans preparing to swipe!".format(currRound, get_num_players())
     elif currGameState == 'SWIPING':
-        return "Round {}: {} humans are swiping right now!".format(currRound, get_num_players())
+        message = "Round {}: {} humans are swiping right now!".format(currRound, get_num_players())
     else:
-        return "Who knows, looks broken."
+        message = "Who knows, looks broken."
+
+    return jsonify({
+        "message": message,
+        "currRound": currRound,
+        "stateTimeoutTime": stateTimeoutTime,
+        "gameOver": gameOver,
+        "gameID": gameID
+    })
 
 @app.route('/get_pickup_completions', methods=['GET', 'POST'])
 def generate_pickup_completions():
@@ -307,7 +321,7 @@ def get_results():
 
 @app.route('/scoreboard_stats')
 def get_scoreboard_stats():
-    global currRound, gameOver, profiles, pickupLines, likes
+    global currRound, gameOver, profiles, pickupLines, likes, gameID
     newprofiles = [vars(p).copy() for p in profiles]
     for p in newprofiles:
         p["hearts"] = sum(p["hearts"])
@@ -317,7 +331,8 @@ def get_scoreboard_stats():
         "gameOver": gameOver,
         "profiles": newprofiles,
         "likes": [vars(p) for p in likes],
-        "pickupLines": [vars(p) for p in pickupLines]
+        "pickupLines": [vars(p) for p in pickupLines],
+        "gameID": gameID
     })
 
 @app.route('/rungpt2', methods=["POST"])
