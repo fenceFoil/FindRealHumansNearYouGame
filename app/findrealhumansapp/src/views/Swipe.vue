@@ -63,6 +63,17 @@ export default {
       if (this.index < this.prospects.length - 1) {
         this.index++;
       } else {
+        // Announce we have finished swiping
+        await fetch(REST_BASE + "/finished_swiping", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8"
+          },
+          body: JSON.stringify({
+            playerID: window.localStorage.getItem("playerID")
+          })
+        });
+        // Move to results page
         window.location.href = "#/results";
       }
     }
