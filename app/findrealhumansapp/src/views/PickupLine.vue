@@ -21,7 +21,7 @@
       <h1>Enhance Your Pickup Line</h1>
       <div v-for="ending in endings" :key="ending" class="text">
         <div class="button">
-          <button v-on:click="submit(ending)" type="button">{{ending}}</button>
+          <button v-on:click="enhanceLine(ending)" type="button">{{ending}}</button>
         </div>
       </div>
     </template>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+  import { REST_BASE } from './../constants/constants.js'
+
   export default {
     name:'pickupline',
     data: function (){
@@ -44,7 +46,7 @@
     methods:{
       submit: async function (){
         const response = await fetch(
-          window.localStorage.getItem('resturl')+"/get_pickup_completions", {
+          REST_BASE+"/get_pickup_completions", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -59,7 +61,7 @@
         alert("The other waifus are preparing...")
 
         await fetch(
-          window.localStorage.getItem('resturl')+"/commit_new_pickup", {
+          REST_BASE+"/commit_new_pickup", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -73,7 +75,7 @@
 
         var myint = setInterval(async function() {
           const response2 = await fetch(
-            window.localStorage.getItem('resturl')+"/is_it_results_time", {
+            REST_BASE+"/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
@@ -82,7 +84,9 @@
             clearInterval(myint);
           }
         }, 1000);
-
+      },
+      enhanceLine: async function (ending) {
+        alert(ending)
       }
     }
   }

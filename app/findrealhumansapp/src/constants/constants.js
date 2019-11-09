@@ -1,0 +1,1 @@
+export const REST_BASE = 'http://44.224.175.124'

@@ -18,6 +18,8 @@
   </div>
 </template>
 <script>
+  import { REST_BASE } from './../constants/constants.js';
+
   export default {
     name:'profile',
     data: function (){
@@ -29,7 +31,7 @@
     created: async function (){
         var myint = setInterval(async function() {
           const response2 = await fetch(
-            window.localStorage.getItem('resturl')+"/is_it_results_time", {
+            REST_BASE+"/is_it_results_time", {
             method: 'GET'
           });
           const myJson2 = await response2.json();
@@ -42,9 +44,9 @@
     },
     methods:{
       submit: async function (){
-        var playerPicID = Math.floor((Math.random()*(66666)+10000));
+        var playerPicID = Math.floor(Math.random()*(200000));
         const response = await fetch(
-          window.localStorage.getItem('resturl')+"/create_profile", {
+          REST_BASE+"/create_profile", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8'
