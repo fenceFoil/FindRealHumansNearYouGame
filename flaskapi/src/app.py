@@ -118,7 +118,7 @@ gameID = uuid.uuid4()
 # Game Admin: Stopping/resetting game in any state
 @app.route('/clear_game', methods=['GET', 'POST'])
 def clear_game():
-    global currGameState, currRound, stateTimeoutTime, gameOver, finishedSwiping, likes, pickupLines, profiles, nextPlayerID, enteringNewState
+    global currGameState, currRound, stateTimeoutTime, gameOver, finishedSwiping, likes, pickupLines, profiles, nextPlayerID, enteringNewState, gameID
     currGameState = "STOPPED"
     currRound = 1
     stateTimeoutTime = None
