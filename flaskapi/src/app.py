@@ -395,14 +395,17 @@ def updateGameState():
     if currGameState == "STOPPED":
         print ("Waiting for profiles... {} present".format(get_num_players()))
     elif currGameState == "WRITING_PICKUPS":
-        print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()*2))
+        if not gameOver: 
+            print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()*2))
         if enteringNewState:
             print ("=== Writing Pickups / Displaying Round Results ===")
             # Make robots write their pickups
             threading.Thread(target=generateBotPickupsForRound).start()
             enteringNewState = False
         # If all human players have finished submitting pickup lines this round OR time is up...
-        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
+        if gameOver:
+            print("Game Over -- Letting Players Display Results")
+        elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
             # Move to swiping time
             currGameState = "SWIPING"
             enteringNewState = True
@@ -420,6 +423,7 @@ def updateGameState():
             if currRound > NUM_ROUNDS:
                 print ("ANNOUNCING GAME IS OVER WITH ALL RESULTS REQUESTED")
                 gameOver = True
+                stateTimeoutTime = None
 
 
 scheduler = APScheduler()
