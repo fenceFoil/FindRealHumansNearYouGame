@@ -45,7 +45,7 @@ export default {
         // Respond to new server state
 
         // Update status bar message
-        that.statusBarText = serverState.message + " -- " + serverState.stateTimeoutTime;
+        that.statusBarText = serverState.message + " -- " + serverState.countdownSecs;
 
         // Check for new game
         if (serverState.currGameID != currGameID) {
