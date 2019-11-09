@@ -40,7 +40,7 @@
           });
           const myJson2 = await response2.json();
           if (myJson2.isItTime) {
-            OVERLAY_CONTROL.off();
+            OVERLAY_CONTROL.OFF();
             window.location.href='#/pickupline'
             clearInterval(myint);
           }
@@ -66,9 +66,6 @@
         window.localStorage.setItem("playerID", myJson.playerID)
         window.localStorage.setItem("playerName", this.name)
         window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
-      },
-      overlay: function (){
-        OVERLAY_CONTROL.ON()
       }
     }}
 </script>
