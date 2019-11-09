@@ -12,7 +12,7 @@
     * OPTIONAL: Open port 8080 to ping gpt2 server directly. Note that there's an endpoint we open up through port 80 to run prompts through gpt2 and the pickup line cropper already, so it's not useful outside of testing the 8080 server itself.
 * Log into it
 * `git clone https://github.com/fenceFoil/FindRealHumansNearYouGame.git`
-* ON DEV MACHINE: Build the /app/ project using `npm install` then `npm run build` and copy the contents of `/dist/` up to the server under `~/FindRealHumansNearYouGame/flaskapi/src/static/app/`
+* ON DEV MACHINE: Build the /app/ project using `npm install` then `npm run build` and copy the contents of `/dist/` up to the server under `~/FindRealHumansNearYouGame/flaskapi/src/static/app/` or on linux just execute `./server_scripts/build_app_dist.sh`
 * `./run_all.sh`
 
 ### Hot Relaoding Dev Client
