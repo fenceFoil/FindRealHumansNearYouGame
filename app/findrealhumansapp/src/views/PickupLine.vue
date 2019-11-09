@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import { REST_BASE } from './../constants/constants.js'
+  import { REST_BASE, OVERLAY_CONTROL } from './../constants/constants.js'
   
   export default {
     name:'pickupline',
@@ -58,7 +58,7 @@
         });
         const myJson = await response.json();
 
-        alert("The other waifus are preparing...")
+        OVERLAY_CONTROL.ON();
 
         await fetch(
           REST_BASE+"/commit_new_pickup", {
@@ -80,6 +80,7 @@
           });
           const myJson2 = await response2.json();
           if (!myJson2.isItTime) {
+            OVERLAY_CONTROL.OFF();
             window.location.href='#/swipe'
             clearInterval(myint);
           }
