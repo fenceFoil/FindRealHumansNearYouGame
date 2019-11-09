@@ -215,7 +215,7 @@ def get_review():
 @app.route('/game_state')
 def get_game_state():
     if currGameState == 'STOPPED':
-        return "Make your profiles now! {} have joined so far.".format(get_num_players()) 
+        return "Make your profile now! {} have joined so far.".format(get_num_players()) 
     elif currGameState == 'WRITING_PICKUPS':
         return "Round {}: {} actual humans preparing to swipe!".format(currRound, get_num_players())
     elif currGameState == 'SWIPING':

@@ -13,7 +13,6 @@
 * Log into it
 * `git clone https://github.com/fenceFoil/FindRealHumansNearYouGame.git`
 * ON DEV MACHINE: Build the /app/ project using `npm install` then `npm run build` and copy the contents of `/dist/` up to the server under `~/FindRealHumansNearYouGame/flaskapi/src/static/app/`
-* `chmod +x run_all.sh`
 * `./run_all.sh`
 
 ### Hot Relaoding Dev Client

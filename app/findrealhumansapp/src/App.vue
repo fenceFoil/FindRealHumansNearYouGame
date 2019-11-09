@@ -1,22 +1,70 @@
 <template>
-<div id="overall" >
-  <div id="overlay"><h1 id="overlay-text">*Girls Are Preparing . . .*</h1></div>
-  <div id="app">
-    <router-view/>
-  </div>
+  <div id="overall">
+    <div id="overlay">
+      <h1 id="overlay-text">*Girls Are Preparing . . .*</h1>
+    </div>
+    <div id="vertical-app-layout">
+      <div id="status-bar">
+        <h1 id="status-bar-text">{{statusBarText}}</h1>
+      </div>
+      <div id="app">
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
+
+<script>
+import { REST_BASE } from "./constants/constants.js";
+
+export default {
+  name: "App",
+  data: function() {
+    return {
+      statusBarText: ""
+    };
+  },
+  created: async function() {
+    let that = this;
+
+    setInterval(async function() {
+      const response3 = await fetch(REST_BASE + "/game_state", {
+        method: "GET"
+      });
+      if (response3.status != 200) {
+        this.statusBarText =
+          "Cannot reach game" + (REST_BASE != "")
+            ? " at " + REST_BASE
+            : " on same server as this page";
+      } else {
+        that.statusBarText = await response3.text();
+      }
+    }, 1000);
+  }
+};
+</script>
 
 <style>
 #app {
   min-width: 1900px;
   max-width: 1940px;
   margin: auto;
-  font-family: Glitter, 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Glitter, "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  overflow-x: hidden;
+}
+
+#status-bar {
+  width: 60vw;
+  background-color: #a55fc1;
+  z-index: 3;
+}
+
+#status-bar-text {
+  color: #1a232c;
 }
 
 #overlay {
@@ -28,7 +76,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.9); /* Black background with opacity */
+  background-color: rgba(0, 0, 0, 0.9); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
 }
@@ -43,20 +91,10 @@
   color: pink;
 }
 
-button, input, textarea{
+button,
+input,
+textarea {
   font-family: Glitter;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
