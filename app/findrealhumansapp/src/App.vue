@@ -45,6 +45,16 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+}
+
 #app {
   min-width: 1900px;
   max-width: 1940px;
@@ -58,12 +68,16 @@ export default {
 }
 
 #status-bar {
-  width: 60vw;
   background-color: #a55fc1;
   z-index: 3;
+  text-align: center;
 }
 
 #status-bar-text {
+  font-family: Crayon, Helvatica, Arial, sans-serif;
+  margin: 0;
+  padding: 0.1em;
+  margin-bottom: 0.3em;
   color: #1a232c;
 }
 
