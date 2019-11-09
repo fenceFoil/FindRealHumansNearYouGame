@@ -1,24 +1,30 @@
 <template>
   <div class="about">
-    <h1 class="header-title">{{prospects[index].name}}</h1>
+    <h1 class="header-title">Name</h1>
     <h1 class="this-is-not-you japanese">これはあなたじゃないです</h1>
     <div class="picture">
-      <img class="waifu" :src="prospects[index].picture" />
+      <img class="waifu" :src="pictureURL" />
     </div>
-    <h1>{{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}</h1>
+    <div class="speech-bubble">
+      <div class="arrow top right"></div>
+      PickupLine Text goes in here
+    </div>
     <button class="button-2 japanese" v-on:click="submit('RIGHT')" type="submit">右 💕</button>
     <button class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button>
   </div>
 </template>
 <script>
-
+//{{prospects[index].name}}
+//prospects[index].picture
+//{{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}
 import { REST_BASE } from "./../constants/constants.js";
 export default {
   name: "swipe",
   data: function() {
     return {
       index: 0,
-      prospects: []
+      prospects: [],
+      pictureURL: window.localStorage.getItem("playerPictureURL")
     };
   },
   components: {},
@@ -80,3 +86,39 @@ export default {
   }
 };
 </script>
+
+<style>
+  .speech-bubble{
+    background-color: #f8f8f8;
+    border: 2px solid #c8c8c8;
+    border-radius: .5em;
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    /* position: absolute; */
+    margin-left: 25%;
+    margin-top: 1em;
+    font-size: 3em;
+
+  }
+
+  .arrow {
+    border-style: solid;
+    position: absolute;
+    border-color: transparent transparent #c8c8c8 transparent;
+    border-width: 0em .8em .8em .8em;
+    margin-top: -1.25em;
+    margin-left: -.4em;
+    left: 50%;
+  }
+
+  .arrow:after {
+    border-color: transparent transparent #f8f8f8 transparent;
+    border-style: solid;
+    border-width: 0px 1em 1em 1em;
+    top: 3px;
+    content: "";
+    position: absolute;
+    left: -1em
+}
+</style>
