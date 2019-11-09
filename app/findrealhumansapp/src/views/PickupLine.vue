@@ -30,7 +30,7 @@
 
 <script>
   import { REST_BASE } from './../constants/constants.js'
-
+  
   export default {
     name:'pickupline',
     data: function (){

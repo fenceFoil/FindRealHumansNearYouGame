@@ -13,13 +13,18 @@
     <img class="logo anim-4" src="./../assets/logo-frhny.png">
     <form id="profile-name" align="center" method="post">
       <input v-model="name" type="text" placeholder="Name">
-      <div class="button"><input v-on:click="submit" type="button" value="Submit"></div>
-      </form>
+      <div class="button">
+        <input v-on:click="submit" type="button" value="Submit">
+        <input v-on:click="overlay" type="button" value="Overlay On">
+      </div>
+
+      
+    </form>
   </div>
 </template>
 <script>
-  import { REST_BASE } from './../constants/constants.js';
-
+  import { REST_BASE, OVERLAY_CONTROL } from './../constants/constants.js';
+  import Overlay from './../constants/overlay.js'
   export default {
     name:'profile',
     data: function (){
@@ -44,6 +49,7 @@
     },
     methods:{
       submit: async function (){
+        Overlay.on();
         var playerPicID = Math.floor(Math.random()*(200000));
         const response = await fetch(
           REST_BASE+"/create_profile", {
@@ -61,6 +67,9 @@
         window.localStorage.setItem("playerName", this.name)
         window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
         alert("Please wait for game to begin...")
+      },
+      overlay: function (){
+        OVERLAY_CONTROL.ON()
       }
     }}
 </script>
