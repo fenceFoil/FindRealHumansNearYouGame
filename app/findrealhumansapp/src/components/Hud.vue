@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="hud-displayer" 
+        <div id="hud-displayer" 
         v-on:mouseover="mouseover"
         v-on:mouseleave="mouseleave">Show HUD</div>
         <div id="hud">
@@ -34,6 +34,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    #hud-displayer {
+        position: fixed;
+        font-size: 2em;
+    }
+
     #hud {
         position: fixed; /* Sit on top of the page content */
         width: 100%; /* Full width (cover the whole page) */
