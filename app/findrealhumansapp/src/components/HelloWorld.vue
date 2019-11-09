@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1><pre>Game State:<br>{{gamestate}}</pre></h1>
-    <img src="../assets/logo-frhny.png" style="width:400px; background:#fffa4d;">
+    <img src="../assets/logo-frhny-big.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
     <button onclick="window.location.href = '#/profile';" class="japanese">始まりましょうか</button>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
