@@ -1,13 +1,13 @@
 <template>
   <div class="about">
-    <h1 class="header-title">Name</h1>
+    <h1 class="header-title">{{prospects[index].name}}</h1>
     <h1 class="this-is-not-you japanese">これはあなたじゃないです</h1>
     <div class="picture">
-      <img class="waifu" :src="pictureURL" />
+      <img class="waifu" :src="prospects[index].picture" />
     </div>
     <div class="speech-bubble">
       <div class="arrow top right"></div>
-      PickupLine Text goes in here
+      {{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}
     </div>
     <button class="button-2 japanese" v-on:click="submit('RIGHT')" type="submit">右 💕</button>
     <button class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button>
