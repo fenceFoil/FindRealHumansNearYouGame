@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { REST_BASE } from './../constants/constants.js'
+
 export default {
   name: 'HelloWorld',
   props: {
@@ -26,7 +28,7 @@ export default {
     let i = 0;
     var myint = setInterval(async function() {
       const response2 = await fetch(
-        window.localStorage.getItem('resturl')+"/get_review", {
+        REST_BASE+"/get_review", {
         method: 'GET'
       });
       const reviewText = await response2.text();
