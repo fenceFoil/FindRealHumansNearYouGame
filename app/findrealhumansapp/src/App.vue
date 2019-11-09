@@ -15,7 +15,7 @@
 <script>
 import LoadingOverlay from '@/components/LoadingOverlay.vue'
 import Hud from '@/components/Hud.vue'
-import { REST_BASE } from "./constants/constants.js";
+import { REST_BASE, OVERLAY_CONTROL } from "./constants/constants.js";
 
 export default {
   name: "App",
@@ -48,10 +48,11 @@ export default {
         that.statusBarText = serverState.message + " -- " + serverState.countdownSecs;
 
         // Check for new game
-        if (serverState.currGameID != currGameID) {
+        if (serverState.gameID != currGameID) {
           // Game was reset!
           window.location.href='#/'
-          currGameID = serverState.currGameID
+          OVERLAY_CONTROL.OFF();
+          currGameID = serverState.gameID
         }
       }
     }, 1000);
