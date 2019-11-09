@@ -37,7 +37,7 @@ export default {
             ? " at " + REST_BASE
             : " on same server as this page";
       } else {
-        that.statusBarText = await response3.text();
+        that.statusBarText = await response3.json().message;
       }
     }, 1000);
   }
