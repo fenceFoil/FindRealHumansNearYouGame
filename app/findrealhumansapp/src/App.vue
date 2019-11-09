@@ -26,7 +26,9 @@ export default {
   },
   created: async function() {
     let that = this;
+    let currGameID = 0;
 
+    // Continuously poll the server for the current game state
     setInterval(async function() {
       const response3 = await fetch(REST_BASE + "/game_state", {
         method: "GET"
@@ -37,7 +39,19 @@ export default {
             ? " at " + REST_BASE
             : " on same server as this page";
       } else {
-        that.statusBarText = await response3.json().message;
+        let serverState = await response3.json();
+
+        // Respond to new server state
+
+        // Update status bar message
+        that.statusBarText = serverState.message + " -- " + serverState.stateTimeoutTime;
+
+        // Check for new game
+        if (serverState.currGameID != currGameID) {
+          // Game was reset!
+          window.location.href='#/'
+          currGameID = serverState.currGameID
+        }
       }
     }, 1000);
   }
