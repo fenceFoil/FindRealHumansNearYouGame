@@ -350,6 +350,30 @@ def rungpt2():
 
 enteringNewState = True
 
+def chooseBotPrefix():
+    allLines = [x.humanWords for x in pickupLines]
+    if len(allLines) < 10:
+        allLines += [
+            "Do you want to feel my biceps?",
+            "I am a sports star.",
+            "Nuzzles ur chesty-westy, *** UwU!",
+            "The fact that I am a physical person is very important to me.",
+            "I is human!",
+            "Wanna go to my place?",
+            "Send nudes!", 
+            "Let me be your waifu, senpai!",
+            "Age/Gender/Location?",
+            "ayy bb",
+            "Drug/Disease free?",
+            "Do you drink water?",
+            "Will you share your water with me?",
+            "Do you have any friends you can introduce me to?",
+            "What is the best way to infiltrate your heart?",
+            "All your breasts belong to me!"
+        ]
+    # TODO: Select an appropriate pickup line
+    return random.choice(allLines)
+
 def generateBotPickupsForRound():
     global profiles, pickupLines, likes, currRound
     # TODO
@@ -363,29 +387,8 @@ def generateBotPickupsForRound():
         #humans_by_humanity = [p for p in profiles if not p.isRobot].sort(key=lambda p: getRobotness(p)) # TODO
         # TODO: Get ranked list of most swiped pickup lines
         # TODO: Smash together with canned pickup lines (but rank at bottom)
-        allLines = [x.humanWords for x in pickupLines]
-        if len(allLines) < 10:
-            allLines += [
-                "Do you want to feel my biceps?",
-                "I am a sports star.",
-                "Nuzzles ur chesty-westy, *** UwU!",
-                "The fact that I am a physical person is very important to me.",
-                "I is human!",
-                "Wanna go to my place?",
-                "Send nudes!", 
-                "Let me be your waifu, senpai!",
-                "Age/Gender/Location?",
-                "ayy bb",
-                "Drug/Disease free?",
-                "Do you drink water?",
-                "Will you share your water with me?",
-                "Do you have any friends you can introduce me to?",
-                "What is the best way to infiltrate your heart?",
-                "All your breasts belong to me!"
-            ]
-        # TODO: Select an appropriate pickup line
-        prompt = random.choice(allLines)
-        pickupLines.append(PickupLine(bot.playerID, currRound, prompt, generateSuffixForPrompt(prompt)))
+        prefix = chooseBotPrefix()
+        pickupLines.append(PickupLine(bot.playerID, currRound, prefix, generateSuffixForPrompt(prefix)))
 
 def updateGameState():
     """
@@ -411,7 +414,8 @@ def updateGameState():
         playerList = list(range(getNumHumanPlayers()*2))
         missingTheirPickupLine = [id for id in list(range(getNumHumanPlayers()*2)) if len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0]
         for id in missingTheirPickupLine:
-            pickupLines.append(PickupLine(id, currRound, "I did not enter my pickup line! ", "Lol."))
+            prefix = chooseBotPrefix()
+            pickupLines.append(PickupLine(id, currRound, prefix, generateSuffixForPrompt(prefix)))
         # TODO: Verify that all robots have pickup lines before letting state proceed to swiping
         # If all human players have finished submitting pickup lines this round OR time is up...
         elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
