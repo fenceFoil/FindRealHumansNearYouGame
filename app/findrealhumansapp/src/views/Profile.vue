@@ -35,7 +35,7 @@
     components:{},
     created: async function (){
         var myint = setInterval(function() {
-          gameState = JSON.parse(window.localStorage.getItem('gameState'))
+          let gameState = JSON.parse(window.localStorage.getItem('gameState'))
 
           if (gameState.currGameState != "STOPPED" && this.submitted) {
             OVERLAY_CONTROL.OFF();
