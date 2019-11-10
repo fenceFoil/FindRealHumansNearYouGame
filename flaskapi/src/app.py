@@ -412,13 +412,14 @@ def updateGameState():
         # TODO: Revamp pickup line submission ending logic: remove players from swiping prospects if they don't submit.
         # TODO: "NO! Imbue them with robotically generated humanity instead!"
         playerList = list(range(getNumHumanPlayers()*2))
-        missingTheirPickupLine = [id for id in list(range(getNumHumanPlayers()*2)) if len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0]
+        playerDoesntHaveAPickupLine = len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0
+        missingTheirPickupLine = [id for id in playerList if playerDoesntHaveAPickupLine]
         for id in missingTheirPickupLine:
             prefix = chooseBotPrefix()
             pickupLines.append(PickupLine(id, currRound, prefix, generateSuffixForPrompt(prefix)))
         # TODO: Verify that all robots have pickup lines before letting state proceed to swiping
         # If all human players have finished submitting pickup lines this round OR time is up...
-        elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or (datetime.now() > stateTimeoutTime):
+        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or (datetime.now() > stateTimeoutTime):
             # TODO Also verify that robots have finished generating pickup lines...
             if True:
                 # Move to swiping time
