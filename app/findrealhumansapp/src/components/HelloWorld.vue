@@ -5,7 +5,7 @@
     <button onclick="window.location.href = '#/profile';" class="japanese">始まりましょうか</button>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
     <div v-for="review in reviews" :key="review">
-      <p>{{review}}</p>
+      <p>"{{review}}</p>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
         method: 'GET'
       });
       const reviewText = await response2.text();
-      that.reviews.push(reviewText);
+      that.reviews.push(reviewText+'"');
       if (++i > 3) {
         clearInterval(myint);
       }
