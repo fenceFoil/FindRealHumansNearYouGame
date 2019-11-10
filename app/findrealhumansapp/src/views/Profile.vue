@@ -37,7 +37,7 @@
         var myint = setInterval(function() {
           let gameState = JSON.parse(window.localStorage.getItem('gameState'))
 
-          if (gameState.currGameState != "STOPPED" && this.submitted) {
+          if (gameState.stage != "STOPPED" && this.submitted) {
             OVERLAY_CONTROL.OFF();
             window.location.href='#/pickupline'
             clearInterval(myint);
