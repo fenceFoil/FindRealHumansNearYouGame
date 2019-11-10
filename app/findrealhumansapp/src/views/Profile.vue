@@ -32,21 +32,6 @@
       }
     },
     components:{},
-    created: async function (){
-        var myint = setInterval(async function() {
-          const response2 = await fetch(
-            REST_BASE+"/is_it_results_time", {
-            method: 'GET'
-          });
-          const myJson2 = await response2.json();
-          if (myJson2.isItTime) {
-            OVERLAY_CONTROL.OFF();
-            window.location.href='#/pickupline'
-            clearInterval(myint);
-          }
-      }, 3000);
-
-    },
     methods:{
       submit: async function (){
         OVERLAY_CONTROL.ON();

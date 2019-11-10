@@ -3,9 +3,7 @@
     <LoadingOverlay></LoadingOverlay>
     <Hud></Hud>
     <div id="vertical-app-layout">
-      <div id="status-bar">
-        <h1 id="status-bar-text">{{statusBarText}}</h1>
-      </div>
+
       <div id="app">
         <router-view />
       </div>
@@ -63,6 +61,7 @@ export default {
 <style>
 body {
   margin: 0;
+  margin-top: 3em;
   padding: 0;
   box-sizing: border-box;
 }
