@@ -1,18 +1,17 @@
 from flask import Flask, jsonify, request, send_from_directory, redirect
 from flask_apscheduler import APScheduler
-import json
-from datetime import datetime, timedelta
-import requests
 from flask_cors import CORS
-import random
-import threading
-import uuid
+
+import requests
+
+from datetime import datetime, timedelta
+import json, random, threading, uuid, threading
 
 VERSION = 8
 SWIPING_SECONDS = 60
 WRITING_PICKUPS_SECONDS = 60
 NUM_ROUNDS = 4
-GPT2_URL = "http://localhost:8080/"
+GPT2_URL = "http://findrealhumansnearyou.com:8080/"
 
 app = Flask(__name__)
 CORS(app)
@@ -182,14 +181,13 @@ def generateSuffixForPrompt(prompt):
         #suffix = suffix.replace ("'", "" )
         suffix = suffix.replace ("\n", " ")
         suffix = suffix.replace ("\r", " ")
-        suffix = suffix.replace ('..', ".")
-        suffix = suffix.replace ('...', ".")
-        suffix = suffix.replace ('.....', ".")
+        suffix = suffix.replace ('..', ". ")
+        suffix = suffix.replace ('...', ". ")
+        suffix = suffix.replace ('.....', ". ")
 
         notFirstLoop = False
         thisSentenceEnds = False
         for token in suffix.split(" "):
-            accepted += (" " if notFirstLoop else "") + token
             notFirstLoop = True
             #print (token)
             killloop = False
@@ -200,16 +198,17 @@ def generateSuffixForPrompt(prompt):
             if killloop:
                 #print ('breaking')
                 break
+            accepted += (" " if notFirstLoop else "") + token
         if not thisSentenceEnds:
-            accepted = accepted[:75]+"..."
-        accepted = accepted.replace("<|endoftext|>", ".")
+            accepted = accepted[:193]+"..."
+        accepted = accepted.replace("<|endoftext|>", ". ")
 
         return accepted #accepted.encode('ascii', 'ignore')
 
 @app.route('/get_review')
 def get_review():
     while True:
-        candidate = generateSuffixForPrompt("Top review: ")
+        candidate = generateSuffixForPrompt("The number 1 rated dating app for real humans. Just read the reviews of our very real and happy customers: ")
         if len(candidate) <= 2:
             print ("GENERATED TOO-SHORT REVIEW. RETRYING.")
             continue
