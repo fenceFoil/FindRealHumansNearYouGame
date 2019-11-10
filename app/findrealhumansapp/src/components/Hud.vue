@@ -1,8 +1,7 @@
 <template>
     <div class="container">
         <div id="hud-displayer" 
-        v-on:mouseover="mouseover"
-        v-on:mouseleave="mouseleave">Show HUD</div>
+        v-on:mouseover="mouseover">Show HUD</div>
         <div id="hud">
             <div id="status-bar">
                 <h1 id="status-bar-text">{{statusBarText}}</h1>
@@ -20,7 +19,8 @@ export default {
     },
     data: function (){
         return {
-            statusBarText: ""
+            statusBarText: "",
+            toggle: true
         }
     },
     created: async function() {
@@ -57,12 +57,13 @@ export default {
     },
     methods: {
         mouseover: function(){
-            HUD_CONTROL.ON()
+            if(this.toggle){
+                HUD_CONTROL.ON();
+            }else{
+                HUD_CONTROL.OFF();
+            }
+            this.toggle = !this.toggle;
         },
-
-        mouseleave: function(){
-            HUD_CONTROL.OFF()
-        }
     }
 }
 </script>
