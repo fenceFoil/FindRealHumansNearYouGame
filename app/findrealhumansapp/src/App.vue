@@ -60,8 +60,7 @@ export default {
 
 <style>
 body {
-  margin: 0;
-  margin-top: 3em;
+  margin: 2em;
   padding: 0;
   box-sizing: border-box;
 }

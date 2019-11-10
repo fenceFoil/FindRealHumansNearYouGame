@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-  import { REST_BASE, OVERLAY_CONTROL } from './../constants/constants.js';
+  import { REST_BASE } from './../constants/constants.js';
   export default {
     name:'profile',
     data: function (){
@@ -33,24 +33,8 @@
       }
     },
     components:{},
-    created: async function (){
-        var myint = setInterval(async function() {
-          const response2 = await fetch(
-            REST_BASE+"/is_it_results_time", {
-            method: 'GET'
-          });
-          const myJson2 = await response2.json();
-          if (myJson2.isItTime && this.submitted) {
-            OVERLAY_CONTROL.OFF();
-            window.location.href='#/pickupline'
-            clearInterval(myint);
-          }
-      }, 3000);
-
-    },
     methods:{
       submit: async function (){
-        OVERLAY_CONTROL.ON();
         var playerPicID = Math.floor(Math.random()*(200000));
         const response = await fetch(
           REST_BASE+"/create_profile", {
@@ -68,6 +52,7 @@
         window.localStorage.setItem("playerID", myJson.playerID)
         window.localStorage.setItem("playerName", this.name)
         window.localStorage.setItem("playerPictureURL", `https://www.thiswaifudoesnotexist.net/example-${playerPicID}.jpg`)
+        window.location.href='#/pickupline'
       }
     }}
 </script>
