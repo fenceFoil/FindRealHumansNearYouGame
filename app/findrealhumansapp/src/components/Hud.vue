@@ -7,7 +7,6 @@
             <div id="status-bar">
                 <h1 id="status-bar-text">{{statusBarText}}</h1>
             </div>
-            <h1><pre>Game State:<br>{{gamestate}}</pre></h1>
             <!-- add in game info here -->
         </div>
     </div>
