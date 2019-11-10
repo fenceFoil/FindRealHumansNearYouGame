@@ -418,7 +418,7 @@ def updateGameState():
             pickupLines.append(PickupLine(id, currRound, prefix, generateSuffixForPrompt(prefix)))
         # TODO: Verify that all robots have pickup lines before letting state proceed to swiping
         # If all human players have finished submitting pickup lines this round OR time is up...
-        elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or datetime.now() > stateTimeoutTime:
+        elif (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or (datetime.now() > stateTimeoutTime):
             # TODO Also verify that robots have finished generating pickup lines...
             if True:
                 # Move to swiping time
