@@ -241,6 +241,7 @@ def get_game_state():
         "countdownSecs": countdownSecs,
         "gameOver": gameOver,
         "gameID": gameID,
+        "stage": currGameState,
         "currPlayers": get_num_players()
     })
 

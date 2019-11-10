@@ -40,6 +40,9 @@ export default {
       } else {
         let serverState = await response3.json();
 
+        // Save state for rest of app
+        window.localStorage.setItem('gameState', JSON.stringify(serverState))
+
         // Respond to new server state
 
         // Update status bar message
