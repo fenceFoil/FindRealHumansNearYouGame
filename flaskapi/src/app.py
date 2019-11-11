@@ -451,7 +451,7 @@ def updateGameState():
         if gameOver:
             print("Game Over -- Letting Players Display Results")
 
-        profileList = list(range([len(profiles)]))
+        profileList = list(range(len(profiles)))
         playerDoesntHaveAPickupLine = len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0
         missingTheirPickupLine = [id for id in profileList if playerDoesntHaveAPickupLine]
         # If all human players have finished submitting pickup lines this round OR time is up...
