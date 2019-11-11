@@ -290,7 +290,7 @@ def get_prospects(playerID):
 
 @app.route('/commit_new_pickup', methods=['POST'])
 def commit_new_pickup():
-    global currRound
+    global currRound, pickupLines
     playerID = request.json["playerID"]
     humanWords = request.json["humanWords"]
     botScreed = request.json["botScreed"]
@@ -453,8 +453,9 @@ def updateGameState():
 
         profileList = list(range(len(profiles)))
         missingTheirPickupLine = [id for id in profileList if getPickupLine(id, currRound) == None]
+        humanPlayersWhoSubmittedPickupLines = [pid for pid in profileList if getPickupLine(pid, currRound) != None and not getPickupLine(pid, currRound).isBackupLine]
         # If all human players have finished submitting pickup lines this round OR time is up...
-        if (len([p for p in pickupLines if p.roundNum == currRound]) >= len(profiles)) or (datetime.now() > stateTimeoutTime):
+        if (len(humanPlayersWhoSubmittedPickupLines) >= getNumHumanPlayers()) or (datetime.now() > stateTimeoutTime):
             # Also verify that robots have finished generating pickup lines or players have backup pickup lines...
             if len(missingTheirPickupLine) <= 0:
                 # Move to swiping time
