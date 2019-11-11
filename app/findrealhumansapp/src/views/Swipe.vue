@@ -31,12 +31,7 @@ export default {
   created: async function() {
     // Set timer to move to results stage if we've moved on
     let myint = setInterval(async function() {
-      const response2 = await fetch(
-        REST_BASE+"/is_it_results_time", {
-        method: 'GET'
-      });
-      const myJson2 = await response2.json();
-      if (myJson2.isItTime) {
+      if (JSON.parse(window.localStorage.getItem("gameState")).stage === "WRITING_PICKUPS") {
         window.location.href='#/results'
         clearInterval(myint);
       }

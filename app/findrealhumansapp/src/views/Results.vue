@@ -130,7 +130,15 @@ export default {
   },
   components: { Implant },
   created: async function() {
-    const response = await fetch(
+      // Force player on to swiping again if they timeout their pickup line writing phase looking at their stuff
+      let myint = setInterval(async function() {
+        if (JSON.parse(window.localStorage.getItem("gameState")).stage === "SWIPING") {
+          window.location.href='#/swipe'
+          clearInterval(myint);
+        }
+      }, 1000);
+
+      const response = await fetch(
       REST_BASE+"/results", {
         method: 'POST',
       headers: {
