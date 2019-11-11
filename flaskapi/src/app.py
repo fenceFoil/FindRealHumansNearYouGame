@@ -303,10 +303,6 @@ def commit_new_pickup():
 
     return "ok"
 
-@app.route('/is_it_swipe_time')
-def move_to_swipe_time():
-    return jsonify({"isItTime":currGameState == "SWIPING"})
-
 @app.route('/swipes', methods=["POST"])
 def do_swipe():
     global currRound
@@ -326,10 +322,6 @@ def finished_swipingfinished_swiping():
     global finished_swiping
     finished_swiping.append(request.json["playerID"])
     return "ok"
-
-@app.route('/is_it_results_time')
-def is_it_results_time():
-    return jsonify({"isItTime":currGameState == "WRITING_PICKUPS"})
 
 @app.route('/results', methods=['GET', 'POST'])
 def get_results():
