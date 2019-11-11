@@ -68,7 +68,7 @@
     </h1>
     <h1 class="dated">Your lovely Dates</h1>
     <div class="dates-container">
-      <img v-for="date in dates" :key="date" class="waifu-thumbnail" :src="date" />
+      <img v-for="date in datePics" :key="date" class="waifu-thumbnail" :src="date" />
     </div>
     <template v-if="!gameOver">
       <button v-on:click="submit" class="ready-button">Ready</button>
@@ -112,7 +112,7 @@ export default {
         "Hey I am a Robot. Plz beleive me",
         "Just a hot single looking to become a hot mess."
       ],
-      dates: [
+      datePics: [
         "https://www.thiswaifudoesnotexist.net/example-196646.jpg",
         "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
         "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
@@ -153,6 +153,7 @@ export default {
     this.hearts = myJson.newHearts;
     this.implants = myJson.newImplants;
     this.gameOver = myJson.isFinalResults;
+    this.datePics = myJson.youDated.map(x => x.picture)
   },
   methods: {
     submit: function() {
