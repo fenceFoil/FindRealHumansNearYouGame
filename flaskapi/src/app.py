@@ -197,12 +197,15 @@ def generateSuffixForPrompt(prompt):
         suffix = suffix.replace ('..', ". ")
         suffix = suffix.replace ('...', ". ")
         suffix = suffix.replace ('.....', ". ")
+        # Put a space before end of text marker to make sure it's its own word
+        suffix = suffix.replace ('<|endoftext|>', ' <|endoftext|> ')
 
         notFirstLoop = False
         thisSentenceEnds = False
         for token in suffix.split(" "):
             notFirstLoop = True
             #print (token)
+            accepted += (" " if notFirstLoop else "") + token
             killloop = False
             for endchar in [".", "!", ":", "?", "<|endoftext|>"]:
                 if endchar in token:
@@ -211,10 +214,9 @@ def generateSuffixForPrompt(prompt):
             if killloop:
                 #print ('breaking')
                 break
-            accepted += (" " if notFirstLoop else "") + token
         if not thisSentenceEnds:
-            accepted = accepted[:193]+"..."
-        accepted = accepted.replace("<|endoftext|>", ". ")
+            accepted = accepted[:150]+"..."
+        accepted = accepted.replace("<|endoftext|>", "")
 
         return accepted #accepted.encode('ascii', 'ignore')
 
