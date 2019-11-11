@@ -154,6 +154,7 @@ export default {
     this.implants = myJson.newImplants;
     this.gameOver = myJson.isFinalResults;
     this.datePics = myJson.youDated.map(x => x.picture)
+    this.pickuplines = myJson.youDated.map(x => (x.pickupLine.humanWords + x.pickupLine.botScreed))
   },
   methods: {
     submit: function() {
