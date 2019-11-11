@@ -201,7 +201,7 @@ def gpt2():
         context=context_tokens,
             num_samples=1,
             length=40,
-            temperature=0.8,
+            temperature=1.2,
             top_k=40,
             top_p=0.9,
             repetition_penalty=0.5,
