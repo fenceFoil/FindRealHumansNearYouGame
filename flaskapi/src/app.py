@@ -199,6 +199,8 @@ def generateSuffixForPrompt(prompt):
         suffix = suffix.replace ('.....', ". ")
         # Put a space before end of text marker to make sure it's its own word
         suffix = suffix.replace ('<|endoftext|>', ' <|endoftext|> ')
+        # Remove all quotation marks: not needed in either reviews or convincing pickup lines
+        suffix = suffix.replace ('"', '')
 
         notFirstLoop = False
         thisSentenceEnds = False
