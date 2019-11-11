@@ -201,6 +201,8 @@ def generateSuffixForPrompt(prompt):
         suffix = suffix.replace ('<|endoftext|>', ' <|endoftext|> ')
         # Remove all quotation marks: not needed in either reviews or convincing pickup lines
         suffix = suffix.replace ('"', '')
+        suffix = suffix.replace ('“', '')
+        suffix = suffix.replace ('”', '')
 
         notFirstLoop = False
         thisSentenceEnds = False
