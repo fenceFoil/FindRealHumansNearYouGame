@@ -75,22 +75,35 @@ def getNumHumanPlayers():
     global profiles
     return len([p for p in profiles if not p.isRobot])
 
+def getNumRobots():
+    global profiles
+    return len([p for p in profiles if p.isRobot])
+
 def getRobotness(player):
     return (sum(player.implants) / (sum(player.implants) + sum(player.hearts) + 1))
 
 pickupLines = []
 class PickupLine(Object):
-    def __init__(self, playerID, roundNum, humanWords, botScreed):
+    def __init__(self, playerID, roundNum, humanWords, botScreed, isBackupLine):
         self.playerID = playerID
         self.roundNum = roundNum
         self.humanWords = humanWords
         self.botScreed = botScreed
+        # A backup line may be generated for a player in case they abandon game before submitting a real pickup line,
+        # but it will be flagged and can be removed when the player submits a real line.
+        self.isBackupLine = isBackupLine 
 
     def __repr__(self):
         return 'PickupLine' + ": " + str(self.__dict__)
 
 def getPickupLine(playerID, roundNum):
-    return [p for p in pickupLines if p.playerID == int(playerID) and p.roundNum == int(roundNum)][0]
+    matches = [p for p in pickupLines if p.playerID == int(playerID) and p.roundNum == int(roundNum)]
+    if len(matches) > 0:
+        return matches[0]
+    else:
+        # Uh oh! It looks like someone doesn't have a pickup line!
+        # Don't handle that here.
+        return None
 
 likes = []
 class Like(Object):
@@ -262,7 +275,8 @@ def generate_pickup_completions():
 @app.route('/get_prospects/<playerID>')
 def get_prospects(playerID):
     playerID = int(playerID)
-    profilesTwo = [vars(p) for p in profiles if p.playerID != playerID]
+    # Get list of players who are not the requesting player and who have a corresponding pickup line ready this round
+    profilesTwo = [vars(p) for p in profiles if p.playerID != playerID and getPickupLine(p.playerID, currRound) != None]
     for p in profilesTwo:
         p["pickupLine"] = vars(getPickupLine(p["playerID"], currRound))
         random.shuffle(profilesTwo)
@@ -275,7 +289,11 @@ def commit_new_pickup():
     humanWords = request.json["humanWords"]
     botScreed = request.json["botScreed"]
 
-    pickupLines.append(PickupLine(playerID, currRound, humanWords, botScreed))
+    # Purge previous line submitted or backup auto-generated text
+    pickupLines = [p for p in pickupLines if not (p.playerID == playerID and p.roundNum == currRound)]
+
+    # Commit the new pickup line uploaded to us
+    pickupLines.append(PickupLine(playerID, currRound, humanWords, botScreed, False))
 
     return "ok"
 
@@ -376,33 +394,49 @@ def chooseBotPrefix():
     return random.choice(allLines)
 
 def generateBotPickupsForRound():
-    global profiles, pickupLines, likes, currRound
+    global profiles, pickupLines, likes, currRound, currGameState
     # TODO
     # Loop bots
     # Decide on canned prefix for bots (either a random one from the list, or a popular one)
     # Generate the suffix for it
     # Save it
     for bot in [b for b in profiles if b.isRobot]:
-        print ("CALCULATING PICKUP LINE FOR ROBOT "+str(bot.playerID))
+        print ("generateBotPickupsForRound(): CALCULATING PICKUP LINE FOR ROBOT "+str(bot.playerID))
         # TODO: Get human profiles ranked by humanity left
         #humans_by_humanity = [p for p in profiles if not p.isRobot].sort(key=lambda p: getRobotness(p)) # TODO
         # TODO: Get ranked list of most swiped pickup lines
         # TODO: Smash together with canned pickup lines (but rank at bottom)
         prefix = chooseBotPrefix()
-        pickupLines.append(PickupLine(bot.playerID, currRound, prefix, generateSuffixForPrompt(prefix)))
+        pickupLines.append(PickupLine(bot.playerID, currRound, prefix, generateSuffixForPrompt(prefix), True))
+        # Here we get a little crazy: watch the state of the game and just give up on this generation stuff if the game moves on without us finishing.
+        if currGameState != "WRITING_PICKUPS":
+            print ("generateBotPickupsForRound(): Game state moved on before we finished generating bot pickup lines!!!")
+            return
+    # Now we fill in the player pickup lines with dummy bot-generated ones as a backup option, filling them in until we get them all
+    # or run out the clock polling GPT-2
+    for player in [p for p in profiles if not p.isRobot]:
+        if getPickupLine(player.playerID, currRound) == None:
+            print ("CALCULATING A BACKUP PICKUP LINE FOR PLAYER "+str(player.playerID))
+            prefix = chooseBotPrefix()
+            pickupLines.append(PickupLine(player.playerID, currRound, prefix, generateSuffixForPrompt(prefix), True))
+        # Here we get a little crazy again: watch the state of the game and just give up on this generation stuff if the game moves on without us finishing.
+        if currGameState != "WRITING_PICKUPS":
+            print ("generateBotPickupsForRound(): Game state moved on before we finished generating backup player pickup lines!!!")
+            return
+    print ("generateBotPickupsForRound(): Finished calculating pickup lines!")
 
 def updateGameState():
     """
     Ticks the state machine that times out game states and advances the 
     game when all players finish making choices.
     """
-    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, NUM_ROUNDS, stateTimeoutTime
+    global finished_swiping, currGameState, pickupLines, currRound, enteringNewState, gameOver, SWIPING_SECONDS, WRITING_PICKUPS_SECONDS, NUM_ROUNDS, stateTimeoutTime, profiles
 
     if currGameState == "STOPPED":
         print ("Waiting for profiles... {} present".format(get_num_players()))
     elif currGameState == "WRITING_PICKUPS":
         if not gameOver: 
-            print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), getNumHumanPlayers()*2))
+            print ("Round {} - [{}] - Pickups written: {} of {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, len([p for p in pickupLines if p.roundNum == currRound]), len(profiles)))
         if enteringNewState:
             print ("=== Writing Pickups / Displaying Round Results ===")
             # Make robots write their pickups
@@ -410,24 +444,21 @@ def updateGameState():
             enteringNewState = False
         if gameOver:
             print("Game Over -- Letting Players Display Results")
-        # TODO: Revamp pickup line submission ending logic: remove players from swiping prospects if they don't submit.
-        # TODO: "NO! Imbue them with robotically generated humanity instead!"
-        playerList = list(range(getNumHumanPlayers()*2))
+
+        profileList = list(range([len(profiles)]))
         playerDoesntHaveAPickupLine = len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0
-        missingTheirPickupLine = [id for id in playerList if playerDoesntHaveAPickupLine]
-        for id in missingTheirPickupLine:
-            prefix = chooseBotPrefix()
-            pickupLines.append(PickupLine(id, currRound, prefix, generateSuffixForPrompt(prefix)))
-        # TODO: Verify that all robots have pickup lines before letting state proceed to swiping
+        missingTheirPickupLine = [id for id in profileList if playerDoesntHaveAPickupLine]
         # If all human players have finished submitting pickup lines this round OR time is up...
-        if (len([p for p in pickupLines if p.roundNum == currRound]) >= getNumHumanPlayers()*2) or (datetime.now() > stateTimeoutTime):
-            # TODO Also verify that robots have finished generating pickup lines...
-            if True:
+        if (len([p for p in pickupLines if p.roundNum == currRound]) >= len(profiles)) or (datetime.now() > stateTimeoutTime):
+            # Also verify that robots have finished generating pickup lines or players have backup pickup lines...
+            if len(missingTheirPickupLine) <= 0:
                 # Move to swiping time
                 currGameState = "SWIPING"
                 enteringNewState = True
                 stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
                 finished_swiping = []
+            else:
+                print("NOT moving to swiping gameState because we are WAITING for more pickup lines to be generated for playerIDs: {}".format(missingTheirPickupLine))
     elif currGameState == "SWIPING":
         print ("Round {} - [{}] Remaining swiping players: {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, getNumHumanPlayers() - len(finished_swiping)))
         # If all human players are finished swiping OR time is up...
