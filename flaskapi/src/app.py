@@ -452,8 +452,7 @@ def updateGameState():
             print("Game Over -- Letting Players Display Results")
 
         profileList = list(range(len(profiles)))
-        playerDoesntHaveAPickupLine = len([p for p in pickupLines if p.roundNum == currRound and p.playerID == id]) == 0
-        missingTheirPickupLine = [id for id in profileList if playerDoesntHaveAPickupLine]
+        missingTheirPickupLine = [id for id in profileList if getPickupLine(id, currRound) == None]
         # If all human players have finished submitting pickup lines this round OR time is up...
         if (len([p for p in pickupLines if p.roundNum == currRound]) >= len(profiles)) or (datetime.now() > stateTimeoutTime):
             # Also verify that robots have finished generating pickup lines or players have backup pickup lines...
