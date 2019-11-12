@@ -9,8 +9,9 @@
       <div class="arrow top right"></div>
       {{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}
     </div>
-    <button class="button-2 japanese" v-on:click="submit('RIGHT')" type="submit">右 💕</button>
-    <button class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button>
+    <!-- there will always be odd amounts of prospects, all other players and their clones as well as your own thus you get one more swipe left than swipe right-->
+    <button :disabled="right >= (prospects.length/2)" class="button-2 japanese"  v-on:click="submit('RIGHT')" type="submit">右 💕</button>
+    <button :disabled="left >= (prospects.length/2) + 1" class="button-1 japanese" v-on:click="submit('LEFT')" type="submit">左</button> 
   </div>
 </template>
 <script>
@@ -24,7 +25,9 @@ export default {
     return {
       index: 0,
       prospects: [],
-      pictureURL: window.localStorage.getItem("playerPictureURL")
+      pictureURL: window.localStorage.getItem("playerPictureURL"),
+      right: 0,
+      left: 0
     };
   },
   components: {},
@@ -63,6 +66,7 @@ export default {
       });
       if (this.index < this.prospects.length - 1) {
         this.index++;
+        direction === 'LEFT' ? this.left++ : this.right++;
       } else {
         // Announce we have finished swiping
         await fetch(REST_BASE + "/finished_swiping", {
