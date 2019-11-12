@@ -38,15 +38,17 @@ export default {
       }
     }, 3200);
   },
-  createProfile: async function() {
-    // Announce someone is joining the game.
-    // Wait until reply to start game. This will prevent you from joining a dead server.
-    // TODO: Test that joining a game-over state server does reset the game and does not 
-    // cause you to bounce back to the home screen after seeing the profile screen.
-    if (!await fetch().ok) {
-      window.location.href='#/profile';
-    } else {
-      alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
+  methods: { 
+    createProfile: async function() {
+      // Announce someone is joining the game.
+      // Wait until reply to start game. This will prevent you from joining a dead server.
+      // TODO: Test that joining a game-over state server does reset the game and does not 
+      // cause you to bounce back to the home screen after seeing the profile screen.
+      if (!await fetch().ok) {
+        window.location.href='#/profile';
+      } else {
+        alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
+      }
     }
   }
 }
