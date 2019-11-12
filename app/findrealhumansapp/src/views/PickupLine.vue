@@ -9,9 +9,6 @@
       <img class="waifu" :src="pictureURL">
     </div>
     <h1>Enter pickup line</h1>
-    <div class="text">
-      <textarea v-model="pickupline" rows="4" cols="50"></textarea>
-    </div>
     <template v-if="settingPickupLine">
       <div class="text speech-bubble">
         <div class="arrow top right"></div>
