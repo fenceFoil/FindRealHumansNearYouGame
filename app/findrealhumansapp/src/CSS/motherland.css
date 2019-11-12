@@ -79,6 +79,11 @@ button:hover, .button input:hover {
     color: #ff9c9c;
 }
 
+button:disabled, .button input:disabled{
+    background-color: #9c9c9c61;
+    color: #a55fc161;
+}
+
 div.button button p {
     margin: .5em 2em .5em 2em;
     font-size: 1.5em;
