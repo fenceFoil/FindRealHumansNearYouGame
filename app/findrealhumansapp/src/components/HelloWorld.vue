@@ -3,6 +3,7 @@
     <img src="../assets/logo-frhny-big.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
     <button v-on:click="createProfile" v-bind:disabled="clickedCreateProfile" class="japanese">始まりましょうか</button>
+    <h3><a href="../static/admin/admin/index.html">See the scoreboard!</a></h3>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
     <div v-for="review in reviews" :key="review">
       <p>"{{review}}</p>
@@ -65,5 +66,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+h3 {
+  padding-top: 2em;
+}
 </style>
