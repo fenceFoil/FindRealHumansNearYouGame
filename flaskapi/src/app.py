@@ -442,21 +442,22 @@ def updateGameState():
             enteringNewState = False
         if gameOver:
             print("Game Over -- Letting Players Display Results")
-
-        profileList = [p.playerID for p in profiles]
-        missingTheirPickupLine = [id for id in profileList if getPickupLine(id, currRound) == None]
-        humanPlayersWhoSubmittedPickupLines = [pid for pid in profileList if getPickupLine(pid, currRound) != None and not getPickupLine(pid, currRound).isBackupLine]
-        # If all human players have finished submitting pickup lines this round OR time is up...
-        if (len(humanPlayersWhoSubmittedPickupLines) >= getNumHumanPlayers()) or (datetime.now() > stateTimeoutTime):
-            # Also verify that robots have finished generating pickup lines or players have backup pickup lines...
-            if len(missingTheirPickupLine) <= 0:
-                # Move to swiping time
-                currGameState = "SWIPING"
-                enteringNewState = True
-                stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
-                finished_swiping = []
-            else:
-                print("NOT moving to swiping gameState because we are WAITING for more pickup lines to be generated for playerIDs: {}".format(missingTheirPickupLine))
+        else:
+            # Check logic for moving to swiping state
+            profileList = [p.playerID for p in profiles]
+            missingTheirPickupLine = [id for id in profileList if getPickupLine(id, currRound) == None]
+            humanPlayersWhoSubmittedPickupLines = [pid for pid in profileList if getPickupLine(pid, currRound) != None and not getPickupLine(pid, currRound).isBackupLine]
+            # If all human players have finished submitting pickup lines this round OR time is up...
+            if (len(humanPlayersWhoSubmittedPickupLines) >= getNumHumanPlayers()) or (datetime.now() > stateTimeoutTime):
+                # Also verify that robots have finished generating pickup lines or players have backup pickup lines...
+                if len(missingTheirPickupLine) <= 0:
+                    # Move to swiping time
+                    currGameState = "SWIPING"
+                    enteringNewState = True
+                    stateTimeoutTime = datetime.now() + timedelta(seconds=SWIPING_SECONDS)
+                    finished_swiping = []
+                else:
+                    print("NOT moving to swiping gameState because we are WAITING for more pickup lines to be generated for playerIDs: {}".format(missingTheirPickupLine))
     elif currGameState == "SWIPING":
         print ("Round {} - [{}] Remaining swiping players: {}".format(currRound, (stateTimeoutTime-datetime.now()).seconds, getNumHumanPlayers() - len(finished_swiping)))
         # If all human players are finished swiping OR time is up...
