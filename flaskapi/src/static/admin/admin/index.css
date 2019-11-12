@@ -69,6 +69,13 @@ grid-row-gap: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.controlsspacer {
+    flex-grow: 1;
 }
 
 .mostHearts { grid-area: 1 / 1 / 2 / 2; }
