@@ -2,7 +2,7 @@
   <div class="hello">
     <img src="../assets/logo-frhny-big.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
-    <button v-on:click="createProfile" class="japanese">始まりましょうか</button>
+    <button v-on:click="createProfile" v-bind:disabled="clickedCreateProfile" class="japanese">始まりましょうか</button>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
     <div v-for="review in reviews" :key="review">
       <p>"{{review}}</p>
@@ -20,7 +20,8 @@ export default {
   data: function (){
     return {
       reviews: [], //["The best dating app money can buy 10 out of 10", "didnt find a human, only robots 0 out of 1"],
-      gamestate: "Loading..."
+      gamestate: "Loading...",
+      clickedCreateProfile: false
      }
   },
   created: async function() {
@@ -47,11 +48,15 @@ export default {
       const resp = await fetch(REST_BASE+"/announce_new_player");
       if (resp.ok) {
         if (resp.text != "ok") {
-          window.localStorage.setItem("iJustStartedGameID", resp.text())
+          this.clickedCreateProfile = true;
+          window.localStorage.setItem("iJustStartedGameID", await resp.text())
+          setTimeout(() => window.location.href='#/profile', 1500) // Wait for game reset watchdog to fire off before moving to next screen. I give up.
+        } else {
+          window.location.href='#/profile';
         }
-        window.location.href='#/profile';
       } else {
         alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
+        this.clickedCreateProfile = false;
       }
     }
   }
