@@ -51,7 +51,11 @@ export default {
         // Check for new game
         if (serverState.gameID != currGameID) {
           // Game was reset!
-          window.location.href='#/'
+          if (window.localStorage.getItem("iJustStartedGameID") != currGameID) {
+            // When the user has clicked "create profile" during game over, the game will reset itself.
+            // But since the player has already started creating their profile, let them keep going.
+            window.location.href='#/'
+          }
           OVERLAY_CONTROL.OFF();
           currGameID = serverState.gameID
         }

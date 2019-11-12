@@ -173,9 +173,12 @@ def announce_new_player():
     Server uses this to reset a game-over game before someone finishes
     creating their new profile.
     """
+    global gameID
     if gameOver:
         clear_game()
-    return "ok"
+        return gameID.hex
+    else:
+        return "ok"
 
 
 @app.route('/create_profile', methods=['POST'])

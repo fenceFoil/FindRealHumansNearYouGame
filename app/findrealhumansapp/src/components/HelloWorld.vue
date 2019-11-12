@@ -44,7 +44,11 @@ export default {
       // Wait until reply to start game. This will prevent you from joining a dead server.
       // TODO: Test that joining a game-over state server does reset the game and does not 
       // cause you to bounce back to the home screen after seeing the profile screen.
-      if (await fetch(REST_BASE+"/announce_new_player").ok) {
+      const resp = await fetch(REST_BASE+"/announce_new_player");
+      if (resp.ok) {
+        if (resp.text != "ok") {
+          window.localStorage.setItem("iJustStartedGameID", resp.text)
+        }
         window.location.href='#/profile';
       } else {
         alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
