@@ -18,7 +18,7 @@
 //{{prospects[index].name}}
 //prospects[index].picture
 //{{prospects[index].pickupLine.humanWords + prospects[index].pickupLine.botScreed}}
-import { REST_BASE } from "./../constants/constants.js";
+import { REST_BASE, OVERLAY_CONTROL } from "./../constants/constants.js";
 export default {
   name: "swipe",
   data: function() {
@@ -35,6 +35,7 @@ export default {
     // Set timer to move to results stage if we've moved on
     let myint = setInterval(async function() {
       if (JSON.parse(window.localStorage.getItem("gameState")).stage === "WRITING_PICKUPS") {
+        OVERLAY_CONTROL.OFF();
         window.location.href='#/results'
         clearInterval(myint);
       }
@@ -78,8 +79,8 @@ export default {
             playerID: window.localStorage.getItem("playerID")
           })
         });
-        // Move to results page
-        window.location.href = "#/results";
+        // Wait for the stage change then move to results page. Show overlay for now.
+        OVERLAY_CONTROL.ON();
       }
     }
   }
