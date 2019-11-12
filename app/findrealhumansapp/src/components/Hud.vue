@@ -43,7 +43,11 @@ export default {
                 // Respond to new server state
 
                 // Update status bar message
-                that.statusBarText = serverState.message + " -- " + serverState.countdownSecs;
+                that.statusBarText = serverState.message;
+                 // 8000 is arbitrary, just a large number
+                if (serverState.countdownSecs < 8000 && serverState.countdownSecs != null) {
+                    that.statusBarText += ' - ' + serverState.countdownSecs;
+                }
 
                 // Check for new game
                 if (serverState.gameID != currGameID) {
