@@ -107,11 +107,12 @@ def getPickupLine(playerID, roundNum):
 
 likes = []
 class Like(Object):
-    def __init__(self, sourcePlayerID, destPlayerID, roundNum, action):
+    def __init__(self, sourcePlayerID, destPlayerID, roundNum, action, prefix):
         self.sourcePlayerID = sourcePlayerID
         self.destPlayerID = destPlayerID
         self.roundNum = roundNum
         self.action = action
+        self.prefix = prefix
 
     def __repr__(self):
         return 'Like' + ": " + str(self.__dict__)
@@ -320,8 +321,12 @@ def commit_new_pickup():
 
 @app.route('/swipes', methods=["POST"])
 def do_swipe():
-    global currRound
-    likes.append(Like(request.json["playerID"], request.json["targetID"], currRound, request.json["action"]))
+    global currRound, pickupLines
+    # Get prefix of pickup line used by target and stash it with the like
+    prefix = getPickupLine(request.json["targetID"], currRound).humanWords
+    likes.append(Like(request.json["playerID"], request.json["targetID"], currRound, request.json["action"], prefix))
+
+    # Implants and hearts
     if getPlayer(request.json["targetID"]).isRobot:
         # chance of getting an implant
         player = getPlayer(request.json["playerID"])
@@ -382,29 +387,45 @@ def rungpt2():
 
 enteringNewState = True
 
+CANNED_BOT_LINES = [
+    "Do you want to feel my biceps?",
+    "I am a sports star.",
+    "Nuzzles ur chesty-westy, *** UwU!",
+    "The fact that I am a physical person is very important to me.",
+    "I is human!",
+    "Wanna go to my place?",
+    "Send nudes!", 
+    "Let me be your waifu, senpai!",
+    "Age/Gender/Location?",
+    "ayy bb",
+    "Drug/Disease free?",
+    "Do you drink water?",
+    "Will you share your water with me?",
+    "Do you have any friends you can introduce me to?",
+    "What is the best way to infiltrate your heart?",
+    "All your breasts belong to me!"
+]
+
 def chooseBotPrefix():
-    allLines = [x.humanWords for x in pickupLines]
-    if len(allLines) < 10:
-        allLines += [
-            "Do you want to feel my biceps?",
-            "I am a sports star.",
-            "Nuzzles ur chesty-westy, *** UwU!",
-            "The fact that I am a physical person is very important to me.",
-            "I is human!",
-            "Wanna go to my place?",
-            "Send nudes!", 
-            "Let me be your waifu, senpai!",
-            "Age/Gender/Location?",
-            "ayy bb",
-            "Drug/Disease free?",
-            "Do you drink water?",
-            "Will you share your water with me?",
-            "Do you have any friends you can introduce me to?",
-            "What is the best way to infiltrate your heart?",
-            "All your breasts belong to me!"
-        ]
-    # TODO: Select an appropriate pickup line
-    return random.choice(allLines)
+    global likes, CANNED_BOT_LINES, pickupLines
+
+    # First round: we have no data. Choose from canned robotic pickup lines.
+    if len(likes) <= 0:
+        return random.choice (CANNED_BOT_LINES)
+    # Subsequent rounds: Put all pickup lines (canned +concat+ used in the game) into a list. 
+    # If you have n robots in game, take from top n (ranked by num swipe rights) BUT leave a 25% chance of choosing completely randomly.
+    def getNumRightSwipes(pickupLine):
+        # Iterate through likes. If the humanWords of this pickup line is in a like, count it.
+        return len([like for like in likes if like.prefix == pickupLine.humanWords and like.action == 'RIGHT'])
+    rankedPickupLines = sorted(pickupLines, key=lambda pickupLine: getNumRightSwipes(pickupLine), reverse=True)
+    rankedPrefixes = [pickupLine.humanWords for pickupLine in rankedPickupLines]
+    topN = rankedPrefixes[0:min(getNumRobots(), len(rankedPrefixes))]
+    if random.random() < 0.25:
+        # lol! choose random
+        return random.choice(rankedPrefixes)
+    else:
+        return random.choice(topN)
+    # TODO: Address limitation of this code: robots will choose duplicate pickup lines with near certainty
 
 def generateBotPickupsForRound():
     global profiles, pickupLines, likes, currRound, currGameState
