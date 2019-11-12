@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     submit: async function(direction) {
-      await fetch(REST_BASE + "/swipes", {
+      fetch(REST_BASE + "/swipes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8"
