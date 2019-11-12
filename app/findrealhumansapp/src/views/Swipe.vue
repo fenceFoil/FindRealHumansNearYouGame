@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1 class="header-title">{{prospects[index].name}}</h1>
+    <h1 class="header-title">{{prospects[index].name}} (?)</h1>
     <h1 class="this-is-not-you japanese">これはあなたじゃないです</h1>
     <div class="picture">
       <img class="waifu" :src="prospects[index].picture" />

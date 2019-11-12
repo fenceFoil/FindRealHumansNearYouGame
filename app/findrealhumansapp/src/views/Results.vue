@@ -105,26 +105,14 @@ export default {
     return {
       playerName: window.localStorage.getItem("playerName"),
       round: 1,
-      hearts: 4,
-      implants: 2,
+      hearts: 0,
+      implants: 0,
       gameOver: false,
       pickuplines: [
-        "Hey I am a Robot. Plz beleive me",
-        "Just a hot single looking to become a hot mess."
+        //"Hey I am a Robot. Plz beleive me",
+        //"Just a hot single looking to become a hot mess."
       ],
       datePics: [
-        "https://www.thiswaifudoesnotexist.net/example-196646.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-196627.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-112647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-106647.jpg",
-        "https://www.thiswaifudoesnotexist.net/example-192647.jpg"
       ]
     };
   },
