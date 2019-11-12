@@ -47,9 +47,11 @@ export default {
       const resp = await fetch(REST_BASE+"/announce_new_player");
       if (resp.ok) {
         if (resp.text != "ok") {
-          window.localStorage.setItem("iJustStartedGameID", resp.text())
+          window.localStorage.setItem("iJustStartedGameID", await resp.text())
+          setTimeout(() => window.location.href='#/profile', 1500) // Wait for game reset watchdog to fire off before moving to next screen. I give up.
+        } else {
+          window.location.href='#/profile';
         }
-        window.location.href='#/profile';
       } else {
         alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
       }
