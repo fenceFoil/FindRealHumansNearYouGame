@@ -47,7 +47,7 @@ export default {
       const resp = await fetch(REST_BASE+"/announce_new_player");
       if (resp.ok) {
         if (resp.text != "ok") {
-          window.localStorage.setItem("iJustStartedGameID", resp.text)
+          window.localStorage.setItem("iJustStartedGameID", resp.text())
         }
         window.location.href='#/profile';
       } else {
