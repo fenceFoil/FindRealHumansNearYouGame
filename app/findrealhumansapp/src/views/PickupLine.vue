@@ -12,7 +12,7 @@
     <template v-if="settingPickupLine">
       <div class="text speech-bubble">
         <div class="arrow top right"></div>
-        <textarea id="pickupLine-input" v-model="pickupline" rows="4" cols="45" placeholder="Enter a pickupline"></textarea>
+        <textarea id="pickupLine-input" v-model="pickupline" rows="4" cols="15" placeholder="Enter a pickupline"></textarea>
       </div>
       <div class="button">
         <button v-on:click="submit" type="button">Submit</button>
