@@ -8,17 +8,17 @@
     <div class="picture">
       <img class="waifu" :src="pictureURL">
     </div>
+    <h1>Enter pickup line</h1>
+    <div class="text">
+      <textarea v-model="pickupline" rows="4" cols="50"></textarea>
+    </div>
     <template v-if="settingPickupLine">
-      <h1>Enter pickup line</h1>
-      <div class="text">
-        <textarea v-model="pickupline" rows="4" cols="50"></textarea>
-      </div>
       <div class="button">
         <button v-on:click="submit" type="button">Submit</button>
       </div>
     </template>
     <template v-if="selectingOption">
-      <h1>Enhance Your Pickup Line</h1>
+      <h1>*Enhance* Your Pickup Line</h1>
       <div v-for="ending in endings" :key="ending" class="text">
         <div class="button">
           <button v-on:click="enhanceLine(ending)" type="button">{{ending}}</button>
@@ -36,6 +36,7 @@
     data: function (){
         return {
           pickupline: "",
+          endings: [],
           settingPickupLine: true,
           selectingOption: false,
           playerName: window.localStorage.getItem("playerName"),
@@ -54,6 +55,9 @@
     },
     methods:{
       submit: async function (){
+        this.settingPickupLine = false;
+        this.selectingOption = true;
+
         const response = await fetch(
           REST_BASE+"/get_pickup_completions", {
           method: 'POST',
@@ -66,7 +70,9 @@
           })
         });
         const myJson = await response.json();
-
+        this.endings = myJson.options;
+      },
+      enhanceLine: async function (ending) {
         OVERLAY_CONTROL.ON();
 
         await fetch(
@@ -78,12 +84,9 @@
           body: JSON.stringify({
             "playerID":parseInt(window.localStorage.getItem('playerID')),
             "humanWords":this.pickupline,
-            "botScreed":myJson.options[0]
+            "botScreed":ending
           })
         });
-      },
-      enhanceLine: async function (ending) {
-        alert(ending)
       }
     }
   }
