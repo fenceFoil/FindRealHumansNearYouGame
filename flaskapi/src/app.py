@@ -176,7 +176,7 @@ def announce_new_player():
     global gameID
     if gameOver:
         clear_game()
-        return gameID.hex
+        return str(gameID)
     else:
         return "ok"
 
