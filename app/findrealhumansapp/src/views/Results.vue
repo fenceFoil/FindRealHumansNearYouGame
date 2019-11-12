@@ -118,21 +118,9 @@ export default {
   },
   components: { Implant },
   created: async function() {
-      // Force player on to swiping again if they timeout their pickup line writing phase looking at their stuff
-      // But give the game a couple of seconds to change states and reupload to this page.
-      setTimeout(function() {
-        let myint = setInterval(async function() {
-          if (JSON.parse(window.localStorage.getItem("gameState")).stage === "SWIPING") {
-            window.location.href='#/swipe'
-            clearInterval(myint);
-          }
-        }, 1000);
-      }, 2000);
-
-      // Meanwhile, immediately continue:
       const response = await fetch(
-      REST_BASE+"/results", {
-        method: 'POST',
+        REST_BASE+"/results", {
+          method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
@@ -147,6 +135,17 @@ export default {
     this.gameOver = myJson.isFinalResults;
     this.datePics = myJson.youDated.map(x => x.picture)
     this.pickuplines = myJson.youDated.map(x => (x.pickupLine.humanWords + x.pickupLine.botScreed))
+
+    // Force player on to swiping again if they timeout their pickup line writing phase looking at their stuff
+    // But give the game a couple of seconds first to change states and reupload to this page.
+    setTimeout(function() {
+      let myint = setInterval(async function() {
+        if (JSON.parse(window.localStorage.getItem("gameState")).stage === "SWIPING" && JSON.parse(window.localStorage.getItem("gameState")).currRound != this.round+1) {
+          window.location.href='#/swipe'
+          clearInterval(myint);
+        }
+      }, 1000);
+    }, 2000);
   },
   methods: {
     submit: function() {
