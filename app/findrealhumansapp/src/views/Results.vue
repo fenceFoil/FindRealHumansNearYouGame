@@ -134,7 +134,7 @@ export default {
     this.implants = myJson.newImplants;
     this.gameOver = myJson.isFinalResults;
     this.datePics = myJson.youDated.map(x => x.picture)
-    this.pickuplines = myJson.youDated.map(x => (x.pickupLine.humanWords + x.pickupLine.botScreed))
+    this.pickuplines = myJson.youDated.map(x => ((x.isRobot? "🤖  ": "❤️  ") + x.pickupLine.humanWords + x.pickupLine.botScreed + (x.isRobot? "  🤖": "  ❤️")))
 
     // Force player on to swiping again if they timeout their pickup line writing phase looking at their stuff
     // But give the game a couple of seconds first to change states and reupload to this page.
