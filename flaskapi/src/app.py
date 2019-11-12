@@ -422,7 +422,11 @@ def chooseBotPrefix():
     topN = rankedPrefixes[0:min(getNumRobots(), len(rankedPrefixes))]
     if random.random() < 0.25:
         # lol! choose random
-        return random.choice(rankedPrefixes)
+        if random.random() < 0.70: 
+            # Go back to canned!
+            return random.choice(CANNED_BOT_LINES)
+        else:
+            return random.choice(rankedPrefixes)
     else:
         return random.choice(topN)
     # TODO: Address limitation of this code: robots will choose duplicate pickup lines with near certainty
