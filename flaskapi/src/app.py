@@ -166,6 +166,18 @@ def start_game():
 
     return "Game Started :) VERSION={}".format(VERSION)
 
+@app.route('/announce_new_player', methods=['GET', 'POST'])
+def announce_new_player():
+    """
+    Webpage uses this to confirm server is alive with a 200 reply.
+    Server uses this to reset a game-over game before someone finishes
+    creating their new profile.
+    """
+    if gameOver:
+        clear_game()
+    return "ok"
+
+
 @app.route('/create_profile', methods=['POST'])
 def create_profile():
     profiles.append(Profile(request.json["name"], "https://www.thiswaifudoesnotexist.net/example-{}.jpg".format(request.json["picture"])))

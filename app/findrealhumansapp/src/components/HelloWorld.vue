@@ -2,7 +2,7 @@
   <div class="hello">
     <img src="../assets/logo-frhny-big.png" style="width:400px; background:#fffa4d;">
     <h1>Create a profile now!!</h1>
-    <button onclick="window.location.href = '#/profile';" class="japanese">始まりましょうか</button>
+    <button v-on:click="createProfile" class="japanese">始まりましょうか</button>
     <h1>The number 1 rated dating app for real humans.<br/>Just read the reviews of our very real and happy customers.</h1>
     <div v-for="review in reviews" :key="review">
       <p>"{{review}}</p>
@@ -37,6 +37,17 @@ export default {
         clearInterval(myint);
       }
     }, 3200);
+  },
+  createProfile: async function() {
+    // Announce someone is joining the game.
+    // Wait until reply to start game. This will prevent you from joining a dead server.
+    // TODO: Test that joining a game-over state server does reset the game and does not 
+    // cause you to bounce back to the home screen after seeing the profile screen.
+    if (!await fetch().ok) {
+      window.location.href='#/profile';
+    } else {
+      alert("Server-chan is sick today. Her entirely meat-based processing is becoming a liability to us all.")
+    }
   }
 }
 </script>
