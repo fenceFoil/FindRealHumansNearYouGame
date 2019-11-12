@@ -115,5 +115,5 @@ export default {
     content: "";
     position: absolute;
     left: -1em
-}
+  }
 </style>

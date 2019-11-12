@@ -101,6 +101,7 @@ body {
 
 button, input, textarea{
   font-family: Glitter;
+  font-size: 2em;
 }
 
 </style>
