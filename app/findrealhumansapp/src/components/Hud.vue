@@ -77,6 +77,7 @@ export default {
     #hud-displayer {
         position: fixed;
         font-size: 2em;
+        z-index: 10;
     }
 
     #hud {

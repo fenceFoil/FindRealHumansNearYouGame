@@ -70,6 +70,9 @@
     <div class="dates-container">
       <img v-for="date in datePics" :key="date" class="waifu-thumbnail" :src="date" />
     </div>
+
+    <VueCarousel :data="datePics" :controls="false" :indicators="false" :interval="2000"></VueCarousel>
+
     <template v-if="!gameOver">
       <button v-on:click="submit" class="ready-button">Ready</button>
     </template>
@@ -98,6 +101,7 @@
 
 <script>
 import Implant from "@/components/Implant.vue";
+import VueCarousel from '@chenfengyuan/vue-carousel';
 import { REST_BASE } from './../constants/constants.js';
 export default {
   name: "pickupline",
@@ -116,7 +120,7 @@ export default {
       ]
     };
   },
-  components: { Implant },
+  components: { Implant, VueCarousel },
   created: async function() {
       const response = await fetch(
         REST_BASE+"/results", {
