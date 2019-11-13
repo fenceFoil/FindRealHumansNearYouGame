@@ -35,6 +35,7 @@ export default {
     // Set timer to move to results stage if we've moved on
     let myint = setInterval(async function() {
       if (JSON.parse(window.localStorage.getItem("gameState")).stage === "WRITING_PICKUPS") {
+        OVERLAY_CONTROL.OFF();
         window.location.href='#/results'
         clearInterval(myint);
       }
@@ -59,7 +60,7 @@ export default {
   },
   methods: {
     submit: async function(direction) {
-      await fetch(REST_BASE + "/swipes", {
+      fetch(REST_BASE + "/swipes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8"
@@ -84,8 +85,8 @@ export default {
             playerID: window.localStorage.getItem("playerID")
           })
         });
-        // Move to results page
-        window.location.href = "#/results";
+        // Wait for the stage change then move to results page. Show overlay for now.
+        OVERLAY_CONTROL.ON();
       }
     }
   }
