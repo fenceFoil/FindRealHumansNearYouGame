@@ -42,15 +42,21 @@ export default {
     }, 1000);
 
     // Load prospects when entering this stage
-    const response = await fetch(
-      REST_BASE + "/get_prospects/" +
-        window.localStorage.getItem("playerID"),
-      {
-        method: "GET"
-      }
-    );
-    const myJson = await response.json();
-    this.prospects = myJson.prospects;
+    // Sometimes returns with no prospects keep trying until we get some
+    // Maybe wait between polls?
+    OVERLAY_CONTROL.ON();
+    while(!this.prospects.length){
+      const response = await fetch(
+        REST_BASE + "/get_prospects/" +
+          window.localStorage.getItem("playerID"),
+        {
+          method: "GET"
+        }
+      );
+      const myJson = await response.json();
+      this.prospects = myJson.prospects;
+    }
+    OVERLAY_CONTROL.OFF();
   },
   methods: {
     submit: async function(direction) {
