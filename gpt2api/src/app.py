@@ -166,7 +166,7 @@ global device
 def main():
     global device, tokenizer, model
     model_type = "gpt2"
-    model_name_or_path="distilgpt2"
+    model_name_or_path="gpt2-medium"
     length = 30
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
