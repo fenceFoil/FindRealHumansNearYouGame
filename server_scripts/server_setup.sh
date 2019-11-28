@@ -14,7 +14,7 @@ sudo ln -s /usr/bin/nodejs /usr/bin/node
 sudo npm install --no-optional -g @vue/cli
 
 # Install npm dependencies
-cd $rootDir/app/findrealhumansapp && npm install
+cd ~/FindRealHumansNearYouGame/app/findrealhumansapp && npm install
 
 #  @vue/cli-service @vue/cli-plugin-babel @vue/cli-service-global
 # sudo npm install --no-optional -g vue eslint @vue/cli @vue/cli-service @vue/cli-plugin-babel @vue/cli-service-global @vue/cli-plugin-eslint vue-template-compiler eslint-plugin-vue^C
