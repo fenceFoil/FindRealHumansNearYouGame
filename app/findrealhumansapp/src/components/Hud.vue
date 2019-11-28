@@ -6,7 +6,7 @@
             <div id="status-bar">
                 <h1 id="status-bar-text">{{statusBarText}}</h1>
             </div>
-            <aplayer id="player" :audio="audio" :lrcType="3" />
+            <aplayer id="player" :audio="audio" :lrcType="3" fixed/>
             <!-- add in game info here -->
         </div>
     </div>
