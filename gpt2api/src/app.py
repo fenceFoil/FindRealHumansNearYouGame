@@ -24,6 +24,7 @@ from tqdm import trange
 import threading
 from flask import Flask, jsonify, request
 from flask_apscheduler import APScheduler
+import random
 
 tokenizer = None
 POOL_TIME = 5
@@ -81,9 +82,10 @@ with people, even a bishop, begging for his blessing. <eod> </s> <eos>"""
 
 
 def set_seed():
-    np.random.seed(42)
-    torch.manual_seed(42)
-    torch.cuda.manual_seed_all(42)
+    seed = random.randint(0, 1000000)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
 
 def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
