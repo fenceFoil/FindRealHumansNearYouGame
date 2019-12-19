@@ -1,5 +1,7 @@
 <template>
-    <div id="overlay"><h1 id="overlay-text">*Girls Are Preparing . . .*</h1></div>
+    <div id="overlay" class="overlay">
+        <h1 id="overlay-text">*Girls Are Preparing . . .*</h1>
+    </div>
 </template>
 
 <script>
@@ -22,8 +24,19 @@ export default {
         right: 0;
         bottom: 0;
         background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+         /* Specify a stack order in case you're using a different order for other elements */
         cursor: pointer; /* Add a pointer on hover */
+    }
+
+    .overlay {
+        opacity: 0;
+        z-index: -1000;
+        transition: opacity 1.00s;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        opacity: 1;
+        z-index: -1;
     }
 
     #overlay-text {

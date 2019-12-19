@@ -2,7 +2,7 @@
     <div class="container">
         <div id="hud-displayer" 
         v-on:mouseover="mouseover">Show HUD</div>
-        <div id="hud">
+        <div id="hud" class="hud">
             <div id="status-bar">
                 <h1 id="status-bar-text">{{statusBarText}}</h1>
             </div>
@@ -118,14 +118,25 @@ export default {
         position: fixed; /* Sit on top of the page content */
         width: 100%; /* Full width (cover the whole page) */
         height: 100%; /* Full height (cover the whole page) */
-        display: none;
+        display: block;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         background-color: rgba(0,0,0,0); /* Black background with opacity */
-        z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
+         /* Specify a stack order in case you're using a different order for other elements */
         cursor: pointer; /* Add a pointer on hover */
+    }
+
+    .hud {
+        opacity: 0;
+        z-index: -1000;
+        transition: opacity 1.00s;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        opacity: 1;
+        z-index: -1;
     }
     
     #status-bar {
